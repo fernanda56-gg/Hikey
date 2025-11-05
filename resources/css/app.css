@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+@import "@fontsource/reddit-sans/400.css";
+@import "@fontsource/reddit-sans/500.css";
+@import "@fontsource/reddit-sans/600.css";
+@import "@fontsource/reddit-sans/700.css";
+
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Reddit Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@plugin "daisyui" {
+    themes: daylight, moonlight;
+    root: ":root";
+    include: ;
+    exclude: ;
+    prefix: ;
+    logs: true;
+}
+
+@plugin "daisyui/theme" {
+    name: "daylight";
+    default: true; /* set as default */
+    prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
+    color-scheme: light; /* color of browser-provided UI */
+
+    --color-base-100: #ffffff;
+    --color-base-200: #f4f2f2;
+    --color-base-300: #dedcdc;
+    --color-base-content: #1f2937;
+
+    --color-primary: #b9ff66;
+    --color-primary-content: #baf291;
+    --color-secondary: #adebb3;
+    --color-secondary-content: #0656bf;
+    --color-accent: #16bbda;
+    --color-accent-content: #a665d3;
+
+    --color-neutral: #111822;
+    --color-neutral-content: #f9fafb;
+
+    --color-info: #3b82f6;
+    --color-success: #22c55e;
+    --color-warning: #f9c74f;
+    --color-error: #f94144;
+
+    /* border radius */
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+
+    /* base sizes */
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+
+    /* border size */
+    --border: 1px;
+
+    /* effects */
+    --depth: 1;
+    --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+    name: "moonlight";
+    color-scheme: dark; /* color of browser-provided UI */
+
+    --color-base-100: #111822;
+    --color-base-200: #1a2531;
+    --color-base-300: #1a1a1a;
+    --color-base-content: #747474;
+
+    --color-primary: #b9ff66;
+    --color-primary-content: #baf291;
+    --color-secondary: #adebb3;
+    --color-secondary-content: #0656bf;
+    --color-accent: #16bbda;
+    --color-accent-content: #a665d3;
+
+    --color-neutral: #f9fafb;
+    --color-neutral-content: #3d4451;
+
+    --color-info: #3b82f6;
+    --color-success: #22c55e;
+    --color-warning: #f9c74f;
+    --color-error: #f94144;
+
+    /* border radius */
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+
+    /* base sizes */
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+
+    /* border size */
+    --border: 1px;
+
+    /* effects */
+    --depth: 1;
+    --noise: 0;
+}

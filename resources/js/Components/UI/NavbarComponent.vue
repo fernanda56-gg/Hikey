@@ -1,0 +1,98 @@
+<template>
+    <!--Contenedor global-->
+    <nav class="text-neutral">
+        <div class="container max-w-full mx-auto md:flex items-center gap-6 border-b border-gray-300">
+            <!--Logo-->
+            <div class="flex items-center justify-between md:w-auto w-full">
+                <Link href="/home" class="flex items-center space-x-2">
+                    <img src="/images/logo.png" class="w-[30px] m-2">
+                    <span class="font-sans font-bold uppercase text-xl flex-1 py-5">hikey</span>
+                </Link>
+
+
+
+                <!--Icono de menu desplegable-->
+                <div class="md:hidden flex items-center px-3">
+                    <button @click="toggleMenu" class="menu-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-neutral cursor-pointer" width="32" height="32" fill="none" viewBox="0 0 256 256">
+                            <path d="M228,128a12,12,0,0,1-12,12H40a12,12,0,0,1,0-24H216A12,12,0,0,1,228,128ZM40,76H216a12,12,0,0,0,0-24H40a12,12,0,0,0,0,24ZM216,180H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24Z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!--Links-->
+            <div :class="[
+                'md:flex md:flex-row flex-col items-center justify-start md:space-x-1 pb-3 md:pb-0 navigation-menu',
+                menuOpen ? 'flex' : 'hidden'
+            ]">
+                <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
+                    <Link href="/home" class="px-3 py-2 block">Inicio</Link>
+                </div>
+
+                <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
+                    <Link :href="route('projects.index')" class="px-3 py-2 block">Proyectos</Link>
+                </div>
+
+                <!--Menu dropdown-->
+                <div class="dropdown dropdown-hover relative">
+                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black">
+                        <span class="cursor-pointer">Prueba</span>
+                        <PhCaretDown :size="20" class="text-neutral md:dark:hover:text-black cursor-pointer"/>
+                    </div>
+                    <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 p-2 shadow-sm">
+                        <li><Link href="#" class="block">Prueba 1</Link></li>
+                        <li><Link href="#" class="block">Prueba 2</Link></li>
+                        <li><Link href="#" class="block">Prueba 3</Link></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--Botón de temo claro y oscuro-->
+                <div class="hidden md:flex items-center justify-between ml-auto space-x-3 px-3">
+                    <button class="btn btn-square" @click="toggleTheme">
+                    <span v-if="theme === 'daylight'">
+                        <PhMoonStars :size="24" color="#003566"/>
+                    </span>
+                    <span v-else>
+                        <PhSunHorizon :size="24" color="#FFC300"/>
+                    </span>
+                    </button>
+
+                <!--Botón de usuario-->
+                    <button class="btn btn-circle">
+                        <PhUserCircle :size="32" class="text-neutral"/>
+                    </button>
+                </div>
+
+        </div>
+    </nav>
+
+    <slot></slot>
+</template>
+
+<script setup>
+import { Link } from '@inertiajs/vue3';
+import { ref, watchEffect } from 'vue';
+import { route } from 'ziggy-js';
+import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown } from '@phosphor-icons/vue';
+
+//Botón de menu
+const menuOpen = ref(false)
+function toggleMenu() {
+    menuOpen.value = !menuOpen.value
+}
+
+//Botón de tema claro y oscuro
+const theme = ref(localStorage.getItem('theme') || 'daylight')
+
+watchEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme.value)
+    localStorage.setItem('theme', theme.value)
+})
+
+function toggleTheme() {
+    theme.value = theme.value === 'daylight' ? 'moonlight' : 'daylight'
+}
+
+</script>

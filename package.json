@@ -1,0 +1,33 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.36.0",
+        "@tailwindcss/vite": "^4.1.13",
+        "@vitejs/plugin-vue": "^6.0.1",
+        "axios": "^1.11.0",
+        "concurrently": "^9.0.1",
+        "daisyui": "^5.3.7",
+        "eslint": "^9.36.0",
+        "eslint-plugin-vue": "^10.5.0",
+        "globals": "^16.4.0",
+        "laravel-vite-plugin": "^2.0.0",
+        "tailwindcss": "^4.1.15",
+        "vite": "^7.0.4"
+    },
+    "dependencies": {
+        "@fontsource/inter": "^5.2.8",
+        "@fontsource/reddit-sans": "^5.2.7",
+        "@inertiajs/vue3": "^2.1.6",
+        "@phosphor-icons/vue": "^2.2.1",
+        "dayjs": "^1.11.18",
+        "notyf": "^3.10.0",
+        "sweetalert2": "^11.23.0",
+        "ziggy-js": "^2.6.0"
+    }
+}
