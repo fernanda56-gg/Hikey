@@ -45,7 +45,7 @@ class ProjectController extends Controller
         Project::create($validated);
 
             //los datos se guardan en BD
-            return redirect()->route('projects.index')->with('success', 'Proyecto creado con exito.');
+            return redirect()->route('projects.index')->with('success', 'Proyecto creado con éxito.');
         }catch(ValidationException $e){
             throw $e;
         }catch(\Exception $e){
