@@ -30,9 +30,9 @@
                         <input id="email" v-model="form.email" type="text" placeholder="Ingresa tu correo electrónico" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
                     </div>
                     <!--Contenedor de error-->
-                    <div class="flex items-center justify-start text-error text-xs m-2">
+                    <div class="flex items-center justify-start text-error text-xs m-2" v-if="form.errors.email">
                         <PhWarningCircle class="mx-1 size-4" weight="bold" />
-                        error
+                        {{ form.errors.email }}
                     </div>
                 </div>
 
@@ -41,6 +41,11 @@
                     <div class="flex items-center gap-2 bg-transparent border-b border-b-gray-700 py-2">
                         <PhLockKey class="text-neutral size-6"/>
                         <input id="password" v-model="form.password" type="password" placeholder="Ingresa tu contraseña" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
+                    </div>
+                    <!--Contenedor de error-->
+                    <div class="flex items-center justify-start text-error text-xs m-2" v-if="form.errors.password">
+                        <PhWarningCircle class="mx-1 size-4" weight="bold" />
+                        {{ form.errors.password }}
                     </div>
                 </div>
 
@@ -55,7 +60,7 @@
 
                 <!--Botón de iniciar sesión-->
                 <div class="mt-16 flex items-center justify-center">
-                    <button type="submit" class="bg-primary w-full p-4 font-bold uppercase rounded-lg m-4 cursor-pointer text-black">iniciar sesión</button>
+                    <button type="submit" class="bg-primary w-full p-4 font-bold uppercase rounded-lg m-4 cursor-pointer text-black hover:bg-primary-content hover:duration-200 duration-200">iniciar sesión</button>
                 </div>
             </form>
         </div>
@@ -67,12 +72,11 @@ import { Link } from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
-const form = useForm (
+const form = useForm(
     {
         email: null,
         password: null
-    }
-)
+    })
 
 const login = () => form.post(route('login.store'))
 </script>
