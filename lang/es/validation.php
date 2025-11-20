@@ -163,6 +163,8 @@ return [
     'image_path' => 'link img',
     'start_date' => 'fecha de inicio',
     'end_date' => 'fecha de finalización',
+    'last_name' => 'apellidos',
+    'password' => 'contraseña',
 ],
 
 ];

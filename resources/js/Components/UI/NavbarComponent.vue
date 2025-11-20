@@ -49,8 +49,8 @@
             </div>
 
             <!--Botón de temo claro y oscuro-->
-                <div class="hidden md:flex items-center justify-between ml-auto space-x-3 px-3">
-                    <button class="btn btn-square" @click="toggleTheme">
+                <div class="hidden md:flex items-center justify-between ml-auto px-3">
+                    <button class="btn btn-square border-0 bg-transparent hover:bg-base-200 hover:duration-300 duration-200 shadow-none" @click="toggleTheme">
                     <span v-if="theme === 'daylight'">
                         <PhMoonStars :size="24" color="#003566"/>
                     </span>
@@ -60,11 +60,34 @@
                     </button>
 
                 <!--Botón de usuario-->
-                    <button class="btn btn-circle">
-                        <PhUserCircle :size="32" class="text-neutral"/>
-                    </button>
-                </div>
+                    <div class="flex items-center justify-between">
+                        <button class="btn btn-circle border-0 bg-transparent shadow-none">
+                            <PhUserCircle weight="duotone" class="text-neutral size-6"/>
+                        </button>
+                        <span v-if="user" class="cursor-default">{{ user.name }}</span>
+                    </div>
 
+                <!--Menu desplegable de usuario-->
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button" class="flex items-center px-3 py-2">
+                            <PhCaretDown class="text-neutral cursor-pointer size-5"/>
+                        </div>
+                        <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-42 p-2 shadow-sm">
+                            <li>
+                                <Link class="flex items-center">
+                                    <PhGear class="size-5 text-base-content" :weight="bold"/>
+                                    <span>Ajustes</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link class="flex items-center" :href="route('logout')" method="delete" as="button">
+                                    <PhSignOut class="size-5 text-error" :weight="bold"/>
+                                    <span>Cerrar sesión</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
         </div>
     </nav>
 
@@ -72,10 +95,12 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { ref, watchEffect } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { ref, watchEffect, computed } from 'vue';
 import { route } from 'ziggy-js';
-import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown } from '@phosphor-icons/vue';
+import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut } from '@phosphor-icons/vue';
+
+
 
 //Botón de menu
 const menuOpen = ref(false)
@@ -94,5 +119,10 @@ watchEffect(() => {
 function toggleTheme() {
     theme.value = theme.value === 'daylight' ? 'moonlight' : 'daylight'
 }
+
+//Propiedad para obtener datos de usuario
+const user = computed(
+    () => usePage().props.user
+)
 
 </script>

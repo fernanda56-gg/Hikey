@@ -50,12 +50,11 @@
                 </div>
 
                 <!--Link a registro de usuario-->
-                <div class="mb-6 m-4">
-                    <Link class="flex items-center gap-1 bg-transparent cursor-pointer">
+                <div class="md:mb-6 m-4">
+                    <Link class="flex items-center gap-1 bg-transparent cursor-pointer" :href="route('register')">
                         <PhArrowLeft class="text-neutral size-4"/>
                         <span class="text-xs text-neutral border-b hover:text-blue-600 hover:duration-200 duration-200">¿Aún no tienes cuenta? Regístrate!</span>
                     </Link>
-
                 </div>
 
                 <!--Botón de iniciar sesión-->

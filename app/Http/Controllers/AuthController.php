@@ -29,7 +29,16 @@ class AuthController extends Controller
     }
 
     //Destruye la sesión del usuario
-    public function destroy() {
+    public function destroy(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect('/');
+    }
+
+    //Muestra la pagina principal
+    public function show() {
+        return inertia(('Home/HomePage'));
     }
 }
