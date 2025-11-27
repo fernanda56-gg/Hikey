@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Project::factory(10)->create();
+        Project::factory(10)->create([
+            'by_user_id' => User::first()->id,
+        ]);
     }
 }

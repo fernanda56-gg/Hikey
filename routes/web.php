@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ManageAccounts;
+use App\Http\Controllers\ManageAccountsController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -13,5 +15,7 @@ Route::get('home', [AuthController::class, 'show'])->name('inicio')->middleware(
 
 Route::get('register', [UserController::class, 'create'])->name('register');
 Route::post('register', [UserController::class, 'store'])->name('register.store');
+
+Route::get('manage-account', [ManageAccountsController::class, 'index'])->name('manage-account')->middleware('auth');
 
 Route::resource('projects', ProjectController::class)->middleware('auth');

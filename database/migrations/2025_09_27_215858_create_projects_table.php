@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->enum('status', ['planned', 'in_progress', 'completed'])->default('planned');
+            $table->foreignId('by_user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

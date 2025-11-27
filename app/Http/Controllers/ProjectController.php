@@ -42,7 +42,8 @@ class ProjectController extends Controller
                     'end_date' => 'required',
                     'status' => 'required|string',
         ]);
-        Project::create($validated);
+        //Project::create($validated);
+        $request->user()->projects()->create($validated);
 
             //los datos se guardan en BD
             return redirect()->route('projects.index')->with('success', 'Proyecto creado con éxito.');
