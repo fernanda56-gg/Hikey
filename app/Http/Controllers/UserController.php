@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Commands\AssignRole;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class UserController extends Controller
                     ->uncompromised(),],
         ]));
         $user->save();
+        $user->assignRole('user'); //se asigna rol de usuario por defecto
         Auth::login($user);
 
         return redirect()->route('inicio')->with('success', 'Bienvenido a Hikey, ' . $user->name . '!');

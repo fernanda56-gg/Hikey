@@ -1,8 +1,8 @@
 <template>
     <div class="text-neutral">
-        <h1 class="uppercase font-bold text-xl">proyecto</h1>
+        <h1 class="uppercase font-bold md:text-xl text-base">proyecto</h1>
         <span class="text-lg">{{ projects.name }}</span>
-        <h1 class="uppercase font-bold text-xl mt-2">descripción</h1>
+        <h1 class="uppercase font-bold md:text-xl text-base mt-2">descripción</h1>
         <p class="text-lg">{{ projects.description }}</p>
 
         <!--Links-->
@@ -28,12 +28,12 @@
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
                 <h1 class="uppercase font-bold text-lg">fecha de inicio</h1>
-                <span class="text-lg">{{ formatDate(projects.start_date) }}</span>
+                <span class="md:text-lg text-base">{{ formatDate(projects.start_date) }}</span>
             </div>
 
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold text-lg">fecha de finalización</h1>
-                <span class="text-lg">{{ formatDate(projects.end_date) }}</span>
+                <span class="md:text-lg text-base">{{ formatDate(projects.end_date) }}</span>
             </div>
         </div>
 

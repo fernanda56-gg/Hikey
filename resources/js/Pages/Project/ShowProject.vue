@@ -7,20 +7,19 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">información de proyecto</h1>
             </div>
             <!--Contenedor de información de proyecto-->
-            <div class="flex items-start justify-start md:space-x-4 md:mx-8 mx-auto pt-4">
+            <div class="flex flex-col lg:flex-row md:p-4 text-neutral">
                 <!--Contenedor de información (grande)-->
-                <div class="flex-1 p-4 bg-base-200 border-2 border-base-300 rounded-lg md:w-5/6">
+                <div class="card border-2 border-base-300 bg-base-200 rounded-box h-auto min-w-4/5 grow place-items-start p-4">
                     <ProjectInformation :projects="project" />
                 </div>
 
+                <div class="divider lg:divider-horizontal"></div>
+
                 <!--Contenedor de acciones (pequeño)-->
-                <div class="hidden md:flex items-center justify-center space-y-2 md:w-1/6 border-2 border-base-300 rounded-lg bg-base-200 p-4">
+                <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start">
                     <ProjectActions :projects="project" />
+                    <div class="divider"></div>
                 </div>
-            </div>
-            <!--Contenedor acciones vista celular-->
-            <div class="flex items-center justify-center border-2 border-base-300 rounded-lg bg-base-200 p-4 mt-2 w-full md:hidden">
-                <ProjectActions :projects="project" />
             </div>
         </div>
     </AppLayout>

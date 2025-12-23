@@ -42,7 +42,6 @@ class ProjectController extends Controller
                     'end_date' => 'required',
                     'status' => 'required|string',
         ]);
-        //Project::create($validated);
         $request->user()->projects()->create($validated);
 
             //los datos se guardan en BD

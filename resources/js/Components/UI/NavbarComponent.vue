@@ -4,7 +4,7 @@
         <div class="container max-w-full mx-auto md:flex items-center gap-6 border-b border-gray-300">
             <!--Logo-->
             <div class="flex items-center justify-between md:w-auto w-full">
-                <Link href="/home" class="flex items-center space-x-2">
+                <Link :href="route('inicio')" class="flex items-center space-x-2">
                     <img src="/images/logo.png" class="w-[30px] m-2">
                     <span class="font-sans font-bold uppercase text-xl flex-1 py-5">hikey</span>
                 </Link>
@@ -27,11 +27,16 @@
                 menuOpen ? 'flex' : 'hidden'
             ]">
                 <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
-                    <Link href="/home" class="px-3 py-2 block">Inicio</Link>
+                    <Link :href="route('inicio')" class="px-3 py-2 block">Inicio</Link>
                 </div>
 
                 <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
                     <Link :href="route('projects.index')" class="px-3 py-2 block">Proyectos</Link>
+                </div>
+
+                <!--Links para usuario admin-->
+                <div v-if="hasRole('admin')" class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
+                    <Link :href="route('manage-account.index')" class="px-3 py-2 block">Usuarios</Link>
                 </div>
 
                 <!--Menu dropdown-->
@@ -64,7 +69,7 @@
                         <button class="btn btn-circle border-0 bg-transparent shadow-none">
                             <PhUserCircle weight="duotone" class="text-neutral size-6"/>
                         </button>
-                        <span v-if="user" class="cursor-default">{{ user.name }}</span>
+                        <span v-if="isAuthenticated" class="cursor-default">{{ user.name }}</span>
                     </div>
 
                 <!--Menu desplegable de usuario-->
@@ -95,10 +100,11 @@
 </template>
 
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3';
-import { ref, watchEffect, computed } from 'vue';
+import { Link} from '@inertiajs/vue3';
+import { ref, watchEffect} from 'vue';
 import { route } from 'ziggy-js';
 import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut } from '@phosphor-icons/vue';
+import { usePermission } from '../../composables/usePermission';
 
 
 
@@ -121,8 +127,9 @@ function toggleTheme() {
 }
 
 //Propiedad para obtener datos de usuario
-const user = computed(
-    () => usePage().props.user
-)
+
+
+//Comprobar permisos de usuario
+const {hasRole, isAuthenticated, user} = usePermission();
 
 </script>

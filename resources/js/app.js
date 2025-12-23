@@ -1,6 +1,6 @@
 //import './bootstrap'; No es necesario
 
-/*inicializacion la aplicacion de inertia*/
+/*inicia la aplicación de inertia*/
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { ZiggyVue } from 'ziggy'
