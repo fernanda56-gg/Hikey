@@ -45,10 +45,10 @@
     --color-neutral: #111822;
     --color-neutral-content: #f9fafb;
 
-    --color-info: #3b82f6;
+    --color-info: #00a6fb;
     --color-success: #22c55e;
-    --color-warning: #f9c74f;
-    --color-error: #f94144;
+    --color-warning: #ffc300;
+    --color-error: #ef233c;
 
     /* border radius */
     --radius-selector: 1rem;

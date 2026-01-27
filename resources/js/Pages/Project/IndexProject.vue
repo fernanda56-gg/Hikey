@@ -1,4 +1,4 @@
-<template>
+    <template>
     <AppLayout>
         <!--Contenedor global-->
         <div class="text-neutral container mx-auto p-4">
@@ -23,9 +23,9 @@
                     <ProjectDetails :projects="project" />
                     <!--Contenedor de acciones de proyecto-->
                     <div class="flex items-center justify-end space-x-3 mt-2">
-                        <Link :href="route('projects.show', {project: project.id})"><PhEye :size="28" weight="duotone" class="hover:text-[#00a6fb] hover:duration-200 duration-200"/></Link>
-                        <Link :href="route('projects.edit', {project: project.id})"><PhPencil :size="28" weight="duotone" class="hover:text-[#ffc300] hover:duration-200 duration-200"/></Link>
-                        <Link :href="route('projects.destroy', {project: project.id})" method="delete" as="button"><PhTrash :size="28" weight="duotone" class="hover:text-[#ef233c] hover:duration-200 duration-200 cursor-pointer"/></Link>
+                        <Link :href="route('projects.show', {project: project.id})"><PhEye :size="28" weight="duotone" class="hover:text-info hover:duration-200 duration-200"/></Link>
+                        <Link :href="route('projects.edit', {project: project.id})"><PhPencil :size="28" weight="duotone" class="hover:text-warning hover:duration-200 duration-200"/></Link>
+                        <Link :href="route('projects.destroy', {project: project.id})" method="delete" as="button"><PhTrash :size="28" weight="duotone" class="hover:text-error hover:duration-200 duration-200 cursor-pointer"/></Link>
                     </div>
                 </BoxComponent>
             </div>
@@ -36,7 +36,7 @@
 <script setup>
     import AppLayout from '../../Layouts/AppLayout.vue';
     import BoxComponent from '../../Components/UI/BoxComponent.vue';
-    import ProjectDetails from '../../Components/ProjectDetails.vue';
+    import ProjectDetails from '../../Components/UI/ProjectDetails.vue';
     import { Link } from '@inertiajs/vue3';
     import { PhEye, PhPencil, PhTrash, PhPlus} from '@phosphor-icons/vue';
     import { route } from 'ziggy-js';

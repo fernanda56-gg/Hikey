@@ -27,8 +27,8 @@
 
 <script setup>
     import AppLayout from '../../Layouts/AppLayout.vue';
-    import ProjectInformation from '../../Components/ProjectInformation.vue';
-    import ProjectActions from '../../Components/ProjectActions.vue';
+    import ProjectInformation from '../../Components/UI/ProjectInformation.vue';
+    import ProjectActions from '../../Components/UI/ProjectActions.vue';
     defineProps(
         {'project': Object,}
     )

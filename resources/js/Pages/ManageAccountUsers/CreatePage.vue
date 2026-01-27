@@ -70,7 +70,7 @@
                         <!-- Checkboxes de rol-->
                             <div class="flex flex-row space-x-4 mt-2">
                                 <div class="flex space-x-2" v-for="role in props.roles" :key="role.id">
-                                    <input type="checkbox" v-model="form.roles" :value="role.id" class="checkbox checkbox-success border border-gray-500"/>
+                                    <input type="checkbox" v-model="form.roles" :value="role.id" class="checkbox checkbox-success"/>
                                     <label for="role.name" class="text-sm capitalize">{{ role.name }}</label>
                                 </div>
                             </div>

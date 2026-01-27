@@ -165,6 +165,12 @@ return [
     'end_date' => 'fecha de finalización',
     'last_name' => 'apellidos',
     'password' => 'contraseña',
+    'phone' => 'teléfono',
+    'address' => 'dirección',
+    'city' => 'cuidad',
+    'country' => 'país',
+    'web_address' => 'sitio web',
+    'tax_id' => 'identificación fiscal',
 ],
 
 ];

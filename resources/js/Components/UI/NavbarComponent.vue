@@ -30,27 +30,36 @@
                     <Link :href="route('inicio')" class="px-3 py-2 block">Inicio</Link>
                 </div>
 
+                <!--Menu para vista proyectos-->
+                <div class="dropdown dropdown-hover relative">
+                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
+                        <span class="mr-1">Proyectos</span>
+                        <PhCaretDown weight="bold" class="md:size-4 size-4"/>
+                    </div>
+                    <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
+                        <li><Link :href="route('projects.index')" class="block">Lista de proyectos</Link></li>
+                        <li><Link :href="route('projects.create')" class="block">Nuevo proyectos</Link></li>
+                    </ul>
+                </div>
+
                 <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
-                    <Link :href="route('projects.index')" class="px-3 py-2 block">Proyectos</Link>
+                    <Link :href="route('companies.redirect')" class="px-3 py-2 block">Empresa</Link>
                 </div>
 
                 <!--Links para usuario admin-->
-                <div v-if="hasRole('admin')" class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
-                    <Link :href="route('manage-account.index')" class="px-3 py-2 block">Usuarios</Link>
-                </div>
-
-                <!--Menu dropdown-->
-                <div class="dropdown dropdown-hover relative">
-                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black">
-                        <span class="cursor-pointer">Prueba</span>
-                        <PhCaretDown :size="20" class="text-neutral md:dark:hover:text-black cursor-pointer"/>
+                <!--Menu dropdown de vista de usuarios-->
+                <div v-if="hasRole('admin')" class="dropdown dropdown-hover relative">
+                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
+                        <span class="mr-1">Usuarios</span>
+                        <PhCaretDown weight="bold" class="md:size-4 size-4"/>
                     </div>
-                    <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 p-2 shadow-sm">
-                        <li><Link href="#" class="block">Prueba 1</Link></li>
-                        <li><Link href="#" class="block">Prueba 2</Link></li>
-                        <li><Link href="#" class="block">Prueba 3</Link></li>
+                    <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
+                        <li><Link :href="route('manage-account.index')" class="block">Lista de usuarios</Link></li>
+                        <li><Link :href="route('manage-account.create')" class="block">Nuevo usuarios</Link></li>
                     </ul>
                 </div>
+
+
             </div>
 
             <!--Botón de temo claro y oscuro-->
@@ -126,10 +135,6 @@ function toggleTheme() {
     theme.value = theme.value === 'daylight' ? 'moonlight' : 'daylight'
 }
 
-//Propiedad para obtener datos de usuario
-
-
 //Comprobar permisos de usuario
 const {hasRole, isAuthenticated, user} = usePermission();
-
 </script>

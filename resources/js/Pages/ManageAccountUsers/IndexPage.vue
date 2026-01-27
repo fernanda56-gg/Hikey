@@ -22,7 +22,7 @@
 </template>
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
-import UserTableInfo from '../../Components/UserTableInfo.vue';
+import UserTableInfo from '../../Components/UI/UserTableInfo.vue';
 import { PhPlus} from '@phosphor-icons/vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
@@ -31,5 +31,4 @@ import { route } from 'ziggy-js';
 defineProps(
     {'userAccounts': Object,}
 )
-
 </script>

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Commands\AssignRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class UserAccountController extends Controller
@@ -15,6 +16,9 @@ class UserAccountController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        abort_if(!$user->can('view user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+
         $userAccounts = User::with('roles')->get();
         return inertia('ManageAccountUsers/IndexPage', compact('userAccounts'));
     }
@@ -24,6 +28,9 @@ class UserAccountController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        abort_if(!$user->can('create user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+
         return inertia('ManageAccountUsers/CreatePage', [
             'roles' => Role::all()
         ]);
@@ -76,6 +83,9 @@ class UserAccountController extends Controller
      */
     public function edit(User $user)
     {
+        $user = Auth::user();
+        abort_if(!$user->can('edit user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+
         return inertia('ManageAccountUsers/EditPage', [
             'userAccount' => $user,
             'roles' => Role::all(),
@@ -115,6 +125,9 @@ class UserAccountController extends Controller
      */
     public function destroy(User $user)
     {
+        $user = Auth::user();
+        abort_if(!$user->can('delete user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+
         $user->delete();
         return redirect()->route('manage-account.index')->with('success', 'Usuario eliminado exitosamente.');
     }

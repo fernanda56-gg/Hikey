@@ -25,15 +25,15 @@
                         <td>
                         <span v-for="role in userAccount.roles" :key="role.id" :class="[
                             role.name === 'admin' ? 'badge badge-soft badge-success badge-outline md:badge-md badge-sm' :
-                            role.name === 'user' ? 'badge badge-soft badge-info badge-outline md:badge-md badge-sm' :
-                            role.name === 'manager' ? 'badge badge-soft badge-warning badge-outline md:badge-md badge-sm' :
-                            'badge badge-soft badge-warning badge-outline md:badge-md badge-sm'
+                            role.name === 'manager' ? 'badge badge-soft badge-error badge-outline md:badge-md badge-sm' :
+                            role.name === 'team-leader' ? 'badge badge-soft badge-warning badge-outline md:badge-md badge-sm whitespace-nowrap' :
+                            'badge badge-soft badge-info badge-outline md:badge-md badge-sm'
                         ]" class="gap-0.5">
                         <PhUserFocus class="md:size-5 size-4" />
                             {{ role.name === 'admin' ? 'Admin' :
-                            role.name === 'user' ? 'Usuario' :
                             role.name === 'manager' ? 'Manager' :
-                            'Invitado' }}
+                            role.name === 'team-leader' ? 'Líder de equipo' :
+                            'Miembro' }}
                         </span>
                         </td>
                         <!--botones de acción usuarios-->

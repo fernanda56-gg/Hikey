@@ -1,0 +1,251 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Company;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+class CompanyController extends Controller
+{
+    use AuthorizesRequests;
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return inertia(
+            'Company/IndexCompany',
+            [
+                'companies' => Company::with('owner')->get() //Deja acceder a los datos del propietario mediante el modelo OWNER
+            ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $this->authorize('create', Company::class);
+        return inertia('Company/CreateCompany');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        try{
+        $validated = $request->validate([
+        'name' => 'required|string|min:3|max:100',
+        'email' => 'required|string|email',
+        'address' => 'required|string|max:100',
+        'city' => 'required|string|max:50',
+        'country' => 'required|string|max:50',
+        'phone' => 'required|string|max:20',
+        'web_address' => 'required|url',
+        'tax_id' => 'required|string|max:20',
+    ]);
+
+    $validated['company_code'] = Company::invitationCode(); //Genera el código
+
+    $company = $request->user()->companyOwner()->create($validated); //Crea el registro y trae el id del usuario de la función del modelo user
+    $company->member()->attach($request->user()->id, [
+        'role' => 'propietario' //cambia el rol a propietario por crear la empresa
+    ]);
+
+    $user = Auth::user(); //cambio el rol del usuario a gerente de proyectos
+    if($user->hasRole('user') && !$user->hasRole('manager'))
+        {
+            $user->removeRole('user');
+            $user->assignRole('manager');
+        }
+
+    //los datos se guardan en BD
+    return redirect()->route('companies.show', $company->id)->with('success', 'Empresa creada con éxito.');
+    }
+    catch(ValidationException $e){
+            throw $e;
+        }catch(\Exception $e){
+            //si los datos no se guardan, se muestra mensaje de error
+            return redirect()->back()->with('error', 'Error al generar empresa.')->withInput();//withInput mantiene los datos del form
+        }
+}
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Company $company)
+    {
+        //
+        if(Gate::denies('view', $company))
+            {
+                return redirect()->back()->with('error', 'No tienes acceso para ver esta empresa.');
+            }
+
+        $user = Auth::user();
+
+        return inertia('Company/ShowCompany', [
+            'company' => $company->load('member'),
+            'can' => [
+                'delete' => $user->can('update', $company),
+                'update' => $user->can('delete', $company),
+        ]
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Company $company)
+    {
+        //
+        $user = Auth::user();
+        abort_if(!$user->can('edit companies'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+
+        return inertia(
+            'Company/EditCompany',
+        [
+            'company' => $company
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Company $company)
+    {
+        if(Gate::denies('update', $company))
+            {
+                return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para modificar la información de esta empresa.');
+            }
+
+        try{
+            $validated = $request->validate([
+                        'name' => 'required|string|min:3|max:100',
+                        'email' => 'required|string|email',
+                        'address' => 'required|string|max:100',
+                        'city' => 'required|string|max:50',
+                        'country' => 'required|string|max:50',
+                        'phone' => 'required|string|max:20',
+                        'web_address' => 'required|url',
+                        'tax_id' => 'required|string|max:20',
+                    ]);
+            $validated['company_code'] = Company::invitationCode(); //Genera el código
+            $company->update($validated);
+
+            //los datos se guardan en BD
+            return redirect()->route('companies.redirect')->with('success', 'Empresa actualizada.');
+        }catch(ValidationException $e){
+            throw $e;
+        }catch(\Exception $e){
+            //si los datos no se guardan, se muestra mensaje de error
+            return redirect()->back()->with('error', 'Error al actualizar empresa.')->withInput();//withInput mantiene los datos del form
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Company $company)
+    {
+        if(Gate::denies('delete', $company))
+            {
+                return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para eliminar esta empresa.');
+            }
+
+        $company->delete();
+
+        $user = Auth::user(); //revoca el permiso de gerente de proyectos y lo devuelve a usuario
+        $user->removeRole('manager');
+        $user->assignRole('user');
+
+        return redirect()->route('companies.index')->with('success', 'Empresa eliminada exitosamente.');
+    }
+
+    public function joinCompany()
+    {
+        $user = Auth::user();
+        abort_if(!$user->can('join companies'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        return inertia('Company/JoinCompany');
+    }
+
+    public function checkCode(Request $request)
+    {
+        try{
+            $validated = $request->validate([
+                'code' => 'required|string|exists:companies,company_code'
+            ]);
+
+            $company = Company::where('company_code', $validated['code'])->firstOrFail(); //busca la empresa por el código
+
+            if($company->member()->where('user_id', $request->user()->id)->exists())//verifica si el usuario ya pertenece a la empresa
+                {
+                    return redirect()->back()->with('error', 'Ya eres miembro de la empresa proporcionada');
+                }
+
+            //Deja que el usuario pueda unirse a la empresa
+            $company->member()->attach(Auth::user()->id, ['role' => 'miembro', 'joined_at' => now()]);
+            return redirect()->route('companies.show', $company->id)->with('success', 'Te has unido a, ' . $company->name . ' exitosamente');
+        }catch(ValidationException $e){
+            throw $e;
+        }catch(\Exception $e){
+            //si los datos no se guardan, se muestra mensaje de error
+            return redirect()->back()->with('error', 'Error al ingresar código.')->withInput();//withInput mantiene los datos del form
+        }
+    }
+
+    public function redirectTo()
+    {
+        $user = Auth::user();
+
+        //Verifica si es el ADMIN
+        if($user->hasRole('admin')){
+            return redirect()->route('companies.index');
+        }
+
+        //Verifica si el usuario es el propietario o forma parte de la empresa
+        if($user->companyOwner->isNotEmpty()){
+            $company = $user->companyOwner->first();
+            return redirect()->route('companies.show', $company->id);
+        }
+
+        if($user->companies()->exists()){
+            $company = $user->companies()->first();
+            return redirect()->route('companies.show', $company->id);
+        }
+
+        //Si aun no se ha unido a ninguna empresa
+        return redirect()->route('companies.index');
+    }
+
+    public function listMember(Company $company)
+    {
+        if(Gate::denies('viewList', $company))
+            {
+                return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para ver esta empresa.');
+            }
+
+        $members = $company->member()->get();
+
+        return inertia('Company/MemberListCompany', [
+            'company' => $company,
+            'members' => $members,
+        ]);
+    }
+
+    public function leaveCompany(Company $company, User $user){
+        if(Gate::denies('joinCompany', $company))
+            {
+                return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para salir de esta empresa.');
+            }
+
+        $company->member()->detach($user->id);
+        return redirect()->route('companies.listMember', $company->id)->with('success', 'Has sacado al usuario de la empresa exitosamente.');
+    }
+}
