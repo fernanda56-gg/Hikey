@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
 use App\Models\Company;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        //USUARIOS
         $userAdmin = User::factory()->create([
             'email' => 'test@example.com',
         ]);
@@ -34,17 +36,20 @@ class UserSeeder extends Seeder
             'email' => 'user@example.com'
         ]);
 
+        //ASIGNACIÓN DE ROLES
         $userAdmin->assignRole('admin');
         $userManager->assignRole('manager');
         $userTeamLeader->assignRole('team-leader');
         $user->assignRole('user');
 
-        Project::factory(10)->create([
-            'by_user_id' => $userAdmin->id,
-        ]);
-
+        //CREACIÓN DE COMPAÑÍA Y PROYECTOS
         $company = Company::factory(1)->create([
             'owner_id' => $userManager->id,
+        ]);
+
+        Project::factory(10)->create([
+            'by_user_id' => $userManager->id,
+            'company_id' => $company->first()->id,
         ]);
 
         $company = Company::first();

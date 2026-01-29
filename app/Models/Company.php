@@ -29,7 +29,7 @@ class Company extends Model
         return $this->belongsTo(User::class, 'owner_id'); //Relación con el dueño del registro
     }
 
-    public function member() //Relación N:N que devuelve a todos los usuarios 
+    public function member() //Relación N:N que devuelve a todos los usuarios
     {
         return $this->belongsToMany(User::class)
                     ->withPivot('role', 'joined_at')
@@ -43,5 +43,10 @@ class Company extends Model
         } while (Company::where('company_code', $code)->exists());
 
         return $code;
+    }
+
+    public function projects() //Relación que retorna los proyectos pertenecientes a la empresa
+    {
+        return $this->hasMany(Project::class);
     }
 }

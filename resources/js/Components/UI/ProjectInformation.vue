@@ -24,6 +24,22 @@
             </div>
         </div>
 
+        <!-- Área -->
+        <div class="flex flex-col">
+            <h1 class="uppercase font-bold text-lg">Área del proyecto</h1>
+            <span :class="[
+                    projects.area.name === 'Desarrollo' ? 'text-[#0496ff]':
+                    projects.area.name === 'Marketing' ? 'text-[#f2b705]':
+                    projects.area.name === 'Recursos Humanos' ? 'text-[#ff65b3]':
+                    projects.area.name === 'Finanzas' ? 'text-[#52b788]':
+                    projects.area.name === 'Producción' ? 'text-[#f26419]':
+                    'text-[#9a8f97]'
+                ]" class="flex items-center gap-2 text-sm font-black mt-1.5">
+                    <component :is="areaIcons[projects.area.name]" class="size-6" />
+                    {{ projects.area.name }}
+                </span>
+        </div>
+
         <!--Fechas-->
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
@@ -57,7 +73,7 @@
     </div>
 </template>
 <script setup>
-import { PhLink } from '@phosphor-icons/vue';
+import { PhLink, PhCode, PhChartLineUp, PhPerson, PhCoins, PhGearSix, PhLightbulbFilament, } from '@phosphor-icons/vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 defineProps(
@@ -68,4 +84,13 @@ defineProps(
 const formatDate = (date) => {
     return dayjs(date, 'YYYY-MM-DD').locale('es').format('D [de] MMM [de] YYYY')
 }
+
+const areaIcons = {
+        'Desarrollo': PhCode,
+        'Marketing': PhChartLineUp,
+        'Recursos Humanos': PhPerson,
+        'Finanzas': PhCoins,
+        'Producción': PhGearSix,
+        'Otros': PhLightbulbFilament,
+    }
 </script>

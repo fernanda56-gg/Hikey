@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Area;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +26,7 @@ class ProjectFactory extends Factory
             'status' => $this->faker->randomElement(['planned', 'in_progress', 'completed']),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
-            //'client_id' => \App\Models\Client::factory(),
+            'area_id' => Area::inRandomOrder()->first()->id,
         ];
     }
 }

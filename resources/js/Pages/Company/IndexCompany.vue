@@ -10,7 +10,7 @@
             <!--Botón crear nueva empresa-->
             <div class="flex items-center justify-end w-full gap-4">
                 <div class="btn md:btn-md btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
-                    <Link v-if="can('createCompanies')" :href="route('companies.create')" class="flex items-center space-x-1">
+                    <Link v-if="can('create companies')" :href="route('companies.create')" class="flex items-center space-x-1">
                         <PhPlus class="md:size-6 size-4" />
                         <span>Crear empresa</span>
                     </Link>

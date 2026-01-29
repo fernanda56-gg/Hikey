@@ -11,6 +11,7 @@
             <form @submit.prevent="create">
                 <div class="md:p-4">
                     <BoxComponent>
+                        <!-- Nombre del proyecto -->
                         <div class="flex flex-col space-y-2">
                             <label class="font-bold text-neutral">Nombre de proyecto</label>
                             <input v-model="form.name" type="text" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" placeholder="Gestor de proyectos"/>
@@ -21,6 +22,7 @@
                             </div>
                         </div>
 
+                        <!-- Descripción del proyecto -->
                         <div class="flex flex-col space-y-2 mt-4">
                             <label class="font-bold text-neutral">Descripción del proyecto</label>
                             <textarea v-model="form.description" class="textarea w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 text-base border-none" placeholder="Descripción"></textarea>
@@ -31,6 +33,7 @@
                             </div>
                         </div>
 
+                        <!-- Link de material de apoyo de proyecto -->
                         <div class="flex flex-col space-y-2 mt-4">
                             <label class="font-bold text-neutral">Link del proyecto</label>
                             <input v-model="form.link" type="text" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" placeholder="Url de recursos"/>
@@ -51,6 +54,21 @@
                             </div>
                         </div>
 
+                        <!-- Select de area para el proyecto -->
+                        <div class="flex flex-col space-y-2 mt-4">
+                            <label class="font-bold text-neutral">Área del proyecto</label>
+                            <select v-model="form.area_id" class="select select-ghost bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                                <option disabled selected>Selecciona un área</option>
+                                <option v-for="area in props.areas" :key="area.id" :value="area.id">{{ area.name }}</option>
+                            </select>
+                            <!--Contenedor de error en input-->
+                            <div class="flex items-center justify-start text-error text-xs" v-if="form.errors.area_id">
+                                <PhWarningCircle class="mx-1 md:size-4 size-6" weight="bold"/>
+                                    {{ form.errors.area_id }}
+                            </div>
+                        </div>
+
+                        <!-- Fechas del proyecto -->
                         <div class="flex items-center space-x-4">
                             <div class="flex flex-col mt-4 space-y-2">
                                 <label class="font-bold text-neutral">Inicio de proyecto</label>
@@ -90,6 +108,10 @@ import { PhWarningCircle } from '@phosphor-icons/vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
+const props = defineProps({
+    areas: Object,
+})
+
 const form = useForm(
     {
         name: null,
@@ -98,7 +120,8 @@ const form = useForm(
         image_path: null,
         start_date:null,
         end_date: null,
-        status: 'planned'
+        status: 'planned',
+        area_id: null,
     })
 
 const create = () => form.post(route('projects.store'))

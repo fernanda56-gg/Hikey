@@ -38,7 +38,7 @@
                     </div>
                     <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
                         <li><Link :href="route('projects.index')" class="block">Lista de proyectos</Link></li>
-                        <li><Link :href="route('projects.create')" class="block">Nuevo proyectos</Link></li>
+                        <li v-if="can('create projects')"><Link :href="route('projects.create')" class="block">Nuevo proyectos</Link></li>
                     </ul>
                 </div>
 
@@ -55,7 +55,7 @@
                     </div>
                     <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
                         <li><Link :href="route('manage-account.index')" class="block">Lista de usuarios</Link></li>
-                        <li><Link :href="route('manage-account.create')" class="block">Nuevo usuarios</Link></li>
+                        <li v-if="can('create projects')"><Link :href="route('manage-account.create')" class="block">Nuevo usuarios</Link></li>
                     </ul>
                 </div>
 
@@ -115,7 +115,8 @@ import { route } from 'ziggy-js';
 import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut } from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 
-
+//Comprobar permisos de usuario
+const {hasRole, isAuthenticated, user, can} = usePermission();
 
 //Botón de menu
 const menuOpen = ref(false)
@@ -134,7 +135,4 @@ watchEffect(() => {
 function toggleTheme() {
     theme.value = theme.value === 'daylight' ? 'moonlight' : 'daylight'
 }
-
-//Comprobar permisos de usuario
-const {hasRole, isAuthenticated, user} = usePermission();
 </script>

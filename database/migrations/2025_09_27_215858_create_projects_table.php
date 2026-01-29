@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->enum('status', ['planned', 'in_progress', 'completed'])->default('planned');
             $table->foreignId('by_user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('area_id')->constrained('areas')->onDelete('cascade');
+            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

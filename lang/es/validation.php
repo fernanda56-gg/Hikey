@@ -171,6 +171,7 @@ return [
     'country' => 'país',
     'web_address' => 'sitio web',
     'tax_id' => 'identificación fiscal',
+    'area_id' => 'área',
 ],
 
 ];
