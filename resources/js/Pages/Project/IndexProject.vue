@@ -18,10 +18,17 @@
             </div>
 
             <!--Contenedor de info de proyectos-->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8 pt-4">
+            <div v-if="projects.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8 pt-4">
                 <BoxComponent v-for="project in projects" :key="project.id">
                     <ProjectDetails :projects="project" />
                 </BoxComponent>
+            </div>
+
+            <!-- Contenedor en caso de que el usuario aun no este registrado a una empresa -->
+            <div v-else class="p-4">
+                <div class="flex items-center w-full justify-start border-2 border-base-300 bg-base-200 rounded-lg p-4">
+                    Únete a una empresa para comenzar a trabajar.
+                </div>
             </div>
         </div>
     </AppLayout>

@@ -204,24 +204,14 @@ class CompanyController extends Controller
     {
         $user = Auth::user();
 
-        //Verifica si es el ADMIN
-        if($user->hasRole('admin')){
+        if($user->hasRole('admin')){ //El usuario ADMIN puede ver todas las empresa
             return redirect()->route('companies.index');
-        }
-
-        //Verifica si el usuario es el propietario o forma parte de la empresa
-        if($user->companyOwner->isNotEmpty()){
-            $company = $user->companyOwner->first();
-            return redirect()->route('companies.show', $company->id);
-        }
-
-        if($user->companies()->exists()){
+        }elseif($user->companies()->exists()){ //Cualquier otro usuario sea miembro o propietario puede ver la info de esa empresa en especifico
             $company = $user->companies()->first();
             return redirect()->route('companies.show', $company->id);
+        }else{ //Si el usuario no pertenece a ninguna empresa no podrá ver nada
+            return redirect()->route('companies.index');
         }
-
-        //Si aun no se ha unido a ninguna empresa
-        return redirect()->route('companies.index');
     }
 
     public function listMember(Company $company)

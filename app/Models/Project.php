@@ -37,4 +37,17 @@ class Project extends Model
     {
         return $this->belongsTo(Area::class);
     }
+
+    protected static function booted() //Registra las fechas del proyecto y actualiza los estados antes de que lleguen a la BD
+    {
+        static::saving(function ($project) {
+            if($project->end_date){
+                $project->status = 'Completado';
+            } elseif($project->start_date){
+                $project->status = 'En progreso';
+            } else{
+                $project->status = 'Pendiente';
+            }
+        });
+    }
 }

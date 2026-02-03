@@ -32,15 +32,13 @@
         <!-- Estatus del proyecto -->
         <div class="flex items-center mt-4 space-x-2 text-neutral font-bold">
             <span :class="[
-                projects.status === 'planned' ? 'status bg-[#d90429] status-lg' :
-                projects.status === 'in_progress' ? 'status bg-[#ffc300] status-lg' :
+                projects.status === 'Pendiente' ? 'status bg-[#d90429] status-lg' :
+                projects.status === 'En progreso' ? 'status bg-[#ffc300] status-lg' :
                 'status bg-[#70e000] status-lg'
             ]">
             </span>
             <span>
-                {{ projects.status === 'planned' ? 'Pendiente' :
-                projects.status === 'in_progress' ? 'En progreso' :
-                'Completado' }}
+                {{ projects.status }}
             </span>
         </div>
 

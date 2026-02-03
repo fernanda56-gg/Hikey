@@ -44,46 +44,57 @@
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
                 <h1 class="uppercase font-bold text-lg">fecha de inicio</h1>
-                <span class="md:text-lg text-base">{{ formatDate(projects.start_date) }}</span>
+                <input class="focus:outline-none" type="date" v-model="form.start_date" @change="updateDate" @input="form.start_date = $event.target.value || null" :disabled="form.end_date">
             </div>
 
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold text-lg">fecha de finalización</h1>
-                <span class="md:text-lg text-base">{{ formatDate(projects.end_date) }}</span>
+                <input class="focus:outline-none" type="date" v-model="form.end_date" @change="updateDate" @input="form.end_date = $event.target.value || null" :disabled="!form.start_date">
             </div>
         </div>
 
-        <!--Estatus de proyecto-->
-        <h1 class="uppercase font-bold text-lg mt-4">estatus de proyecto</h1>
-        <div class="flex items-center mt-2 space-x-2 text-neutral font-bold text-lg">
-            <span :class="[
-                projects.status === 'planned' ? 'status bg-[#d90429] status-lg' :
-                projects.status === 'in_progress' ? 'status bg-[#ffc300] status-lg' :
-                'status bg-[#70e000] status-lg'
-            ]">
-            </span>
-            <span>
-                {{ projects.status === 'planned' ? 'Pendiente' :
-                projects.status === 'in_progress' ? 'En progreso' :
-                'Completado' }}
-            </span>
+        <!--Estatus de proyecto y Empresa propietaria de proyecto (ADMIN)-->
+        <div class="flex flex-row gap-4 items-start">
+            <div class="flex flex-col">
+                <h1 class="uppercase font-bold text-lg mt-4">estatus de proyecto</h1>
+                <div class="flex items-center mt-2 space-x-2 text-neutral font-bold text-lg">
+                    <span :class="[
+                        projects.status === 'Pendiente' ? 'status bg-[#d90429] status-lg' :
+                        projects.status === 'En progreso' ? 'status bg-[#ffc300] status-lg' :
+                        'status bg-[#70e000] status-lg'
+                    ]"></span>
+                    <span>{{ projects.status }}</span>
+                </div>
+            </div>
+
+            <div v-if="hasRole('admin')" class="flex flex-col">
+                <h1 class="uppercase font-bold text-lg mt-4">Empresa propietaria</h1>
+                <span class="mt-2 font-stretch-expanded text-lg">
+                    {{ projects.company.name }}
+                </span>
+            </div>
         </div>
-
-
     </div>
 </template>
 <script setup>
+import { useForm } from '@inertiajs/vue3';
 import { PhLink, PhCode, PhChartLineUp, PhPerson, PhCoins, PhGearSix, PhLightbulbFilament, } from '@phosphor-icons/vue';
-import dayjs from 'dayjs';
-import 'dayjs/locale/es';
-defineProps(
-        {'projects': Object,}
-    );
+import { route } from 'ziggy-js';
+import { usePermission } from '../../composables/usePermission';
 
-// Cambia el formato de la fecha
-const formatDate = (date) => {
-    return dayjs(date, 'YYYY-MM-DD').locale('es').format('D [de] MMM [de] YYYY')
-}
+//Comprobar permisos de usuario
+const {hasRole} = usePermission();
+
+const props = defineProps(
+        {'projects': Object,}
+    )
+
+const form = useForm({
+    start_date: props.projects.start_date,
+    end_date: props.projects.end_date,
+})
+
+const updateDate = () => form.put(route('projects.update-date', props.projects.id))
 
 const areaIcons = {
         'Desarrollo': PhCode,

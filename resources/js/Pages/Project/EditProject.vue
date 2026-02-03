@@ -4,7 +4,7 @@
         <div class="text-neutral container mx-auto p-4">
             <!--Titulo de pagina-->
             <div class="py-3 bg-primary-content/80 my-4 flex justify-start items-center md:rounded-3xl rounded-xl">
-                <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">nuevo proyecto</h1>
+                <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">editar proyecto</h1>
             </div>
 
             <!--Form de proyectos-->
@@ -68,28 +68,6 @@
                             </div>
                         </div>
 
-                        <!-- Fechas del proyecto -->
-                        <div class="flex items-center space-x-4">
-                            <div class="flex flex-col mt-4 space-y-2">
-                                <label class="font-bold text-neutral">Inicio de proyecto</label>
-                                <input v-model="form.start_date" type="date" class="p-2 rounded-lg text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 bg-base-100">
-                                <!--Contenedor de error en input-->
-                                <div class="flex items-center justify-start text-error text-xs" v-if="form.errors.start_date">
-                                    <PhWarningCircle class="mx-1 md:size-4 size-6" weight="bold"/>
-                                    {{ form.errors.start_date }}
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col mt-4 space-y-2 md:mx-4">
-                                <label class="font-bold text-neutral">Fin de proyecto</label>
-                                <input v-model="form.end_date" type="date" class="p-2 rounded-lg text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 bg-base-100">
-                                <!--Contenedor de error en input-->
-                                <div class="flex items-center justify-start text-error text-xs" v-if="form.errors.end_date">
-                                    <PhWarningCircle class="mx-1 md:size-4 size-6" weight="bold"/>
-                                    {{ form.errors.end_date }}
-                                </div>
-                            </div>
-                        </div>
                         <!--Botón de actualizar proyecto-->
                         <div class="flex items-center justify-center mt-8">
                             <button type="submit" class="bg-primary-content w-full p-3 rounded-lg text-black font-bold cursor-pointer tracking-wide">Actualizar proyecto</button>
@@ -119,8 +97,6 @@ const form = useForm(
         description: props.project.description,
         link: props.project.link,
         image_path: props.project.image_path,
-        start_date: props.project.start_date,
-        end_date: props.project.end_date,
         status: props.project.status,
         area_id: props.project.area_id,
     })

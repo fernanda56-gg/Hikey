@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image_path')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->enum('status', ['planned', 'in_progress', 'completed'])->default('planned');
+            $table->enum('status', ['Pendiente', 'En progreso', 'Completado'])->default('Pendiente');
             $table->foreignId('by_user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('area_id')->constrained('areas')->onDelete('cascade');
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');

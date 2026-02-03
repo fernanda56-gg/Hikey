@@ -24,6 +24,7 @@ Route::resource('manage-account', UserAccountController::class)->only(['edit', '
 Route::resource('manage-account', UserAccountController::class)->only(['destroy'])->middleware('auth', 'permission:delete user accounts')->parameters(['manage-account' => 'user']);
 
 //Proyectos
+Route::put('projects/{project}/update-date', [ProjectController::class, 'updateDate'])->name('projects.update-date')->middleware('auth', 'permission:edit projects');
 Route::resource('projects', ProjectController::class)->only(['create', 'store'])->middleware('auth', 'permission:create projects');
 Route::resource('projects', ProjectController::class)->only(['index', 'show'])->middleware('auth', 'permission:view projects');
 Route::resource('projects', ProjectController::class)->only(['edit', 'update'])->middleware('auth', 'permission:edit projects');

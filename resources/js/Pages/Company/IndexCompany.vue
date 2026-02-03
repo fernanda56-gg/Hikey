@@ -29,19 +29,16 @@
             <CompanyTableInfo v-if="hasRole('admin')" :companies="companies" />
 
             <!--Vista para usuarios-->
-            <div class="md:p-4 mt-3" v-else>
-                <BoxComponent>
-                    <div class="flex items-center justify-start md:m-2">
-                        <h1 class="text-sm md:text-base">Aún no formas parte de una empresa...</h1>
-                    </div>
-                </BoxComponent>
+            <div v-else class="p-4 mt-4">
+                <div class="flex items-center w-full justify-start border-2 border-base-300 bg-base-200 rounded-lg p-4">
+                    Aún no formas parte de una empresa.
+                </div>
             </div>
         </div>
     </AppLayout>
 </template>
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
-import BoxComponent from '../../Components/UI/BoxComponent.vue';
 import { Link } from '@inertiajs/vue3';
 import { PhPlus, PhCaretRight } from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
