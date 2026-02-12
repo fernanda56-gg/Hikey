@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Project;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Controller;
 
 class ProjectController extends Controller
 {
@@ -95,12 +98,21 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load('area', 'company');
-        return inertia(
-            'Project/ShowProject',
-            [
-                'project' => $project,
-            ]);
+        $user = Auth::user();
+        $project->load('area', 'company', 'clients');
+
+        $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador                  
+            $client->client_update = $user->can('update', $client);
+            $client->client_delete = $user->can('delete', $client);
+        });
+
+        return inertia('Project/ShowProject', [
+            'project' => $project,
+            'can' => [
+                'update' => $user->can('update', $project),
+                'delete' => $user->can('delete', $project),
+            ]
+        ]);
     }
 
     /**
@@ -123,6 +135,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+
         try{
         $validated = $request->validate([
                     'name' => 'required|string|min:3|max:50',
@@ -145,7 +158,13 @@ class ProjectController extends Controller
 
     public function updateDate(Request $request, Project $project)
     {
-        $validates = $request->validate([
+
+        Gate::denies('update', $project);
+        {
+            return redirect()->back()->with('error', 'No tienes permiso para modificar fechas.');
+        }
+
+            $validates = $request->validate([
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);

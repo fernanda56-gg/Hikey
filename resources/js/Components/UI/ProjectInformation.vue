@@ -8,7 +8,7 @@
         <!--Links-->
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
-                <h1 class="uppercase font-bold text-lg">link de proyecto</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base">link de proyecto</h1>
                 <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
                     <span>Link</span>
                     <PhLink :size="20" weight="bold"/>
@@ -16,7 +16,7 @@
             </div>
 
             <div class="flex flex-col">
-                <h1 class="uppercase font-bold text-lg">link de img</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base">link de img</h1>
                 <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
                     <span>Link</span>
                     <PhLink :size="20" weight="bold"/>
@@ -26,7 +26,7 @@
 
         <!-- Área -->
         <div class="flex flex-col">
-            <h1 class="uppercase font-bold text-lg">Área del proyecto</h1>
+            <h1 class="uppercase font-bold md:text-lg text-base">Área del proyecto</h1>
             <span :class="[
                     projects.area.name === 'Desarrollo' ? 'text-[#0496ff]':
                     projects.area.name === 'Marketing' ? 'text-[#f2b705]':
@@ -43,12 +43,12 @@
         <!--Fechas-->
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
-                <h1 class="uppercase font-bold text-lg">fecha de inicio</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base">fecha de inicio</h1>
                 <input class="focus:outline-none" type="date" v-model="form.start_date" @change="updateDate" @input="form.start_date = $event.target.value || null" :disabled="form.end_date">
             </div>
 
             <div class="flex flex-col">
-                <h1 class="uppercase font-bold text-lg">fecha de finalización</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base">fecha de finalización</h1>
                 <input class="focus:outline-none" type="date" v-model="form.end_date" @change="updateDate" @input="form.end_date = $event.target.value || null" :disabled="!form.start_date">
             </div>
         </div>
@@ -56,7 +56,7 @@
         <!--Estatus de proyecto y Empresa propietaria de proyecto (ADMIN)-->
         <div class="flex flex-row gap-4 items-start">
             <div class="flex flex-col">
-                <h1 class="uppercase font-bold text-lg mt-4">estatus de proyecto</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base mt-4">estatus de proyecto</h1>
                 <div class="flex items-center mt-2 space-x-2 text-neutral font-bold text-lg">
                     <span :class="[
                         projects.status === 'Pendiente' ? 'status bg-[#d90429] status-lg' :
@@ -68,7 +68,7 @@
             </div>
 
             <div v-if="hasRole('admin')" class="flex flex-col">
-                <h1 class="uppercase font-bold text-lg mt-4">Empresa propietaria</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base mt-4">Empresa propietaria</h1>
                 <span class="mt-2 font-stretch-expanded text-lg">
                     {{ projects.company.name }}
                 </span>

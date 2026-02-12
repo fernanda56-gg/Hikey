@@ -25,6 +25,7 @@
         "@fontsource/reddit-sans": "^5.2.7",
         "@inertiajs/vue3": "^2.1.6",
         "@phosphor-icons/vue": "^2.2.1",
+        "@vueuse/core": "^14.2.0",
         "dayjs": "^1.11.18",
         "notyf": "^3.10.0",
         "sweetalert2": "^11.23.0",

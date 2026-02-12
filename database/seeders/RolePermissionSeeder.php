@@ -47,6 +47,13 @@ class RolePermissionSeeder extends Seeder
         $leaveCompany = Permission::create(['name' => 'leave company']);
         $checkCode = Permission::create(['name' => 'check code companies']);
 
+        //Clientes
+        $viewClients = Permission::create((['name' => 'view clients']));
+        $createClients = Permission::create((['name' => 'create clients']));
+        $editClients = Permission::create((['name' => 'edit clients']));
+        $deleteClients = Permission::create((['name' => 'delete clients']));
+        $assignClients = Permission::create((['name' => 'assign clients']));
+
 
         //Asignar permisos a roles
         //Admin
@@ -71,6 +78,12 @@ class RolePermissionSeeder extends Seeder
             $listMembers,
             $leaveCompany,
             $checkCode,
+            //permisos para clientes
+            $viewClients,
+            $createClients,
+            $editClients,
+            $deleteClients,
+            $assignClients,
         ]);
 
         //Gerente de proyectos(manager)
@@ -87,6 +100,12 @@ class RolePermissionSeeder extends Seeder
             $redirectCompanies,
             $listMembers,
             $leaveCompany,
+            //permisos para clientes
+            $viewClients,
+            $createClients,
+            $editClients,
+            $deleteClients,
+            $assignClients,
         ]);
 
 
@@ -100,6 +119,8 @@ class RolePermissionSeeder extends Seeder
             $checkCode,
             $redirectCompanies,
             $listMembers,
+            //permisos para clientes
+            $viewClients,
         ]);
 
     }

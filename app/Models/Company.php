@@ -49,4 +49,9 @@ class Company extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    public function clients() //Relación que registra a que empresa pertenece el cliente
+    {
+        return $this->hasMany(Client::class);
+    }
 }

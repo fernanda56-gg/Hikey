@@ -17,8 +17,9 @@
 
                 <!--Contenedor de acciones (pequeño)-->
                 <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start">
-                    <ProjectActions :projects="project" />
+                    <ProjectActions :project="project" :can="can" />
                     <div class="divider"></div>
+                    <ClientButton :projects="project"/>
                 </div>
             </div>
         </div>
@@ -29,8 +30,11 @@
     import AppLayout from '../../Layouts/AppLayout.vue';
     import ProjectInformation from '../../Components/UI/ProjectInformation.vue';
     import ProjectActions from '../../Components/UI/ProjectActions.vue';
+    import ClientButton from '../../Components/UI/ClientButton.vue';
     defineProps(
-        {'project': Object,}
+        {'project': Object,
+            'can': Object,
+        }
     )
 </script>
 

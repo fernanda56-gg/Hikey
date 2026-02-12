@@ -21,6 +21,7 @@ class Project extends Model
         'by_user_id',
         'area_id',
         'company_id',
+        'client_id',
     ];
 
     public function project_owner() //Relación con el usuario que genero el proyecto
@@ -49,5 +50,12 @@ class Project extends Model
                 $project->status = 'Pendiente';
             }
         });
+    }
+
+    public function clients() //Relación entre el cliente y el proyecto
+    {
+        /* return $this->belongsToMany(Client::class); */
+        return $this->belongsToMany(Client::class, 'client_project')
+                    ->withTimestamps();
     }
 }

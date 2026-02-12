@@ -30,6 +30,20 @@
                     <Link :href="route('inicio')" class="px-3 py-2 block">Inicio</Link>
                 </div>
 
+
+                <!--Links para usuario admin-->
+                <!--Menu dropdown de vista de usuarios-->
+                <div v-if="hasRole('admin')" class="dropdown dropdown-hover relative">
+                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
+                        <span class="mr-1">Usuarios</span>
+                        <PhCaretDown weight="bold" class="md:size-4 size-4"/>
+                    </div>
+                    <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
+                        <li><Link :href="route('manage-account.index')" class="block">Lista de usuarios</Link></li>
+                        <li v-if="can('create projects')"><Link :href="route('manage-account.create')" class="block">Nuevo usuarios</Link></li>
+                    </ul>
+                </div>
+
                 <!--Menu para vista proyectos-->
                 <div class="dropdown dropdown-hover relative">
                     <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
@@ -46,20 +60,9 @@
                     <Link :href="route('companies.redirect')" class="px-3 py-2 block">Empresa</Link>
                 </div>
 
-                <!--Links para usuario admin-->
-                <!--Menu dropdown de vista de usuarios-->
-                <div v-if="hasRole('admin')" class="dropdown dropdown-hover relative">
-                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
-                        <span class="mr-1">Usuarios</span>
-                        <PhCaretDown weight="bold" class="md:size-4 size-4"/>
-                    </div>
-                    <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
-                        <li><Link :href="route('manage-account.index')" class="block">Lista de usuarios</Link></li>
-                        <li v-if="can('create projects')"><Link :href="route('manage-account.create')" class="block">Nuevo usuarios</Link></li>
-                    </ul>
+                <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
+                    <Link :href="route('clients.index')" class="px-3 py-2 block">Clientes</Link>
                 </div>
-
-
             </div>
 
             <!--Botón de temo claro y oscuro-->

@@ -19,8 +19,8 @@
                 <!--Contenedor de acciones (pequeño)-->
                 <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start">
                     <div class="space-x-6 md:space-x-0 md:space-y-4 flex flex-row md:flex-col items-start justify-start m-4">
-                        <Link v-if="can.update" :href="route('companies.edit', {company: company.id})" class="flex items-center gap-2 font-bold link link-hover hover:text-[#f8961e] hover:duration-200"><PhPencil class="md:size-6 size-5" />Editar</Link>
-                        <Link v-if="can.delete" :href="route('companies.destroy', {company: company.id})" method="delete" as="button" class="flex items-center gap-2 font-bold link link-hover hover:text-error hover:duration-200"><PhTrash class="md:size-6 size-5" />Eliminar</Link>
+                        <Link v-if="can?.update" :href="route('companies.edit', {company: company.id})" class="flex items-center gap-2 font-bold link link-hover hover:text-[#f8961e] hover:duration-200"><PhPencil class="md:size-6 size-5" />Editar</Link>
+                        <Link v-if="can?.delete" :href="route('companies.destroy', {company: company.id})" method="delete" as="button" class="flex items-center gap-2 font-bold link link-hover hover:text-error hover:duration-200"><PhTrash class="md:size-6 size-5" />Eliminar</Link>
                         <Link :href="route('companies.listMember', {company: company.id})" class="flex items-center gap-2 font-bold link link-hover hover:text-info hover:duration-200"><PhUserList class="md:size-6 size-5" />Miembros</Link>
                     </div>
                     <div class="divider"></div>
