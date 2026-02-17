@@ -7,6 +7,15 @@
                 <h1 class="text-neutral uppercase font-black md:text-6xl text-2xl md:m-10 m-4 p-2">nuevo cliente</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li><Link :href="route('projects.show', {project: project.id})" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresa</Link></li>
+                    <li>Agregar nuevo cliente</li>
+                </ul>
+            </div>
+
             <!-- Form de clientes -->
             <form @submit.prevent="create">
                 <div class="md:p-4">
@@ -61,7 +70,8 @@ import { route } from 'ziggy-js';
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import BoxComponent from '../../Components/UI/BoxComponent.vue';
-import { PhWarningCircle } from '@phosphor-icons/vue';
+import { PhWarningCircle, PhHouseLine} from '@phosphor-icons/vue';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     project: Object

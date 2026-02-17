@@ -7,7 +7,6 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Role;
 
 //Rutas de autentificación
 Route::get('/', [AuthController::class, 'create'])->name('login');

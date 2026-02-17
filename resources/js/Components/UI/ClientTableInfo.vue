@@ -1,6 +1,14 @@
 <template>
+    <!-- Link breadcrumbs -->
+    <div class="breadcrumbs p-4 text-xs md:text-sm">
+        <ul>
+            <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+            <li v-if="hasAnyRole(['admin', 'manager'])"><Link :href="route('clients.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Clientes</Link></li>
+            <li>Lista de clientes</li>
+        </ul>
+    </div>
     <!-- Contenedor global -->
-    <div v-if="clients.length" class="mx-auto md:p-4 mt-3 flex justify-center">
+    <div v-if="clients.length" class="mx-auto md:p-4 mt-1 flex justify-center">
         <div class="w-fit overflow-x-auto rounded-box border-2 border-base-content/15 bg-base-100">
             <table class="table md:table-md table-sm w-auto">
                 <thead class="bg-base-200 text-neutral">
@@ -18,6 +26,7 @@
                         <td class="w-80">{{ client.email }}</td>
                         <td class="w-80">{{ client.phone }}</td>
                         <td v-if="hasRole('admin')" class="w-80">{{ client.company.name }}</td>
+                        <!-- Acciones del contenedor -->
                         <td class="w-80 flex items-center gap-4 justify-center">
                             <Link :href="route('clients.edit', {client: client.id})" class="flex items-center gap-1 font-bold link link-hover hover:text-[#f8961e] hover:duration-200"><PhPencil weight="duotone" class="md:size-6 size-5" /></Link>
                             <Link :href="route('clients.destroy', {client: client.id})" method="delete" as="button"  class="flex items-center gap-1 font-bold link link-hover hover:text-error hover:duration-200"><PhTrash weight="duotone" class="md:size-6 size-5" /></Link>
@@ -39,11 +48,12 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { PhKanban, PhPencil, PhTrash} from '@phosphor-icons/vue';
+import { route } from 'ziggy-js';
+import { PhKanban, PhPencil, PhTrash, PhHouseLine} from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 
 //Comprobar permisos de usuario
-const {hasRole} = usePermission();
+const {hasRole, hasAnyRole} = usePermission();
 
 defineProps({
     'clients': Object,

@@ -17,8 +17,17 @@
                 </div>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li><Link :href="route('projects.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Proyectos</Link></li>
+                    <li>Lista de proyectos</li>
+                </ul>
+            </div>
+
             <!--Contenedor de info de proyectos-->
-            <div v-if="projects.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8 pt-4">
+            <div v-if="projects.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8">
                 <BoxComponent v-for="project in projects" :key="project.id">
                     <ProjectDetails :projects="project" />
                 </BoxComponent>
@@ -42,6 +51,7 @@
     import {PhPlus} from '@phosphor-icons/vue';
     import { route } from 'ziggy-js';
     import { usePermission } from '../../composables/usePermission';
+    import { PhHouseLine } from '@phosphor-icons/vue';
 
     //Comprobar permisos de usuario
     const {can} = usePermission();

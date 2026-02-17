@@ -7,6 +7,15 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">asignar cliente</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li><Link :href="route('projects.show', {project: project.id})" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresa</Link></li>
+                    <li>Asignación de cliente</li>
+                </ul>
+            </div>
+
             <!-- Contenedor de lista de clientes -->
 
             <div class="md:p-4">
@@ -36,7 +45,8 @@
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { route } from 'ziggy-js';
-import { PhStar } from '@phosphor-icons/vue';
+import { Link } from '@inertiajs/vue3';
+import { PhStar, PhHouseLine } from '@phosphor-icons/vue';
 import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({

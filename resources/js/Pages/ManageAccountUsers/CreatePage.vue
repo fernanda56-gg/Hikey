@@ -7,6 +7,15 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">nuevo usuario</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li v-if="hasRole('admin')"><Link :href="route('manage-account.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Usuarios</Link></li>
+                    <li>Nuevo usuario</li>
+                </ul>
+            </div>
+
             <!--Form de usuario-->
             <form @submit.prevent="addUser">
                 <div class="md:p-4">
@@ -95,9 +104,13 @@
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
 import BoxComponent from '../../Components/UI/BoxComponent.vue';
-import { PhWarningCircle } from '@phosphor-icons/vue';
-import { useForm } from '@inertiajs/vue3';
+import { PhWarningCircle, PhHouseLine } from '@phosphor-icons/vue';
+import { useForm, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { usePermission } from '../../composables/usePermission';
+
+//Comprobar permisos de usuario
+const {hasRole} = usePermission();
 
 const props = defineProps({
     roles: Object,

@@ -2,8 +2,6 @@
     <AppLayout>
         <!--Contenedor global-->
         <div class="text-neutral min-h-screen mx-auto flex items-start justify-center">
-            <!--Contenedor principal-->
-
             <div class="container py-8 px-4 w-120">
                 <!--Titulo de página-->
                 <div class="flex justify-between items-center">
@@ -37,7 +35,7 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 import AppLayout from '../../Layouts/AppLayout.vue';
-import { PhWarningCircle } from '@phosphor-icons/vue';
+import { PhWarningCircle} from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
 
 const form = useForm({

@@ -8,11 +8,11 @@
         <div v-for="client in projects.clients" :key="client.id" class="flex flex-row items-center gap-3">
             <h1 class="font-black">{{ client.name }}</h1>
 
-            <div class="tooltip tooltip-bottom tooltip-info" :data-tip="copyText">
+            <div class="tooltip tooltip-bottom" :data-tip="copyText">
                 <PhAt @click="copy(client.email)" class="size-5 cursor-pointer hover:text-accent" weight="bold"/>
             </div>
 
-            <div class="tooltip tooltip-bottom tooltip-info" :data-tip="copyText">
+            <div class="tooltip tooltip-bottom" :data-tip="copyText">
                 <PhPhone @click="copy(client.phone)" class="size-5 cursor-pointer hover:text-accent" weight="bold"/>
             </div>
 

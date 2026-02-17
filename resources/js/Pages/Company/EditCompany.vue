@@ -7,6 +7,16 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">editar empresa</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li v-if="hasRole('admin')"><Link :href="route('companies.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresas</Link></li>
+                    <li><Link :href="route('companies.show', {company: company.id})" class="hover:text-success duration-200 hover:duration-200 font-semibold">{{ company.name }}</Link></li>
+                    <li>Editar empresa</li>
+                </ul>
+            </div>
+
             <!--Form para actualizar info de empresa-->
             <form @submit.prevent="update">
                 <div class="md:p-4">
@@ -115,10 +125,15 @@
 
 <script setup>
 import { route } from 'ziggy-js';
+import {Link} from '@inertiajs/vue3';
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
 import BoxComponent from '../../Components/UI/BoxComponent.vue';
-import { PhWarningCircle } from '@phosphor-icons/vue';
+import { PhWarningCircle, PhHouseLine } from '@phosphor-icons/vue';
+import { usePermission } from '../../composables/usePermission';
+
+//Comprobar permisos de usuario
+const {hasRole} = usePermission();
 
 
 const props = defineProps({

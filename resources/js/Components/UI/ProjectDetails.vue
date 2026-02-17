@@ -1,5 +1,5 @@
 <template>
-    <!--Info sobre el proyecto-->
+    <!--Contenedor global-->
     <div class="flex flex-col h-full">
         <!-- Nombre del proyecto -->
         <div class="flex items-center">

@@ -7,6 +7,15 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">nueva empresa</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li><Link :href="route('companies.redirect')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresa</Link></li>
+                    <li>Agregar nueva empresa</li>
+                </ul>
+            </div>
+
             <!--Form de empresas-->
             <form @submit.prevent="create">
                 <div class="md:p-4">
@@ -116,9 +125,10 @@
 <script setup>
 import BoxComponent from '../../Components/UI/BoxComponent.vue';
 import AppLayout from '../../Layouts/AppLayout.vue';
-import { PhWarningCircle } from '@phosphor-icons/vue';
+import { PhWarningCircle, PhHouseLine } from '@phosphor-icons/vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import {Link} from '@inertiajs/vue3';
 
 
 const form = useForm({

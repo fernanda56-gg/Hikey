@@ -7,6 +7,17 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">información de empresa</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li v-if="hasRole('admin')"><Link :href="route('companies.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresas</Link></li>
+                    <li v-if="hasRole('admin')"><Link :href="route('companies.show', {company: company.id})" class="hover:text-success duration-200 hover:duration-200 font-semibold">{{ company.name }}</Link></li>
+                    <li v-if="hasAnyRole(['manager', 'team-leader', 'user'])"><Link :href="route('companies.redirect')" class="hover:text-success duration-200 hover:duration-200 font-semibold">{{ company.name }}</Link></li>
+                    <li>Información de empresa</li>
+                </ul>
+            </div>
+
             <!--Contenedor de info de empresa-->
             <div class="flex flex-col lg:flex-row md:p-4 text-neutral">
                 <!--Contenedor de información (grande)-->
@@ -35,7 +46,11 @@ import CompanyInfo from '../../Components/UI/CompanyInfo.vue';
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { PhPencil, PhTrash, PhUserList } from '@phosphor-icons/vue';
+import { PhPencil, PhTrash, PhUserList, PhHouseLine } from '@phosphor-icons/vue';
+import { usePermission } from '../../composables/usePermission';
+
+//Comprobar permisos de usuario
+const {hasRole, hasAnyRole} = usePermission();
 
 defineProps(
     {'company': Object,

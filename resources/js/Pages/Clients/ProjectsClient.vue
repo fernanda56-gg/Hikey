@@ -7,6 +7,15 @@
                 <h1 class="text-neutral uppercase font-bold md:text-6xl text-2xl md:m-10 m-4 p-2">proyectos</h1>
             </div>
 
+            <!-- Link breadcrumbs -->
+            <div class="breadcrumbs p-4 text-xs md:text-sm">
+                <ul>
+                    <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
+                    <li v-if="hasAnyRole(['admin', 'manager'])"><Link :href="route('clients.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Clientes</Link></li>
+                    <li>Proyectos de cliente</li>
+                </ul>
+            </div>
+
             <!-- Contenedor para lista de proyectos -->
             <div class="md:p-4">
                 <ul v-if="projects.length" class="list bg-base-100 rounded-box space-y-3">
@@ -64,7 +73,7 @@
                             </Link>
 
                             <!-- Links para vista de celular -->
-                            <Link :href="route('clients.projects.detach', {project: project.id})" method="delete" as="button" class="md:hidden btn border-0 bg-primary-content/80 text-black">
+                            <Link :href="route('clients.projects.detach', {project: project.id, client: client.id})" method="delete" as="button" class="md:hidden btn border-0 bg-primary-content/80 text-black">
                                 <PhLinkBreak class="md:size-5 size-4" weight="bold"/>
                             </Link>
 
@@ -92,10 +101,14 @@
 </template>
 
 <script setup>
-import { PhCode, PhChartLineUp, PhPerson, PhCoins, PhGearSix, PhLightbulbFilament, PhArrowRight, PhLinkBreak } from '@phosphor-icons/vue';
+import { PhCode, PhChartLineUp, PhPerson, PhCoins, PhGearSix, PhLightbulbFilament, PhArrowRight, PhLinkBreak, PhHouseLine  } from '@phosphor-icons/vue';
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { usePermission } from '../../composables/usePermission';
+
+//Comprobar permisos de usuario
+const {hasAnyRole} = usePermission();
 
 defineProps({
     client: Object,

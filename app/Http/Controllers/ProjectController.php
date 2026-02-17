@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Project;
-use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -101,7 +100,7 @@ class ProjectController extends Controller
         $user = Auth::user();
         $project->load('area', 'company', 'clients');
 
-        $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador                  
+        $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador
             $client->client_update = $user->can('update', $client);
             $client->client_delete = $user->can('delete', $client);
         });
