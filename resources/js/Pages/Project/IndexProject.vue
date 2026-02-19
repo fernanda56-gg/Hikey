@@ -8,7 +8,7 @@
             </div>
 
             <!--Botón crear nuevo proyecto-->
-            <div v-if="can('create projects')" class="flex items-center justify-end w-full">
+            <div v-if="can?.create" class="flex items-center justify-end w-full">
                 <div class="btn md:btn-md btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
                     <Link :href="route('projects.create')" class="flex items-center space-x-1">
                         <PhPlus class="md:size-6 size-4" />
@@ -50,13 +50,15 @@
     import { Link } from '@inertiajs/vue3';
     import {PhPlus} from '@phosphor-icons/vue';
     import { route } from 'ziggy-js';
-    import { usePermission } from '../../composables/usePermission';
+    /* import { usePermission } from '../../composables/usePermission'; */
     import { PhHouseLine } from '@phosphor-icons/vue';
 
     //Comprobar permisos de usuario
-    const {can} = usePermission();
+    /* const {can} = usePermission(); */
 
     defineProps(
-        {'projects': Object,}
+        {'projects': Object,
+            'can': Object,
+        }
     );
 </script>

@@ -45,8 +45,8 @@
                         <!--botones de acción usuarios-->
                         <td class="w-75">
                             <div class="flex items-center justify-center gap-4">
-                                <Link :href="route('manage-account.edit', { user: userAccount.id })"><PhPencil :size="24" weight="duotone" class="hover:text-[#ffc300] hover:duration-200 duration-200"/></Link>
-                                <Link :href="route('manage-account.destroy', { user: userAccount.id })" method="delete" as="button" ><PhTrash :size="24" weight="duotone" class="hover:text-[#ef233c] hover:duration-200 duration-200 cursor-pointer"/></Link>
+                                <Link v-if="userAccount.update_c" :href="route('manage-account.edit', { user: userAccount.id })"><PhPencil :size="24" weight="duotone" class="hover:text-[#ffc300] hover:duration-200 duration-200"/></Link>
+                                <Link v-if="userAccount.delete_c" :href="route('manage-account.destroy', { user: userAccount.id })" method="delete" as="button" ><PhTrash :size="24" weight="duotone" class="hover:text-[#ef233c] hover:duration-200 duration-200 cursor-pointer"/></Link>
                             </div>
                         </td>
                     </tr>

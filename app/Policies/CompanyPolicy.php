@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Company;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CompanyPolicy
 {
@@ -13,6 +12,12 @@ class CompanyPolicy
      */
     public function viewAny(User $user): bool
     {
+        if($user->hasRole('admin')){
+            return true;
+        }if($user->hasRole('user'))
+        {
+            return true;
+        }
         return false;
     }
 
@@ -42,7 +47,7 @@ class CompanyPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole('admin', 'user');
+        return $user->hasAnyRole('admin', 'manager');
     }
 
     /**
@@ -63,7 +68,22 @@ class CompanyPolicy
 
     public function leaveCompany(User $user, Company $company): bool
     {
-        return $user->isOwner($company)  || $user->hasRole('admin');
+        if($user->hasRole('admin')){
+            return true;
+        }if($company->owner_id === $user->id){
+            return true;
+        }return false;
+    }
+
+    public function joinCompany(User $user): bool
+    {
+        if($user->hasRole('admin')){
+            return true;
+        }if($user->hasRole('user') && !$user->companies()->where('user_id', $user->id)->exists()){
+            return true;
+        }elseif($user->hasRole('manager')){
+            return false;
+        }return false;
     }
 
     /**

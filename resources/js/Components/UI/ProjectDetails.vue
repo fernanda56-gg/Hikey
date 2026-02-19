@@ -44,8 +44,8 @@
 
         <div class="flex items-end justify-end space-x-3 mt-auto">
             <Link :href="route('projects.show', {project: projects.id})"><PhEye :size="28" weight="duotone" class="hover:text-info hover:duration-200 duration-200"/></Link>
-            <Link :href="route('projects.edit', {project: projects.id})"><PhPencil :size="28" weight="duotone" class="hover:text-warning hover:duration-200 duration-200"/></Link>
-            <Link :href="route('projects.destroy', {project: projects.id})" method="delete" as="button"><PhTrash :size="28" weight="duotone" class="hover:text-error hover:duration-200 duration-200 cursor-pointer"/></Link>
+            <Link v-if="projects.update_p" :href="route('projects.edit', {project: projects.id})"><PhPencil :size="28" weight="duotone" class="hover:text-warning hover:duration-200 duration-200"/></Link>
+            <Link v-if="projects.delete_p" :href="route('projects.destroy', {project: projects.id})" method="delete" as="button"><PhTrash :size="28" weight="duotone" class="hover:text-error hover:duration-200 duration-200 cursor-pointer"/></Link>
         </div>
     </div>
 </template>
@@ -54,7 +54,9 @@
     import { Link } from '@inertiajs/vue3';
 
     defineProps(
-            {'projects': Object,}
+            {'projects': Object,
+                can: Object,
+            }
         );
 
     const areaIcons = {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +18,12 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('viewAny', Company::class))
+            {
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+            }
+
+
         return inertia(
             'Company/IndexCompany',
             [
@@ -31,7 +36,10 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Company::class);
+        if(Gate::denies('create', Company::class))
+            {
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+            }
         return inertia('Company/CreateCompany');
     }
 
@@ -85,7 +93,7 @@ class CompanyController extends Controller
         //
         if(Gate::denies('view', $company))
             {
-                return redirect()->back()->with('error', 'No tienes acceso para ver esta empresa.');
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }
 
         $user = Auth::user();
@@ -105,8 +113,10 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         //
-        $user = Auth::user();
-        abort_if(!$user->can('edit companies'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('update', $company))
+            {
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+            }
 
         return inertia(
             'Company/EditCompany',
@@ -120,11 +130,6 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        if(Gate::denies('update', $company))
-            {
-                return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para modificar la información de esta empresa.');
-            }
-
         try{
             $validated = $request->validate([
                         'name' => 'required|string|min:3|max:100',
@@ -156,7 +161,7 @@ class CompanyController extends Controller
     {
         if(Gate::denies('delete', $company))
             {
-                return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para eliminar esta empresa.');
+                abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
             }
 
         $company->delete();
@@ -170,8 +175,10 @@ class CompanyController extends Controller
 
     public function joinCompany()
     {
-        $user = Auth::user();
-        abort_if(!$user->can('join companies'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('joinCompany', Company::class))
+            {
+                return redirect()->route('inicio')->with('error', 'No puedes unirte a esta empresa.');
+            }
         return inertia('Company/JoinCompany');
     }
 
@@ -230,11 +237,14 @@ class CompanyController extends Controller
     }
 
     public function leaveCompany(Company $company, User $user){
-        if(Gate::denies('joinCompany', $company))
+        if(Gate::denies('leaveCompany', $company))
             {
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para salir de esta empresa.');
             }
 
+        if($user->isOwner($company)){
+            return redirect()->route('companies.show', $company->id)->with('error', 'No puedes salir de tu propia empresa.');
+        }
         $company->member()->detach($user->id);
         return redirect()->route('companies.listMember', $company->id)->with('success', 'Has sacado al usuario de la empresa exitosamente.');
     }

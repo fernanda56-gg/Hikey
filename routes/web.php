@@ -19,10 +19,10 @@ Route::post('register', [UserController::class, 'store'])->name('register.store'
 
 //Rutas mediante permisos
 //Administración de cuentas de usuario
-Route::resource('manage-account', UserAccountController::class)->only(['create', 'store'])->middleware('auth', 'permission:create user accounts');
-Route::resource('manage-account', UserAccountController::class)->only(['index', 'show'])->middleware('auth', 'permission:view user accounts');
-Route::resource('manage-account', UserAccountController::class)->only(['edit', 'update'])->middleware('auth', 'permission:edit user accounts')->parameters(['manage-account' => 'user']);
-Route::resource('manage-account', UserAccountController::class)->only(['destroy'])->middleware('auth', 'permission:delete user accounts')->parameters(['manage-account' => 'user']);
+Route::resource('manage-account', UserAccountController::class)->only(['create', 'store'])->middleware('auth');
+Route::resource('manage-account', UserAccountController::class)->only(['index', 'show'])->middleware('auth');
+Route::resource('manage-account', UserAccountController::class)->only(['edit', 'update'])->middleware('auth')->parameters(['manage-account' => 'user']);
+Route::resource('manage-account', UserAccountController::class)->only(['destroy'])->middleware('auth')->parameters(['manage-account' => 'user']);
 
 //Proyectos
 Route::put('projects/{project}/update-date', [ProjectController::class, 'updateDate'])->name('projects.update-date')->middleware('auth');

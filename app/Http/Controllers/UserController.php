@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
-use Spatie\Permission\Commands\AssignRole;
 use App\Models\User;
 
 use Illuminate\Http\Request;

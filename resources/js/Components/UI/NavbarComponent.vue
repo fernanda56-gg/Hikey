@@ -33,7 +33,7 @@
 
                 <!--Links para usuario admin-->
                 <!--Menu dropdown de vista de usuarios-->
-                <div v-if="hasRole('admin')" class="dropdown dropdown-hover relative">
+                <div v-if="hasRole('admin')" class="dropdown md:dropdown-hover relative">
                     <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
                         <span class="mr-1">Usuarios</span>
                         <PhCaretDown weight="bold" class="md:size-4 size-4"/>
@@ -45,7 +45,7 @@
                 </div>
 
                 <!--Menu para vista proyectos-->
-                <div class="dropdown dropdown-hover relative">
+                <div class="dropdown md:dropdown-hover relative">
                     <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
                         <span class="mr-1">Proyectos</span>
                         <PhCaretDown weight="bold" class="md:size-4 size-4"/>
@@ -60,7 +60,7 @@
                     <Link :href="route('companies.redirect')" class="px-3 py-2 block">Empresa</Link>
                 </div>
 
-                <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
+                <div v-if="hasAnyRole(['admin', 'manager'])" class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
                     <Link :href="route('clients.index')" class="px-3 py-2 block">Clientes</Link>
                 </div>
             </div>
@@ -119,7 +119,7 @@ import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut
 import { usePermission } from '../../composables/usePermission';
 
 //Comprobar permisos de usuario
-const {hasRole, isAuthenticated, user, can} = usePermission();
+const {hasRole, isAuthenticated, user, can, hasAnyRole} = usePermission();
 
 //Botón de menu
 const menuOpen = ref(false)

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Validation\Rules\Password;
-use Spatie\Permission\Commands\AssignRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Models\Role;
 
 class UserAccountController extends Controller
@@ -17,10 +17,21 @@ class UserAccountController extends Controller
     public function index()
     {
         $user = Auth::user();
-        abort_if(!$user->can('view user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('viewAny', User::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
 
         $userAccounts = User::with('roles')->get();
-        return inertia('ManageAccountUsers/IndexPage', compact('userAccounts'));
+
+        $userAccounts->each(function ($userAccount) use ($user) {
+            $userAccount->update_c = $user->can('update', $userAccount);
+            $userAccount->delete_c = $user->can('delete', $userAccount);
+        });
+
+        return inertia('ManageAccountUsers/IndexPage', [
+            'userAccounts' => $userAccounts,
+        ]);
     }
 
     /**
@@ -28,8 +39,10 @@ class UserAccountController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        abort_if(!$user->can('create user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('create', User::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
 
         return inertia('ManageAccountUsers/CreatePage', [
             'roles' => Role::all()
@@ -83,8 +96,10 @@ class UserAccountController extends Controller
      */
     public function edit(User $user)
     {
-        $user = Auth::user();
-        abort_if(!$user->can('edit user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('update', $user))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
 
         return inertia('ManageAccountUsers/EditPage', [
             'userAccount' => $user,
@@ -125,8 +140,10 @@ class UserAccountController extends Controller
      */
     public function destroy(User $user)
     {
-        $user = Auth::user();
-        abort_if(!$user->can('delete user accounts'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('delete', $user))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
 
         $user->delete();
         return redirect()->route('manage-account.index')->with('success', 'Usuario eliminado exitosamente.');

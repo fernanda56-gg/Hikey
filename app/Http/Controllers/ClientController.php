@@ -115,7 +115,7 @@ class ClientController extends Controller
     {
         //
         $user = Auth::user();
-        if(Gate::denies('delete', $client))
+        if(Gate::denies('update', $client))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }

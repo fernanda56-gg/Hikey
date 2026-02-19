@@ -86,7 +86,9 @@ import { usePermission } from '../../composables/usePermission';
 const {hasRole} = usePermission();
 
 const props = defineProps(
-        {'projects': Object,}
+        {'projects': Object,
+            'can': Object,
+        }
     )
 
 const form = useForm({

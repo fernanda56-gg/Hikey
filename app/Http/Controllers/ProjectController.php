@@ -18,6 +18,11 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('viewAny', Project::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
         $user = Auth::user();
 
         if($user->hasRole('admin')){ //El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
@@ -29,10 +34,18 @@ class ProjectController extends Controller
             $projects = collect();
         }
 
+        $projects->each(function ($project) use ($user){
+            $project->update_p = $user->can('update', $project);
+            $project->delete_p = $user->can('delete', $project);
+        });
+
         return inertia(
             'Project/IndexProject',
             [
                 'projects' => $projects,
+                'can' => [
+                'create' => $user->can('create', Project::class),
+            ]
             ]);
     }
 
@@ -41,7 +54,11 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        abort_if(!Auth::user()->can('create projects'), 403, 'No tienes los permisos necesarios para ver esta pagina.');
+        if(Gate::denies('create', Project::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
         return inertia('Project/CreateProject', [
             'areas' => Area::all(),
             'companies' => Auth::user()->hasRole('admin') ? Company::all() : [], //Asegura que solo el ADMIN pueda ver todas las empresas
@@ -97,6 +114,11 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        if(Gate::denies('view', $project))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
         $user = Auth::user();
         $project->load('area', 'company', 'clients');
 
@@ -119,8 +141,11 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        if(Gate::denies('update', $project))
+        {
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
 
-        abort_if(!Auth::user()->can('edit projects'), 403, 'No tienes los permisos necesarios para realizar esta acción.');
         return inertia(
             'Project/EditProject',
             [
@@ -158,7 +183,7 @@ class ProjectController extends Controller
     public function updateDate(Request $request, Project $project)
     {
 
-        Gate::denies('update', $project);
+        if(Gate::denies('update', $project))
         {
             return redirect()->back()->with('error', 'No tienes permiso para modificar fechas.');
         }
@@ -177,7 +202,11 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        abort_if(!Auth::user()->can('delete projects'), 403, 'No tienes los permisos necesarios para realizar esta acción.');
+        if(Gate::denies('delete', $project))
+        {
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
+
         $project->delete();
         return redirect()->route('projects.index')->with('success', 'Proyecto eliminado.');
     }

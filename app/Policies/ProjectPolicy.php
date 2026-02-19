@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ProjectPolicy
 {
@@ -13,6 +12,9 @@ class ProjectPolicy
      */
     public function viewAny(User $user): bool
     {
+        if($user->can('view projects')){
+            return true;
+        }
         return false;
     }
 
@@ -21,7 +23,11 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        return false;
+        if($user->hasRole('admin')){
+            return true;
+        }elseif($user->companies()->where('company_id', $project->company_id)->exists()){
+            return true;
+        }return false;
     }
 
     /**
@@ -29,7 +35,7 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -39,12 +45,9 @@ class ProjectPolicy
     {
         if($user->hasAnyRole(['admin', 'manager'])){
             return true;
-        }
-
-        if($project->by_user_id === $user->id){
+        }elseif($project->by_user_id === $user->id){
             return true;
         }
-
         return false;
     }
 
@@ -55,12 +58,9 @@ class ProjectPolicy
     {
         if($user->hasAnyRole(['admin', 'manager'])){
             return true;
-        }
-
-        if($project->by_user_id === $user->id){
+        }elseif($project->by_user_id === $user->id){
             return true;
         }
-
         return false;
     }
 
