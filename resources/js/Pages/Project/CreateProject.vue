@@ -67,7 +67,7 @@
                         <div class="flex flex-col space-y-2 mt-4">
                             <label class="font-bold text-neutral">Área del proyecto</label>
                             <select v-model="form.area_id" class="select select-ghost bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-                                <option disabled selected>Selecciona un área</option>
+                                <option :value="null" disabled selected>Selecciona un área</option>
                                 <option v-for="area in areas" :key="area.id" :value="area.id">{{ area.name }}</option>
                             </select>
                             <!--Contenedor de error en input-->
@@ -93,7 +93,7 @@
                             <div v-if="hasRole('admin')" class="flex flex-col space-y-2 mt-4 md:w-1/4 w-auto">
                                 <label class="font-bold text-neutral">Empresa</label>
                                     <select v-model="form.company_id" class="select select-ghost bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-                                        <option disabled selected>Selecciona una empresa</option>
+                                        <option :value="null" disabled selected>Selecciona una empresa</option>
                                         <option v-for="company in companies" :key="company.id" :value="company.id">{{ company.name }}</option>
                                     </select>
                                 <!--Contenedor de error en input-->

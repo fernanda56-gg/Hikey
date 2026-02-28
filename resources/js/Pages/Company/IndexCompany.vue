@@ -26,7 +26,7 @@
             </div>
 
             <!--Tabla para la información de las empresas solo para ADMIN-->
-            <CompanyTableInfo v-if="hasRole('admin')" :companies="companies" />
+            <CompanyTableInfo v-if="hasRole('admin')" :companies="companies" :filters="filters"/>
 
             <!--Vista para usuarios-->
             <div v-else class="p-4 mt-4">
@@ -46,7 +46,9 @@ import CompanyTableInfo from '../../Components/UI/CompanyTableInfo.vue';
 import { usePermission } from '../../composables/usePermission';
 
 defineProps(
-    {'companies': Object,}
+    {'companies': Object,
+        'filters': Object,
+    }
 );
 
 const {hasRole, can} = usePermission();

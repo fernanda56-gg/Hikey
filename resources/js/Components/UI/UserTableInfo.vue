@@ -8,8 +8,11 @@
             </ul>
         </div>
 
+    <!-- Filtro -->
+    <FilterUser :filters="filters" :roles="roles"/>
+
     <!-- Contenedor global -->
-    <div class="mx-auto md:p-4 flex justify-center">
+    <div v-if="userAccounts.data.length" class="mx-auto md:p-4 flex justify-center">
         <div class="w-fit overflow-x-auto rounded-box border-2 border-base-content/15 bg-base-100">
             <table class="table md:table-md table-sm w-auto">
                 <thead class="bg-base-200 text-neutral ">
@@ -23,7 +26,7 @@
                 </thead>
                 <tbody>
                     <!-- info de usuarios -->
-                    <tr v-for="userAccount in userAccounts" :key="userAccount.id">
+                    <tr v-for="userAccount in userAccounts.data" :key="userAccount.id">
                         <td class="w-20">{{ userAccount.id }}</td>
                         <td class="w-80">{{ userAccount.name }} {{ userAccount.last_name }}</td>
                         <td class="w-75">{{ userAccount.email }}</td>
@@ -50,12 +53,14 @@
                             </div>
                         </td>
                     </tr>
-
-
-
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Contenedor de paginado -->
+    <div v-if="userAccounts.data.length" class="w-full flex justify-center">
+        <PaginationComponent :links="userAccounts.links" />
     </div>
 </template>
 
@@ -63,11 +68,16 @@
 import { Link } from '@inertiajs/vue3';
 import { PhPencil, PhTrash, PhUserFocus, PhHouseLine} from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
+import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
+import FilterUser from './FilterUser.vue';
 import { usePermission } from '../../composables/usePermission';
 
 //Comprobar permisos de usuario
 const {hasRole} = usePermission();
 
 defineProps({
-    'userAccounts': Object,})
+    'userAccounts': Object,
+    'filters': Object,
+    'roles': Object,
+    })
 </script>

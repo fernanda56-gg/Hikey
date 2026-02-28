@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,4 +60,29 @@ class Project extends Model
         return $this->belongsToMany(Client::class, 'client_project')
                     ->withTimestamps();
     }
+
+    #[Scope]
+    public function MostRecent($query)
+    {
+        return $query->orderByDesc('created_at');
+    }
+
+    #[Scope]
+    protected function filter(Builder $query, array $filters): void
+    {
+        $query
+            ->when(
+                $filters['status'] ?? false, //Evalúa la condición si existe el valor o no
+                fn($query, $value) => $query->where('status', $value)
+                /* El query actúa como la consulta y el $value es el valor que se pasa del filtro */
+            )->when(
+                $filters['name'] ?? false,
+                fn($query, $value) => $query->where('name', 'like', "%$value%")
+            )->when(
+                $filters['area'] ?? false,
+                fn($query, $value) => $query->where('area_id', $value)
+            );
+    }
+
+
 }

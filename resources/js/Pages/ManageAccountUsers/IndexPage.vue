@@ -16,7 +16,7 @@
                 </div>
             </div>
             <!--Tabla de información de usuarios-->
-            <UserTableInfo :userAccounts="userAccounts" />
+            <UserTableInfo :userAccounts="userAccounts" :filters="filters" :roles="roles"/>
         </div>
     </AppLayout>
 </template>
@@ -29,6 +29,9 @@ import { route } from 'ziggy-js';
 
 
 defineProps(
-    {'userAccounts': Object,}
+    {'userAccounts': Object,
+        'filters' : Object,
+        'roles': Object,
+    }
 )
 </script>

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 class Company extends Model
 {
@@ -53,5 +55,28 @@ class Company extends Model
     public function clients() //Relación que registra a que empresa pertenece el cliente
     {
         return $this->hasMany(Client::class);
+    }
+
+    #[Scope]
+    public function MostRecent($query)
+    {
+        return $query->orderByDesc('created_at');
+    }
+
+    #[Scope]
+    protected function filter(Builder $query, array $filters): void
+    {
+        $query
+            ->when(
+                $filters['city'] ?? false, //Evalúa la condición si existe el valor o no
+                fn($query, $value) => $query->where('city', 'like', "%$value%")
+                /* El query actúa como la consulta y el $value es el valor que se pasa del filtro */
+            )->when(
+                $filters['name'] ?? false,
+                fn($query, $value) => $query->where('name', 'like', "%$value%")
+            )->when(
+                $filters['country'] ?? false,
+                fn($query, $value) => $query->where('country', 'like', "%$value%")
+            );
     }
 }

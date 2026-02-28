@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -74,5 +76,26 @@ class User extends Authenticatable
     public function isAdmin():bool
     {
         return $this->hasRole('admin');
+    }
+
+    #[Scope]
+    public function MostRecent($query)
+    {
+        return $query->orderBy('created_at', 'asc');
+    }
+
+    #[Scope]
+    protected function filter(Builder $query, array $filters): void
+    {
+        $query
+            ->when(
+                $filters['role'] ?? false,
+                fn($query, $value) => $query->whereHas('roles', function ($query) use ($value) {
+                    $query->where('name', $value);
+                })
+            )->when(
+                $filters['name'] ?? false,
+                fn($query, $value) => $query->where('name', 'like', "%$value%")
+            );
     }
 }

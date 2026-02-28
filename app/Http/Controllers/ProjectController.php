@@ -16,7 +16,7 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Gate::denies('viewAny', Project::class))
         {
@@ -25,15 +25,25 @@ class ProjectController extends Controller
 
         $user = Auth::user();
 
+        $query = Project::with('area')->mostRecent(); //Utiliza el scope de Proyectos para ordenarlos por fecha de creación
+
         if($user->hasRole('admin')){ //El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
-            $projects = Project::with('area')->get();
+            $projects = $query;
         }elseif($user->companies()->exists()){ //Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
             $company = $user->companies()->pluck('companies.id');
-            $projects = Project::with('area')->whereIn('company_id', $company)->get();
+            $projects = $query->whereIn('company_id', $company);
         }else{//Si el usuario no pertenece a ninguna empresa no podrá ver ningún proyecto
             $projects = collect();
         }
 
+        /* Para acceder a los campos del filtro */
+        $filters = $request->only(['name', 'area', 'status']);
+        $areas = Area::all();
+
+        /* Realiza la paginación y mediante el scope que se llama desde el modelo se filtran los datos */
+        $projects = $query->filter($filters)->paginate(10)->withQueryString();
+
+        /* Para acceder a permisos de editar y eliminar proyectos */
         $projects->each(function ($project) use ($user){
             $project->update_p = $user->can('update', $project);
             $project->delete_p = $user->can('delete', $project);
@@ -43,6 +53,8 @@ class ProjectController extends Controller
             'Project/IndexProject',
             [
                 'projects' => $projects,
+                'areas' => $areas,
+                'filters' => $filters,
                 'can' => [
                 'create' => $user->can('create', Project::class),
             ]

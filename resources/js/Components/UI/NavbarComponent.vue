@@ -27,15 +27,15 @@
                 menuOpen ? 'flex' : 'hidden'
             ]">
                 <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
-                    <Link :href="route('inicio')" class="px-3 py-2 block">Inicio</Link>
+                    <Link :href="route('inicio')" class="px-1.5 lg:px-3 py-2 block lg:text-base text-sm">Inicio</Link>
                 </div>
 
 
                 <!--Links para usuario admin-->
                 <!--Menu dropdown de vista de usuarios-->
                 <div v-if="hasRole('admin')" class="dropdown md:dropdown-hover relative">
-                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
-                        <span class="mr-1">Usuarios</span>
+                    <div tabindex="0" role="button" class="flex items-center px-1.5 lg:px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
+                        <span class="mr-1 lg:text-base text-sm">Usuarios</span>
                         <PhCaretDown weight="bold" class="md:size-4 size-4"/>
                     </div>
                     <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
@@ -46,8 +46,8 @@
 
                 <!--Menu para vista proyectos-->
                 <div class="dropdown md:dropdown-hover relative">
-                    <div tabindex="0" role="button" class="flex items-center px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
-                        <span class="mr-1">Proyectos</span>
+                    <div tabindex="0" role="button" class="flex items-center px-1.5 lg:px-3 py-2 md:hover:bg-primary-content rounded-lg duration-200 md:dark:hover:text-black cursor-pointer">
+                        <span class="mr-1 lg:text-base text-sm">Proyectos</span>
                         <PhCaretDown weight="bold" class="md:size-4 size-4"/>
                     </div>
                     <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
@@ -57,11 +57,11 @@
                 </div>
 
                 <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
-                    <Link :href="route('companies.redirect')" class="px-3 py-2 block">Empresa</Link>
+                    <Link :href="route('companies.redirect')" class="px-1.5 lg:px-3 py-2 block lg:text-base text-sm">Empresa</Link>
                 </div>
 
                 <div v-if="hasAnyRole(['admin', 'manager'])" class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
-                    <Link :href="route('clients.index')" class="px-3 py-2 block">Clientes</Link>
+                    <Link :href="route('clients.index')" class="px-1.5 lg:px-3 py-2 block lg:text-base text-sm">Clientes</Link>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
                         <button class="btn btn-circle border-0 bg-transparent shadow-none">
                             <PhUserCircle weight="duotone" class="text-neutral size-6"/>
                         </button>
-                        <span v-if="isAuthenticated" class="cursor-default">{{ user.name }}</span>
+                        <span v-if="isAuthenticated" class="cursor-default whitespace-nowrap">{{ user.name }}</span>
                     </div>
 
                 <!--Menu desplegable de usuario-->

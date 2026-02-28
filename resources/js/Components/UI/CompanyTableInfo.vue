@@ -1,14 +1,18 @@
 <template>
     <!-- Link breadcrumbs -->
-    <div class="breadcrumbs p-4 text-xs md:text-sm">
+    <div class="breadcrumbs px-4 py-1.5 text-xs md:text-sm">
         <ul>
             <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
             <li><Link :href="route('companies.redirect')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresas</Link></li>
             <li>Lista de empresas</li>
         </ul>
     </div>
+
+    <!-- Filtro -->
+    <FilterCompany :filters="filters"/>
+
     <!-- Contenedor global -->
-    <div class="mx-auto md:p-4 mt-1 flex justify-center">
+    <div v-if="companies.data.length" class="mx-auto md:p-4 mt-1 flex justify-center">
         <div class="w-fit overflow-x-auto rounded-box border-2 border-base-content/15 bg-base-100">
             <table class="table md:table-md table-sm w-auto">
                 <thead class="bg-base-200 text-neutral ">
@@ -24,7 +28,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="company in companies" :key="company.id">
+                    <tr v-for="company in companies.data" :key="company.id">
                         <td class="w-20">{{ company.id }}</td>
                         <td class="w-100">{{ company.name }}</td>
                         <td class="w-100">{{ company.email }}</td>
@@ -52,16 +56,25 @@
             </table>
         </div>
     </div>
+
+    <!-- Contenedor de paginado -->
+    <div v-if="companies.data.length" class="w-full flex justify-center">
+        <PaginationComponent :links="companies.links" />
+    </div>
 </template>
 
 <script setup>
 import { PhPencil, PhTrash, PhCopySimple, PhEye, PhHouseLine } from "@phosphor-icons/vue";
+import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
+import FilterCompany from "./FilterCompany.vue";
 import { Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import { ref } from 'vue';
 
 defineProps(
-    {'companies': Object,}
+    {'companies': Object,
+        'filters': Object,
+    }
 );
 
 const copyText = ref('Copiar')

@@ -16,18 +16,25 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Gate::denies('viewAny', Company::class))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }
+            $query = Company::with('owner')->mostRecent(); //Deja acceder a los datos del propietario mediante el modelo OWNER
 
+            /* Para acceder a los campos del filtro */
+            $filters = $request->only(['name', 'city', 'country']);
+
+
+            $companies = $query->filter($filters)->paginate(10)->withQueryString();
 
         return inertia(
             'Company/IndexCompany',
             [
-                'companies' => Company::with('owner')->get() //Deja acceder a los datos del propietario mediante el modelo OWNER
+                'companies' => $companies,
+                'filters' => $filters,
             ]);
     }
 

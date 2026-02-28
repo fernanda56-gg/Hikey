@@ -8,7 +8,7 @@
             </div>
 
             <!-- Tabla de info de los clientes de la empresa -->
-            <ClientTableInfo :clients="clients"/>
+            <ClientTableInfo :clients="clients" :filters="filters"/>
         </div>
     </AppLayout>
 </template>
@@ -19,6 +19,7 @@ import AppLayout from '../../Layouts/AppLayout.vue';
 
 defineProps({
     'clients': Object,
+    'filters': Object,
 });
 
 </script>

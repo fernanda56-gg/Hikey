@@ -15,10 +15,9 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-
         if(Gate::denies('viewAny', Client::class))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
@@ -27,14 +26,19 @@ class ClientController extends Controller
         /* Dependiendo del rol del usuario es a los registros que lo dejara ver */
         $user = Auth::user();
         if($user->hasRole('admin')){ //ADMIN: Puede ver todos los registros
-            $clients = Client::with('projects', 'company')->get();
+            $query = Client::with('projects', 'company')->mostRecent();
         }else{
             $company = $user->companies()->first(); //MANAGER: Solo puede ver los registros de su empresa
-            $clients = Client::where('company_id', $company->id)->with('projects')->get();
+            $query = Client::where('company_id', $company->id)->with('projects')->mostRecent();
         }
 
+        /* Para acceder a los campos del filtro */
+        $filters = $request->only(['name', 'projectName', 'companyName']);
+
+        $clients = $query->filter($filters)->paginate(10)->withQueryString();
         return inertia('Clients/IndexClient',[
             'clients' => $clients,
+            'filters' => $filters,
         ]);
     }
 

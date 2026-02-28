@@ -14,7 +14,7 @@ class UserAccountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         if(Gate::denies('viewAny', User::class))
@@ -22,15 +22,23 @@ class UserAccountController extends Controller
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
 
-        $userAccounts = User::with('roles')->get();
+        $query = User::with('roles')->MostRecent();
+
+        /* Para acceder a los campos del filtro */
+        $filters = $request->only(['name', 'role']);
+        $roles = Role::select('id', 'name')->get();
+
+        $userAccounts = $query->filter($filters)->paginate(10)->withQueryString();
 
         $userAccounts->each(function ($userAccount) use ($user) {
             $userAccount->update_c = $user->can('update', $userAccount);
             $userAccount->delete_c = $user->can('delete', $userAccount);
         });
-
+        
         return inertia('ManageAccountUsers/IndexPage', [
             'userAccounts' => $userAccounts,
+            'filters' => $filters,
+            'roles' => $roles,
         ]);
     }
 

@@ -2,15 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Area;
 use App\Models\Company;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Project;
 use App\Models\User;
-use Spatie\Permission\Commands\AssignRole;
-
-use function Symfony\Component\Clock\now;
 
 class UserSeeder extends Seeder
 {
@@ -47,7 +42,7 @@ class UserSeeder extends Seeder
             'owner_id' => $userManager->id,
         ]);
 
-        Project::factory(10)->create([
+        Project::factory(30)->create([
             'by_user_id' => $userManager->id,
             'company_id' => $company->first()->id,
         ]);

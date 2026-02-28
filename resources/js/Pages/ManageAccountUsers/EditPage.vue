@@ -8,7 +8,7 @@
             </div>
 
             <!-- Link breadcrumbs -->
-            <div class="breadcrumbs p-4 text-xs md:text-sm">
+            <div class="breadcrumbs px-4 py-1.5 text-xs md:text-sm">
                 <ul>
                     <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
                     <li v-if="hasRole('admin')"><Link :href="route('manage-account.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Usuarios</Link></li>

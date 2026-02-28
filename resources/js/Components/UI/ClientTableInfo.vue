@@ -1,14 +1,18 @@
 <template>
     <!-- Link breadcrumbs -->
-    <div class="breadcrumbs p-4 text-xs md:text-sm">
+    <div class="breadcrumbs px-4 py-1.5 text-xs md:text-sm">
         <ul>
             <li><Link :href="route('inicio')"><PhHouseLine class="md:size-6 size-5 cursor-pointer hover:text-success duration-200 hover:duration-200" weight="duotone" /></Link></li>
             <li v-if="hasAnyRole(['admin', 'manager'])"><Link :href="route('clients.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Clientes</Link></li>
             <li>Lista de clientes</li>
         </ul>
     </div>
+
+    <!-- Componente de filtro -->
+    <FilterClient :filters="filters"/>
+
     <!-- Contenedor global -->
-    <div v-if="clients.length" class="mx-auto md:p-4 mt-1 flex justify-center">
+    <div v-if="clients.data.length" class="mx-auto md:p-4 mt-1 flex justify-center">
         <div class="w-fit overflow-x-auto rounded-box border-2 border-base-content/15 bg-base-100">
             <table class="table md:table-md table-sm w-auto">
                 <thead class="bg-base-200 text-neutral">
@@ -21,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="client in clients" :key="client.id">
+                    <tr v-for="client in clients.data" :key="client.id">
                         <td class="w-80">{{ client.name }}</td>
                         <td class="w-80">{{ client.email }}</td>
                         <td class="w-80">{{ client.phone }}</td>
@@ -38,6 +42,11 @@
         </div>
     </div>
 
+    <!-- Contenedor de paginado -->
+            <div v-if="clients.data.length" class="w-full flex justify-center">
+                <PaginationComponent :links="clients.links" />
+            </div>
+
     <!-- Contenedor en caso de que aun no haya clientes -->
     <div v-else class="p-4">
         <div class="flex items-center w-full justify-start border-2 border-base-300 bg-base-200 rounded-lg p-4">
@@ -49,6 +58,8 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
+import FilterClient from '../../Components/UI/FilterClient.vue';
 import { PhKanban, PhPencil, PhTrash, PhHouseLine} from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 
@@ -57,5 +68,6 @@ const {hasRole, hasAnyRole} = usePermission();
 
 defineProps({
     'clients': Object,
+    'filters': Object,
 });
 </script>
