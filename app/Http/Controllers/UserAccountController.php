@@ -34,7 +34,7 @@ class UserAccountController extends Controller
             $userAccount->update_c = $user->can('update', $userAccount);
             $userAccount->delete_c = $user->can('delete', $userAccount);
         });
-        
+
         return inertia('ManageAccountUsers/IndexPage', [
             'userAccounts' => $userAccounts,
             'filters' => $filters,
@@ -148,12 +148,43 @@ class UserAccountController extends Controller
      */
     public function destroy(User $user)
     {
+        /* dd($user->id); */
         if(Gate::denies('delete', $user))
         {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
 
-        $user->delete();
+        if ($user->trashed()) { //Si el usuario esta en eliminados lo eliminara de forma definitiva
+        $user->forceDelete();
+        } else {
+            $user->delete(); // Soft delete
+        }
         return redirect()->route('manage-account.index')->with('success', 'Usuario eliminado exitosamente.');
+    }
+
+    public function trash()
+    {
+        if(Gate::denies('viewAny', User::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $users = User::onlyTrashed()->with('roles')->MostRecent()->get();
+
+        return inertia('ManageAccountUsers/TrashAccount', [
+            'users' => $users,
+        ]);
+    }
+
+    public function recover(User $user)
+    {
+        $user = User::withTrashed()->findOrFail($user->id);
+        if(Gate::denies('delete', $user))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $user->restore();
+        return redirect()->route('manage-account.index')->with('success', 'Usuario recuperado con éxito.');
     }
 }

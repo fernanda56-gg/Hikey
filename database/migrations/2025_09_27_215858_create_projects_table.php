@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('area_id')->constrained('areas')->onDelete('cascade');
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

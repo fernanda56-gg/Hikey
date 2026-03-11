@@ -31,6 +31,14 @@
                             <span class="font-black">Limpiar</span>
                         </span>
                     </button>
+
+                    <!-- Botón para soft delete -->
+                    <Link v-if="hasAnyRole(['admin'])" :href="route('manage-account.trash')" class="btn btn-sm md:btn-md bg-error text-white border-0 hover:bg-red-700 hover:duration-200 duration-200">
+                        <span class="flex items-center space-x-1">
+                            <PhTrashSimple class="md:size-5 size-4" weight="bold" />
+                            <span class="font-black hidden md:flex">Eliminados</span>
+                        </span>
+                    </Link>
                 </div>
             </div>
         </form>
@@ -38,9 +46,14 @@
 </template>
 
 <script setup>
-import { PhFunnel, PhFunnelX } from '@phosphor-icons/vue';
+import { PhFunnel, PhFunnelX, PhTrashSimple } from '@phosphor-icons/vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { Link } from '@inertiajs/vue3';
+import { usePermission } from '../../composables/usePermission';
+
+//Comprobar permisos de usuario
+const {hasAnyRole} = usePermission();
 
 const props = defineProps({
     'filters': Object,

@@ -162,17 +162,56 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
+        $client = Client::withTrashed()->findOrFail($id);
+
+        if (Gate::denies('delete', $client)) {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        if ($client->trashed()) { //Si el proyecto esta en eliminados lo eliminara de forma definitiva
+        $client->forceDelete();
+        } else {
+            $client->delete(); // Soft delete
+        }
+
+        return redirect()->back()->with('success', 'Cliente eliminado exitosamente.');
+    }
+
+    public function trash()
+    {
+        if(Gate::denies('viewAny', Client::class))
+            {
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+            }
+
         $user = Auth::user();
+        $query = Client::onlyTrashed()->with('projects', 'company')->mostRecent();
+
+        if($user->hasRole('admin')){ //El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
+            $clients = $query->get();
+        }elseif($user->companies()->exists()){ //Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
+            $company = $user->companies()->first(); //MANAGER: Solo puede ver los registros de su empresa
+            $clients = Client::where('company_id', $company->id)->with('projects')->mostRecent();
+        }
+
+        return inertia('Clients/TrashClient',[
+            'clients' => $clients,
+        ]);
+    }
+
+    public function recover(Client $client)
+    {
+        $client = Client::onlyTrashed()->findOrFail($client->id);
+
         if(Gate::denies('delete', $client))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }
 
-        $client->delete();
-        return redirect()->back()->with('success', 'Cliente eliminado exitosamente.');
+        $client->restore();
+        return redirect()->route('clients.index')->with('success', 'Cliente recuperado con éxito.');
     }
 
     public function assignClient(Project $project)

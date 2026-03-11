@@ -219,7 +219,47 @@ class ProjectController extends Controller
             abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
         }
 
-        $project->delete();
+        if ($project->trashed()) { //Si el proyecto esta en eliminados lo eliminara de forma definitiva
+        $project->forceDelete();
+        } else {
+            $project->delete(); // Soft delete
+        }
         return redirect()->route('projects.index')->with('success', 'Proyecto eliminado.');
+    }
+
+    public function trash()
+    {
+        if(Gate::denies('viewAny', Project::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $user = Auth::user();
+        $query = Project::onlyTrashed()->with('area')->mostRecent();
+
+        if($user->hasRole('admin')){ //El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
+            $projects = $query->get();
+        }elseif($user->companies()->exists()){ //Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
+            $company = $user->companies()->pluck('companies.id');
+            $projects = $query->whereIn('company_id', $company)->get();
+        }
+
+        return inertia(
+            'Project/TrashProject',
+            [
+                'projects' => $projects,
+            ]);
+    }
+
+    public function recover($id)
+    {
+        $project = Project::withTrashed()->findOrFail($id);
+
+        if (Gate::denies('delete', $project)) {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $project->restore();
+        return redirect()->route('projects.show', $project->id)->with('success', 'Proyecto recuperado con éxito.');
     }
 }
