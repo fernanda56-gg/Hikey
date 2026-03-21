@@ -56,24 +56,39 @@
                     </ul>
                 </div>
 
+                <!-- Empresa -->
                 <div class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
                     <Link :href="route('companies.redirect')" class="px-1.5 lg:px-3 py-2 block lg:text-base text-sm">Empresa</Link>
                 </div>
 
+                <!-- Clientes -->
                 <div v-if="hasAnyRole(['admin', 'manager'])" class="md:hover:bg-primary-content rounded-lg hover:duration-200 duration-200 md:dark:hover:text-black">
                     <Link :href="route('clients.index')" class="px-1.5 lg:px-3 py-2 block lg:text-base text-sm">Clientes</Link>
                 </div>
             </div>
 
-            <!--Botón de temo claro y oscuro-->
-                <div class="hidden md:flex items-center justify-between ml-auto px-3">
+                <!-- Botones de usuario -->
+                <div class="hidden md:flex items-center justify-between ml-auto gap-0.5">
+                    <!--Botón de temo claro y oscuro-->
                     <button class="btn btn-square border-0 bg-transparent hover:bg-base-200 hover:duration-300 duration-200 shadow-none" @click="toggleTheme">
-                    <span v-if="theme === 'daylight'">
-                        <PhMoonStars :size="24" color="#003566"/>
-                    </span>
-                    <span v-else>
-                        <PhSunHorizon :size="24" color="#FFC300"/>
-                    </span>
+                        <span v-if="theme === 'daylight'">
+                            <PhMoonStars :size="24" color="#003566"/>
+                        </span>
+                        <span v-else>
+                            <PhSunHorizon :size="24" color="#FFC300"/>
+                        </span>
+                    </button>
+
+                    <!-- Botón de notificaciones -->
+                    <button v-if="user" class="btn btn-square border-0 bg-transparent hover:bg-base-200 hover:duration-300 duration-200 shadow-none">
+                        <Link :href="route('notifications.index')" class="flex items-center gap-4">
+                            <div class="relative pr-2 py-2">
+                                <PhBell class="text-neutral md:size-6 size-5" weight="duotone"/>
+                                <div v-if="notificationCount" class="absolute right-0 top-0 w-4 h-4 bg-[#f94144] text-white font-black rounded-full text-xs text-center">
+                                    {{ notificationCount }}
+                                </div>
+                            </div>
+                        </Link>
                     </button>
 
                 <!--Botón de usuario-->
@@ -115,11 +130,14 @@
 import { Link} from '@inertiajs/vue3';
 import { ref, watchEffect} from 'vue';
 import { route } from 'ziggy-js';
-import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut } from '@phosphor-icons/vue';
+import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut, PhBell } from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
+import { useNotification } from '../../composables/UseNotification';
 
 //Comprobar permisos de usuario
 const {hasRole, isAuthenticated, user, can, hasAnyRole} = usePermission();
+const {notificationCount } = useNotification()
+
 
 //Botón de menu
 const menuOpen = ref(false)

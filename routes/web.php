@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationSeenController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
@@ -58,3 +60,8 @@ Route::resource('clients', ClientController::class)->only([ 'store'])->middlewar
 Route::resource('clients', ClientController::class)->only(['index', 'show'])->middleware('auth');
 Route::resource('clients', ClientController::class)->only(['edit', 'update'])->middleware('auth');
 Route::resource('clients', ClientController::class)->only(['destroy'])->withTrashed()->middleware('auth');
+
+//Notificaciones
+Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index')->middleware('auth');
+Route::put('notifications/{notification}/seen', [NotificationSeenController::class, '__invoke'])->name('notification.seen')->middleware('auth');
+Route::delete('notifications', [NotificationController::class, 'destroy'])->name('notifications.delete')->middleware('auth');

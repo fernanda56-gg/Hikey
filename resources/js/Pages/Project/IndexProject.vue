@@ -27,17 +27,17 @@
             </div>
 
             <!-- Filtro -->
-            <FilterProject :filters="filters" :areas="areas" />
+            <FilterProject v-if="can?.view" :filters="filters" :areas="areas" />
 
             <!--Contenedor de info de proyectos-->
-            <div v-if="projects.data.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8">
+            <div v-if="can?.view" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8">
                 <BoxComponent v-for="project in projects.data" :key="project.id">
                     <ProjectDetails :projects="project" />
                 </BoxComponent>
             </div>
 
             <!-- Contenedor de paginado -->
-            <div v-if="projects.data.length" class="w-full flex justify-center">
+            <div v-if="can?.view" class="w-full flex justify-center">
                 <PaginationComponent :links="projects.links" />
             </div>
 

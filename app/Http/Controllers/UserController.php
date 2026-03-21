@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
-
+use App\Notifications\UserCreated;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -34,6 +34,13 @@ class UserController extends Controller
         $user->save();
         $user->assignRole('user'); //se asigna rol de usuario por defecto
         Auth::login($user);
+
+        $admin = User::all()->filter(fn($u) => $u->isAdmin() );
+        foreach($admin as $a){
+            $a->notify(
+            new UserCreated($user)
+        );
+        }
 
         return redirect()->route('inicio')->with('success', 'Bienvenido a Hikey, ' . $user->name . '!');
     }

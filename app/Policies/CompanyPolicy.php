@@ -47,7 +47,7 @@ class CompanyPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole('admin', 'manager');
+        return $user->hasRole('admin') || !$user->companies()->exists();
     }
 
     /**

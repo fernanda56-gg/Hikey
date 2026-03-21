@@ -28,7 +28,6 @@ class Client extends Model
 
     public function projects() //Relación con el proyecto y el cliente
     {
-        /* return $this->belongsToMany(Project::class); */
         return $this->belongsToMany(Project::class, 'client_project')
                     ->withTimestamps();
     }

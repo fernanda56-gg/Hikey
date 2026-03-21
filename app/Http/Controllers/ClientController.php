@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Project;
+use App\Notifications\ClientAssigned;
+use App\Notifications\ClientCreated;
+use App\Notifications\ClientDeleted;
+use App\Notifications\ClientEdited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -71,21 +75,27 @@ class ClientController extends Controller
         'project_id' => 'required|exists:projects,id'
     ]);
 
-    $project = Project::findOrFail($validated['project_id']); //encuentra el ID del proyecto
-    $data = collect($validated)->except('project_id')->merge(['company_id' => $project->company_id])->toArray(); //recolecta la información con excepción del project_id
-    $client = Client::create($data); //crea el registro
-    $client->projects()->attach($project->id); //añade el id del proyecto para la tabla pivote
+        $project = Project::findOrFail($validated['project_id']); //encuentra el ID del proyecto
+        $data = collect($validated)->except('project_id')->merge(['company_id' => $project->company_id])->toArray(); //recolecta la información con excepción del project_id
+        $client = Client::create($data); //crea el registro
+        $client->projects()->attach($project->id); //añade el id del proyecto para la tabla pivote
 
-    return redirect()->route('projects.show', $project->id)->with('success', 'Cliente creado con éxito.');
+        /* notificación */
+        $project = Project::with('project_owner')->find($project->id);
+        $project->project_owner->notify(
+            new ClientCreated($client, $project)
+        );
 
-    }
-    catch(ValidationException $e){
-            throw $e;
-        }catch(\Exception $e){
-            //si los datos no se guardan, se muestra mensaje de error
-            /* dd($e->getMessage()); */
-            return redirect()->back()->with('error', 'Error al generar cliente.')->withInput();//withInput mantiene los datos del form
+        return redirect()->route('projects.show', $project->id)->with('success', 'Cliente creado con éxito.');
+
         }
+        catch(ValidationException $e){
+                throw $e;
+            }catch(\Exception $e){
+                //si los datos no se guardan, se muestra mensaje de error
+                /* dd($e->getMessage()); */
+                return redirect()->back()->with('error', 'Error al generar cliente.')->withInput();//withInput mantiene los datos del form
+            }
     }
 
     /**
@@ -147,7 +157,17 @@ class ClientController extends Controller
                         'phone' => 'required|string|max:20',
                     ]);
             $client->update($validated);
-            $project = $client->projects()->first();
+            $projects = $client->projects()->get();
+
+            /* notificación */
+            /* Mandara la notificación a cada proyecto en el que este asignado como cliente */
+            foreach ($projects as $project) {
+                if ($project->project_owner) {
+                    $project->project_owner->notify(
+                        new ClientEdited($client)
+                    );
+                }
+            }
 
             //los datos se guardan en BD
             return redirect()->route('projects.show', $project)->with('success', 'Cliente actualizado.');
@@ -162,18 +182,29 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Client $client)
     {
-        $client = Client::withTrashed()->findOrFail($id);
+        $client = Client::withTrashed()->findOrFail($client->id);
 
         if (Gate::denies('delete', $client)) {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
 
+        $projects = $client->projects()->with('project_owner')->get();
+
         if ($client->trashed()) { //Si el proyecto esta en eliminados lo eliminara de forma definitiva
         $client->forceDelete();
         } else {
             $client->delete(); // Soft delete
+        }
+
+        /* Mandara la notificación a cada proyecto en el que este asignado como cliente */
+        foreach ($projects as $project) {
+            if ($project->project_owner) {
+                $project->project_owner->notify(
+                    new ClientDeleted($client)
+                );
+            }
         }
 
         return redirect()->back()->with('success', 'Cliente eliminado exitosamente.');
@@ -244,6 +275,16 @@ class ClientController extends Controller
         $validated = $request->validate([
             'client_id' => 'required|exists:clients,id'
         ]);
+
+        /* notificación */
+        $project = Project::with('project_owner')->find($project->id);
+        $client = Client::find($validated['client_id']);
+
+        if($project->project_owner()){
+            $project->project_owner->notify(
+                new ClientAssigned($client, $project)
+            );
+        }
 
         $project->clients()->attach($validated);
 

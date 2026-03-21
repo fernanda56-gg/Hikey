@@ -6,7 +6,7 @@
                     <li v-if="hasRole('admin')"><Link :href="route('companies.index')" class="hover:text-success duration-200 hover:duration-200 font-semibold">Empresas</Link></li>
                     <li v-if="hasRole('admin')"><Link :href="route('companies.show', {company: company.id})" class="hover:text-success duration-200 hover:duration-200 font-semibold">{{ company.name }}</Link></li>
                     <li v-if="hasAnyRole(['manager', 'team-leader', 'user'])"><Link :href="route('companies.redirect')" class="hover:text-success duration-200 hover:duration-200 font-semibold">{{ company.name }}</Link></li>
-                    <li>Información de empresa</li>
+                    <li>Miembros</li>
                 </ul>
             </div>
     <!-- Contenedor global -->

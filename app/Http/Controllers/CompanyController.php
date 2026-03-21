@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Notifications\CompanyCreated;
+use App\Notifications\CompanyEdited;
+use App\Notifications\CompanyJoin;
+use App\Notifications\CompanyLeave;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -26,7 +30,7 @@ class CompanyController extends Controller
 
             /* Para acceder a los campos del filtro */
             $filters = $request->only(['name', 'city', 'country']);
-
+            $user = $request->user();
 
             $companies = $query->filter($filters)->paginate(10)->withQueryString();
 
@@ -35,6 +39,9 @@ class CompanyController extends Controller
             [
                 'companies' => $companies,
                 'filters' => $filters,
+                'can' => [
+                    'create' => $user->can('create', Company::class),
+                ]
             ]);
     }
 
@@ -74,12 +81,17 @@ class CompanyController extends Controller
         'role' => 'propietario' //cambia el rol a propietario por crear la empresa
     ]);
 
-    $user = Auth::user(); //cambio el rol del usuario a gerente de proyectos
+    $user = $request->user(); //cambio el rol del usuario a gerente de proyectos
     if($user->hasRole('user') && !$user->hasRole('manager'))
         {
             $user->removeRole('user');
             $user->assignRole('manager');
         }
+
+    /* Notificación */
+    $user->notify(
+        new CompanyCreated($company)
+    );
 
     //los datos se guardan en BD
     return redirect()->route('companies.show', $company->id)->with('success', 'Empresa creada con éxito.');
@@ -151,8 +163,18 @@ class CompanyController extends Controller
             $validated['company_code'] = Company::invitationCode(); //Genera el código
             $company->update($validated);
 
+            /* Notificación */
+            $user = $request->user();
+            $user->notify(
+                new CompanyEdited($company)
+            );
+
             //los datos se guardan en BD
-            return redirect()->route('companies.redirect')->with('success', 'Empresa actualizada.');
+            if($user->hasRole('admin')){
+                return redirect()->route('companies.index')->with('success', 'Empresa actualizada.');
+            }else{
+                return redirect()->route('companies.show', $company->id)->with('success', 'Empresa actualizada.');
+            }
         }catch(ValidationException $e){
             throw $e;
         }catch(\Exception $e){
@@ -205,6 +227,12 @@ class CompanyController extends Controller
 
             //Deja que el usuario pueda unirse a la empresa
             $company->member()->attach(Auth::user()->id, ['role' => 'miembro', 'joined_at' => now()]);
+
+            /* Notificación */
+            $user = $request->user();
+            $user->notify(
+            new CompanyJoin($company)
+        );
             return redirect()->route('companies.show', $company->id)->with('success', 'Te has unido a, ' . $company->name . ' exitosamente');
         }catch(ValidationException $e){
             throw $e;
@@ -253,6 +281,12 @@ class CompanyController extends Controller
             return redirect()->route('companies.show', $company->id)->with('error', 'No puedes salir de tu propia empresa.');
         }
         $company->member()->detach($user->id);
+
+        /* Notificación */
+        $user->notify(
+            new CompanyLeave($company)
+        );
+
         return redirect()->route('companies.listMember', $company->id)->with('success', 'Has sacado al usuario de la empresa exitosamente.');
     }
 }

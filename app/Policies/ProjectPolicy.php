@@ -12,10 +12,11 @@ class ProjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        if($user->can('view projects')){
+        if($user->hasRole('admin')){
             return true;
         }
-        return false;
+        $member = Project::whereIn('company_id', $user->companies()->pluck('companies.id'))->exists();
+        return $member;
     }
 
     /**

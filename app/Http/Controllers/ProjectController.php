@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Project;
+use App\Notifications\ProjectChangeDates;
+use App\Notifications\ProjectCreated;
+use App\Notifications\ProjectDeleted;
+use App\Notifications\ProjectEdited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
-use App\Http\Controllers\Controller;
 
 class ProjectController extends Controller
 {
@@ -18,11 +22,6 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        if(Gate::denies('viewAny', Project::class))
-        {
-            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
-        }
-
         $user = Auth::user();
 
         $query = Project::with('area')->mostRecent(); //Utiliza el scope de Proyectos para ordenarlos por fecha de creación
@@ -57,6 +56,7 @@ class ProjectController extends Controller
                 'filters' => $filters,
                 'can' => [
                 'create' => $user->can('create', Project::class),
+                'view' => $user->can('viewAny', Project::class),
             ]
             ]);
     }
@@ -81,44 +81,48 @@ class ProjectController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    try {
-        $validated = [
-            'name' => 'required|string|min:3|max:50',
-            'description' => 'required|string|max:255',
-            'link' => 'required|url',
-            'image_path' => 'required|url',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'area_id' => 'required|exists:areas,id',
-        ];
-        $user = $request->user();
+    {
+        try {
+            $validated = [
+                'name' => 'required|string|min:3|max:50',
+                'description' => 'required|string|max:255',
+                'link' => 'required|url',
+                'image_path' => 'required|url',
+                'start_date' => 'nullable|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date',
+                'area_id' => 'required|exists:areas,id',
+            ];
+            $user = $request->user();
 
-        if ($user->hasRole('admin')) { //Si el user es ADMIN validara lo que haya puesto en el select
-            $validated['company_id'] = 'required|exists:companies,id';
+            if ($user->hasRole('admin')) { //Si el user es ADMIN validara lo que haya puesto en el select
+                $validated['company_id'] = 'required|exists:companies,id';
+            }
+
+            $data = $request->validate($validated); //Solicita los datos validados
+
+            /* Dependiendo del rol que tenga el usuario almacena de forma diferente el company_id */
+            if ($user->hasRole('admin')) {
+                $data['company_id'] = $data['company_id'];
+            } else {
+                $company = $user->companies()->first();
+                $data['company_id'] = $company?->id;
+            }
+
+            /* notificación */
+            $project = $user->projects()->create($data);
+            $project->project_owner->notify(
+                new ProjectCreated($project)
+            );
+
+            return redirect()->route('projects.index')->with('success', 'Proyecto creado con éxito.');
+
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            /* dd($e->getMessage()); */
+            return redirect()->back()->with('error', 'Error al actualizar proyecto.')->withInput();//withInput mantiene los datos del form
         }
-
-        $data = $request->validate($validated); //Solicita los datos validados
-
-        /* Dependiendo del rol que tenga el usuario almacena de forma diferente el company_id */
-        if ($user->hasRole('admin')) {
-            $data['company_id'] = $data['company_id'];
-        } else {
-            $company = $user->companies()->first();
-            $data['company_id'] = $company?->id;
-        }
-
-        $user->projects()->create($data);
-
-        return redirect()->route('projects.index')->with('success', 'Proyecto creado con éxito.');
-
-    } catch (ValidationException $e) {
-        throw $e;
-    } catch (\Exception $e) {
-        /* dd($e->getMessage()); */
-        return redirect()->back()->with('error', 'Error al actualizar proyecto.')->withInput();//withInput mantiene los datos del form
     }
-}
 
 
     /**
@@ -182,6 +186,11 @@ class ProjectController extends Controller
         ]);
         $project->update($validated);
 
+        /* Generar notificación para dueño del proyecto */
+        $project->project_owner->notify(
+            new ProjectEdited($project)
+        );
+
             //los datos se guardan en BD
             return redirect()->route('projects.index')->with('success', 'Proyecto actualizado.');
         }catch(ValidationException $e){
@@ -206,6 +215,11 @@ class ProjectController extends Controller
         ]);
 
         $project->update($validates);
+
+        /* Generar notificación para dueño del proyecto */
+        $project->project_owner->notify(
+            new ProjectChangeDates($project)
+        );
         return back();
     }
 
@@ -219,10 +233,14 @@ class ProjectController extends Controller
             abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
         }
 
-        if ($project->trashed()) { //Si el proyecto esta en eliminados lo eliminara de forma definitiva
-        $project->forceDelete();
+        if ($project->trashed()) {
+            /* Generar notificación para dueño del proyecto */
+            $project->project_owner->notify(
+                new ProjectDeleted($project)
+                );
+            $project->forceDelete();
         } else {
-            $project->delete(); // Soft delete
+            $project->delete();
         }
         return redirect()->route('projects.index')->with('success', 'Proyecto eliminado.');
     }

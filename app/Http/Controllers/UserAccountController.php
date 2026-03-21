@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\UserCreated;
+use App\Notifications\UserDeleted;
+use App\Notifications\UserEdited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -82,6 +85,12 @@ class UserAccountController extends Controller
             ]));
             $user->assignRole($request->input('roles'));
             $user->save();
+
+            /* notificación */
+            $admin = $request->user();
+            $admin->notify(
+                new UserCreated($user)
+            );
             return redirect()->route('manage-account.index')->with('success', 'Usuario creado exitosamente.');
         }catch(\Exception $e){
             throw $e;
@@ -133,6 +142,11 @@ class UserAccountController extends Controller
             $user->update($validated);
             $user->syncRoles($validated['roles']);
 
+            /* notificación */
+            $request->user()->notify(
+                new UserEdited($user)
+            );
+
 
             return redirect()->route('manage-account.index')->with('success', 'Usuario actualizado exitosamente.');
         }catch(\Exception $e){
@@ -148,13 +162,16 @@ class UserAccountController extends Controller
      */
     public function destroy(User $user)
     {
-        /* dd($user->id); */
         if(Gate::denies('delete', $user))
         {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
 
         if ($user->trashed()) { //Si el usuario esta en eliminados lo eliminara de forma definitiva
+        $admin = Auth::user();
+        $admin->notify(
+            new UserDeleted($user)
+        );
         $user->forceDelete();
         } else {
             $user->delete(); // Soft delete
