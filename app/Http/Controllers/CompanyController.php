@@ -256,18 +256,31 @@ class CompanyController extends Controller
         }
     }
 
-    public function listMember(Company $company)
+    public function listMember(Company $company, Request $request)
     {
         if(Gate::denies('viewList', $company))
             {
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para ver esta empresa.');
             }
 
-        $members = $company->member()->get();
+        $query = $company->member()->mostRecent();
+
+        /* filtro y paginación */
+        $filters = $request->only(['name']);
+        $members = $query->filter($filters)->paginate(10)->withQueryString();
+
+        /* permisos */
+        $user = $request->user();
 
         return inertia('Company/MemberListCompany', [
             'company' => $company,
             'members' => $members,
+            'filters' => $filters,
+            'can' => [
+                'viewMembers' => $user->can('viewMembers', Company::class),
+                'admin' => $user->can('is_Admin', Company::class),
+                'leave' => $user->can('leaveCompany', Company::class),
+            ]
         ]);
     }
 
@@ -290,3 +303,4 @@ class CompanyController extends Controller
         return redirect()->route('companies.listMember', $company->id)->with('success', 'Has sacado al usuario de la empresa exitosamente.');
     }
 }
+

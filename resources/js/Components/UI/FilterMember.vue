@@ -1,12 +1,12 @@
 <template>
     <!-- Contenedor global -->
     <div class="mb-4 mt-4 flex flex-wrap gap-2 px-4">
-        <form>
+        <form @submit.prevent="filter">
             <!-- Contenedor de input de filtro -->
             <div class="flex flex-wrap items-center gap-2">
-                <!-- nombre de proyecto -->
+                <!-- nombre del miembro -->
                 <div class="flex flex-nowrap items-center">
-                    <input v-model="filterForm.name" class="w-48 bg-base-200 input input-sm md:input-md focus:outline-none" type="text" placeholder="Nombre de miembro">
+                    <input v-model="filterForm.name" class="w-48 bg-base-200 input input-sm md:input-md focus:outline-none" type="text" placeholder="Nombre">
                 </div>
 
                 <!-- Botón de filtro -->
@@ -36,6 +36,7 @@ import { route } from 'ziggy-js';
 
 const props =  defineProps({
     'filters': Object,
+    'company': Object,
 })
 
 const filterForm = useForm({
@@ -43,9 +44,9 @@ const filterForm = useForm({
 })
 
 const filter = () => {
-    filterForm.get(route('companies.listMember'),{
+    filterForm.get(route('companies.listMember', props.company.id),{
         preserveState: true,
-        preserveScroll:true,
+        preserveScroll: true,
     })
 }
 

@@ -8,7 +8,7 @@
             </div>
 
         <!--Tabla de info de miembros de la empresa-->
-        <MemberTableInfo :company="company" :members="members"/>
+        <MemberTableInfo :company="company" :members="members" :filters="filters" :can="can"/>
     </div>
 </AppLayout>
 
@@ -21,6 +21,8 @@ import AppLayout from '../../Layouts/AppLayout.vue';
 defineProps({
     'company': Object,
     'members': Object,
+    'can': Object,
+    'filters': Object,
 })
 </script>
 

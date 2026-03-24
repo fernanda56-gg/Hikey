@@ -66,13 +66,9 @@ class CompanyPolicy
         return $user->isOwner($company) || $user->hasRole('admin');
     }
 
-    public function leaveCompany(User $user, Company $company): bool
+    public function leaveCompany(User $user): bool
     {
-        if($user->hasRole('admin')){
-            return true;
-        }if($company->owner_id === $user->id){
-            return true;
-        }return false;
+        return $user->companies()->exists() || $user->hasRole('admin');
     }
 
     public function joinCompany(User $user): bool
@@ -84,6 +80,11 @@ class CompanyPolicy
         }elseif($user->hasRole('manager')){
             return false;
         }return false;
+    }
+
+    public function viewMembers(User $user): bool
+    {
+        return $user->companies()->exists();
     }
 
     /**
@@ -100,5 +101,10 @@ class CompanyPolicy
     public function forceDelete(User $user, Company $company): bool
     {
         return false;
+    }
+
+    public function is_Admin(User $user): bool
+    {
+        return $user->hasRole('admin');
     }
 }
