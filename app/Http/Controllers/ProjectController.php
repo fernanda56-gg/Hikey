@@ -262,6 +262,8 @@ class ProjectController extends Controller
             $projects = $query->whereIn('company_id', $company)->get();
         }
 
+        $projects = $query->paginate(5)->withQueryString();
+
         return inertia(
             'Project/TrashProject',
             [

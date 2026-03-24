@@ -18,8 +18,8 @@
 
             <!-- Contenedor de lista de clientes -->
             <div class="md:p-4 mt-8">
-                <ul v-if="clients.length" class="list bg-base-100 rounded-box space-y-3">
-                    <li v-for="client in clients" :key="client.id" class="list-row bg-base-200">
+                <ul v-if="clients.data.length" class="list bg-base-100 rounded-box space-y-3">
+                    <li v-for="client in clients.data" :key="client.id" class="list-row bg-base-200">
                         <div class="space-y-1">
                             <!-- Nombre del cliente -->
                             <div class="font-black capitalize text-lg">
@@ -48,13 +48,18 @@
                             </Link>
                         </div>
                     </li>
+
+                    <!-- Contenedor de paginado -->
+                    <div class="w-full flex justify-center">
+                        <PaginationComponent :links="clients.links" />
+                    </div>
                 </ul>
 
                 <!-- Contenedor en caso de que aun no haya proyectos eliminados -->
 
-                    <div v-else class="flex items-center text-neutral border-2 border-base-300 bg-base-200 rounded-lg p-4">
-                        <span>Aún no hay clientes eliminados.</span>
-                    </div>
+                <div v-else class="flex items-center text-neutral border-2 border-base-300 bg-base-200 rounded-lg p-4">
+                    <span>Aún no hay clientes eliminados.</span>
+                </div>
             </div>
         </div>
     </AppLayout>
@@ -62,6 +67,7 @@
 
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
+import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
 import { route } from 'ziggy-js';
 import { Link } from '@inertiajs/vue3';
 import { PhHouseLine, PhArrowBendUpRight, PhTrash} from '@phosphor-icons/vue';

@@ -18,8 +18,8 @@
 
             <!-- Contenedor para lista de usuarios -->
             <div class="md:p-4 mt-8">
-                <ul v-if="users.length" class="list bg-base-100 rounded-box space-y-3">
-                    <li v-for="user in users" :key="user.id" class="list-row bg-base-200">
+                <ul v-if="users.data.length" class="list bg-base-100 rounded-box space-y-3">
+                    <li v-for="user in users.data" :key="user.id" class="list-row bg-base-200">
                         <div class="space-y-1">
                             <!-- Nombre de usuario -->
                             <div class="font-black capitalize text-lg">
@@ -64,6 +64,11 @@
                             </Link>
                         </div>
                     </li>
+
+                    <!-- Contenedor de paginado -->
+                    <div class="w-full flex justify-center">
+                        <PaginationComponent :links="users.links" />
+                    </div>
                 </ul>
 
                 <!-- Contenedor en caso de que aun no haya proyectos eliminados -->
@@ -78,6 +83,7 @@
 
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
+import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { PhHouseLine, PhIdentificationBadge, PhArrowBendUpRight, PhTrash } from '@phosphor-icons/vue';

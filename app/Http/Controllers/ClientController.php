@@ -182,9 +182,9 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        $client = Client::withTrashed()->findOrFail($client->id);
+        $client = Client::withTrashed()->findOrFail($id);
 
         if (Gate::denies('delete', $client)) {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
@@ -227,6 +227,7 @@ class ClientController extends Controller
             $clients = Client::where('company_id', $company->id)->with('projects')->mostRecent();
         }
 
+        $clients = $query->paginate(5)->withQueryString();
         return inertia('Clients/TrashClient',[
             'clients' => $clients,
         ]);

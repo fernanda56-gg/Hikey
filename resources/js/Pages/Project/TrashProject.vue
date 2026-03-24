@@ -18,8 +18,8 @@
 
             <!-- Contenedor para lista de proyectos -->
             <div class="md:p-4 mt-8">
-                <ul v-if="projects.length" class="list bg-base-100 rounded-box space-y-3">
-                    <li v-for="project in projects" :key="project.id" class="list-row bg-base-200">
+                <ul v-if="projects.data.length" class="list bg-base-100 rounded-box space-y-3">
+                    <li v-for="project in projects.data" :key="project.id" class="list-row bg-base-200">
                         <div class="space-y-1">
                             <!-- Nombre de proyecto -->
                             <div class="font-black capitalize text-lg">
@@ -72,6 +72,11 @@
                             </Link>
                         </div>
                     </li>
+
+                    <!-- Contenedor de paginado -->
+                    <div class="w-full flex justify-center">
+                        <PaginationComponent :links="projects.links" />
+                    </div>
                 </ul>
 
                 <!-- Contenedor en caso de que aun no haya proyectos eliminados -->
@@ -87,6 +92,7 @@
 
 <script setup>
 import AppLayout from '../../Layouts/AppLayout.vue';
+import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { PhHouseLine, PhCode, PhChartLineUp, PhPerson, PhCoins, PhGearSix, PhLightbulbFilament, PhArrowBendUpRight, PhTrash} from '@phosphor-icons/vue';

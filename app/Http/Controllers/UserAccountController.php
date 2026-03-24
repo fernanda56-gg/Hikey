@@ -186,7 +186,7 @@ class UserAccountController extends Controller
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
 
-        $users = User::onlyTrashed()->with('roles')->MostRecent()->get();
+        $users = User::onlyTrashed()->with('roles')->MostRecent()->paginate(5)->withQueryString();
 
         return inertia('ManageAccountUsers/TrashAccount', [
             'users' => $users,
