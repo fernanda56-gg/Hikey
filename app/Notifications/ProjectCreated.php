@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Project;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -27,8 +26,7 @@ class ProjectCreated extends Notification
      */
     public function via(object $notifiable): array
     {
-        /* return ['mail']; */
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -37,9 +35,11 @@ class ProjectCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line("Un nuevo proyecto '{$this->project->name}' ha sido generado.")
+            ->action('Ver proyecto',
+            route('projects.show', ['project' => $this->project])
+            )
+            ->line('Gracias por usar nuestra aplicación!');
     }
 
     /**

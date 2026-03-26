@@ -62,6 +62,11 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        if(Gate::denies('create', Company::class))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
         try{
         $validated = $request->validate([
         'name' => 'required|string|min:3|max:100',
@@ -94,12 +99,13 @@ class CompanyController extends Controller
     );
 
     //los datos se guardan en BD
-    return redirect()->route('companies.show', $company->id)->with('success', 'Empresa creada con éxito.');
+    return redirect()->route('companies.show', ['company' => $company->id])->with('success', 'Empresa creada con éxito.');
     }
     catch(ValidationException $e){
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
+            /* dd($e); */
             return redirect()->back()->with('error', 'Error al generar empresa.')->withInput();//withInput mantiene los datos del form
         }
 }
@@ -149,6 +155,11 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
+        if(Gate::denies('update', $company))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
         try{
             $validated = $request->validate([
                         'name' => 'required|string|min:3|max:100',
@@ -179,6 +190,7 @@ class CompanyController extends Controller
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
+            dd($e);
             return redirect()->back()->with('error', 'Error al actualizar empresa.')->withInput();//withInput mantiene los datos del form
         }
     }

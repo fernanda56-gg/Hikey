@@ -26,7 +26,7 @@ class CompanyJoin extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -35,9 +35,11 @@ class CompanyJoin extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line("Has sido agregado a '{$this->company->name}'. Para conocer detalles de la empresa entra al siguiente enlace.")
+            ->action('Abrir enlace',
+            route('companies.show', ['company' => $this->company])
+            )
+            ->line('Gracias por usar nuestra aplicación!');
     }
 
     /**

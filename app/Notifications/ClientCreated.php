@@ -27,7 +27,7 @@ class ClientCreated extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -36,9 +36,11 @@ class ClientCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line("Se ha agregado un nuevo cliente {$this->client->name} para el proyecto '{$this->project->name}', para mas información entra al siguiente enlace.")
+            ->action('Abrir enlace',
+            route('projects.show', ['project' => $this->project])
+            )
+            ->line('Gracias por usar nuestra aplicación!');
     }
 
     /**

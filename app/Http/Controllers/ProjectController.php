@@ -120,7 +120,7 @@ class ProjectController extends Controller
             throw $e;
         } catch (\Exception $e) {
             /* dd($e->getMessage()); */
-            return redirect()->back()->with('error', 'Error al actualizar proyecto.')->withInput();//withInput mantiene los datos del form
+            return redirect()->back()->with('error', 'Error al generar proyecto.')->withInput();//withInput mantiene los datos del form
         }
     }
 

@@ -26,7 +26,7 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company): bool
     {
-        return $company->member()->where('user_id', $user->id)->exists() || $user->hasRole('admin');
+        return $company->member->contains($user->id) || $user->hasRole('admin');
     }
 
     public function viewList(User $user, Company $company): bool
@@ -47,7 +47,11 @@ class CompanyPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('admin') || !$user->companies()->exists();
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        return !$user->companies()->exists();
     }
 
     /**
@@ -68,7 +72,7 @@ class CompanyPolicy
 
     public function leaveCompany(User $user): bool
     {
-        return $user->companies()->exists() || $user->hasRole('admin');
+        return $user->hasRole('manager') || $user->hasRole('admin');
     }
 
     public function joinCompany(User $user): bool
