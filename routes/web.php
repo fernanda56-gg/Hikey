@@ -8,60 +8,80 @@ use App\Http\Controllers\NotificationSeenController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 //Rutas de autentificación
 Route::get('/', [AuthController::class, 'create'])->name('login');
 Route::post('login', [AuthController::class, 'store'])->name('login.store');
 Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
-Route::get('home', [AuthController::class, 'show'])->name('inicio')->middleware('auth');
+Route::get('home', [AuthController::class, 'show'])->name('inicio')->middleware(['auth', 'verified']);
 
+//Rutas para registro de usuarios
 Route::get('register', [UserController::class, 'create'])->name('register');
 Route::post('register', [UserController::class, 'store'])->name('register.store');
 
+//Rutas de verificación de correo
+Route::get('/email/verify', function () {
+    return inertia('Auth/VerifyEmailPage');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect()->route('inicio')->with('success', 'Correo verificado');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return redirect()->back()->with('success', 'Enlace enviado!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 //Rutas mediante permisos
 //Administración de cuentas de usuario
-Route::get('manage-account/trash', [UserAccountController::class, 'trash'])->name('manage-account.trash')->middleware('auth');
-Route::get('/manage-account/{user}/recover', [UserAccountController::class, 'recover'])->name('manage-account.recover')->middleware('auth')->withTrashed();
-Route::resource('manage-account', UserAccountController::class)->only(['create', 'store'])->middleware('auth');
-Route::resource('manage-account', UserAccountController::class)->only(['index'])->middleware('auth');
-Route::resource('manage-account', UserAccountController::class)->only(['edit', 'update'])->middleware('auth')->parameters(['manage-account' => 'user']);
-Route::delete('/manage-account/{user}', [UserAccountController::class, 'destroy'])->name('manage-account.destroy')->middleware('auth')->withTrashed();
+Route::get('manage-account/trash', [UserAccountController::class, 'trash'])->name('manage-account.trash')->middleware(['auth', 'verified']);
+Route::get('/manage-account/{user}/recover', [UserAccountController::class, 'recover'])->name('manage-account.recover')->middleware(['auth', 'verified'])->withTrashed();
+Route::resource('manage-account', UserAccountController::class)->only(['create', 'store'])->middleware(['auth', 'verified']);
+Route::resource('manage-account', UserAccountController::class)->only(['index'])->middleware(['auth', 'verified']);
+Route::resource('manage-account', UserAccountController::class)->only(['edit', 'update'])->middleware(['auth', 'verified'])->parameters(['manage-account' => 'user']);
+Route::delete('/manage-account/{user}', [UserAccountController::class, 'destroy'])->name('manage-account.destroy')->middleware(['auth', 'verified'])->withTrashed();
 
 //Proyectos
-Route::put('projects/{project}/update-date', [ProjectController::class, 'updateDate'])->name('projects.update-date')->middleware('auth');
-Route::get('projects/trash', [ProjectController::class, 'trash'])->name('projects.trash')->middleware('auth');
-Route::get('/projects/{project}/recover', [ProjectController::class, 'recover'])->middleware('auth')->withTrashed()->name('projects.recover');
-Route::resource('projects', ProjectController::class)->only(['create', 'store'])->middleware('auth');
-Route::resource('projects', ProjectController::class)->only(['index', 'show'])->middleware('auth');
-Route::resource('projects', ProjectController::class)->only(['edit', 'update'])->middleware('auth');
-Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->withTrashed()->name('projects.destroy')->middleware('auth');
+Route::put('projects/{project}/update-date', [ProjectController::class, 'updateDate'])->name('projects.update-date')->middleware(['auth', 'verified']);
+Route::get('projects/trash', [ProjectController::class, 'trash'])->name('projects.trash')->middleware(['auth', 'verified']);
+Route::get('/projects/{project}/recover', [ProjectController::class, 'recover'])->middleware(['auth', 'verified'])->withTrashed()->name('projects.recover');
+Route::resource('projects', ProjectController::class)->only(['create', 'store'])->middleware(['auth', 'verified']);
+Route::resource('projects', ProjectController::class)->only(['index', 'show'])->middleware(['auth', 'verified']);
+Route::resource('projects', ProjectController::class)->only(['edit', 'update'])->middleware(['auth', 'verified']);
+Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->withTrashed()->name('projects.destroy')->middleware(['auth', 'verified']);
 
 //Empresas
-Route::get('companies/join', [CompanyController::class, 'joinCompany'])->name('companies.join')->middleware('auth');
-Route::post('companies/check-code', [CompanyController::class, 'checkCode'])->name('companies.checkCode')->middleware('auth');
-Route::get('companies/redirect', [CompanyController::class, 'redirectTo'])->name('companies.redirect')->middleware('auth');
-Route::get('companies/{company}/members', [CompanyController::class, 'listMember'])->name('companies.listMember')->middleware('auth');
-Route::delete('companies/{company}/leave/{user}', [CompanyController::class, 'leaveCompany'])->name('companies.leave')->middleware('auth');
-Route::resource('companies', CompanyController::class)->only(['create', 'store'])->middleware('auth');
-Route::resource('companies', CompanyController::class)->only(['index', 'show'])->middleware('auth');
-Route::resource('companies', CompanyController::class)->only(['edit', 'update'])->middleware('auth');
-Route::resource('companies', CompanyController::class)->only(['destroy'])->middleware('auth');
+Route::get('companies/join', [CompanyController::class, 'joinCompany'])->name('companies.join')->middleware(['auth', 'verified']);
+Route::post('companies/check-code', [CompanyController::class, 'checkCode'])->name('companies.checkCode')->middleware(['auth', 'verified']);
+Route::get('companies/redirect', [CompanyController::class, 'redirectTo'])->name('companies.redirect')->middleware(['auth', 'verified']);
+Route::get('companies/{company}/members', [CompanyController::class, 'listMember'])->name('companies.listMember')->middleware(['auth', 'verified']);
+Route::delete('companies/{company}/leave/{user}', [CompanyController::class, 'leaveCompany'])->name('companies.leave')->middleware(['auth', 'verified']);
+Route::resource('companies', CompanyController::class)->only(['create', 'store'])->middleware(['auth', 'verified']);
+Route::resource('companies', CompanyController::class)->only(['index', 'show'])->middleware(['auth', 'verified']);
+Route::resource('companies', CompanyController::class)->only(['edit', 'update'])->middleware(['auth', 'verified']);
+Route::resource('companies', CompanyController::class)->only(['destroy'])->middleware(['auth', 'verified']);
 
 //Clientes
-Route::get('/projects/{project}/clients', [ClientController::class, 'create'])->name('clients.create')->middleware('auth');
-Route::get('/clients/{client}/projects', [ClientController::class, 'clientProjects'])->name('clients.projects')->middleware('auth');
-Route::get('/projects/{project}/clients/assign-client', [ClientController::class, 'assignClient'])->name('clients.projects.assign')->middleware('auth');
-Route::post('/projects/{project}/clients', [ClientController::class, 'attach'])->name('clients.projects.attach')->middleware('auth');
-Route::delete('/clients/{client}/{project}/projects', [ClientController::class, 'detach'])->name('clients.projects.detach')->middleware('auth');
-Route::get('clients/trash', [ClientController::class, 'trash'])->name('clients.trash')->middleware('auth');
-Route::get('/clients/{client}/recover', [ClientController::class, 'recover'])->middleware('auth')->withTrashed()->name('clients.recover');
-Route::resource('clients', ClientController::class)->only([ 'store'])->middleware('auth');
-Route::resource('clients', ClientController::class)->only(['index', 'show'])->middleware('auth');
-Route::resource('clients', ClientController::class)->only(['edit', 'update'])->middleware('auth');
-Route::resource('clients', ClientController::class)->only(['destroy'])->withTrashed()->middleware('auth');
+Route::get('/projects/{project}/clients', [ClientController::class, 'create'])->name('clients.create')->middleware(['auth', 'verified']);
+Route::get('/clients/{client}/projects', [ClientController::class, 'clientProjects'])->name('clients.projects')->middleware(['auth', 'verified']);
+Route::get('/projects/{project}/clients/assign-client', [ClientController::class, 'assignClient'])->name('clients.projects.assign')->middleware(['auth', 'verified']);
+Route::post('/projects/{project}/clients', [ClientController::class, 'attach'])->name('clients.projects.attach')->middleware(['auth', 'verified']);
+Route::delete('/clients/{client}/{project}/projects', [ClientController::class, 'detach'])->name('clients.projects.detach')->middleware(['auth', 'verified']);
+Route::get('clients/trash', [ClientController::class, 'trash'])->name('clients.trash')->middleware(['auth', 'verified']);
+Route::get('/clients/{client}/recover', [ClientController::class, 'recover'])->middleware(['auth', 'verified'])->withTrashed()->name('clients.recover');
+Route::resource('clients', ClientController::class)->only([ 'store'])->middleware(['auth', 'verified']);
+Route::resource('clients', ClientController::class)->only(['index', 'show'])->middleware(['auth', 'verified']);
+Route::resource('clients', ClientController::class)->only(['edit', 'update'])->middleware(['auth', 'verified']);
+Route::resource('clients', ClientController::class)->only(['destroy'])->withTrashed()->middleware(['auth', 'verified']);
 
 //Notificaciones
-Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index')->middleware('auth');
-Route::put('notifications/{notification}/seen', [NotificationSeenController::class, '__invoke'])->name('notification.seen')->middleware('auth');
-Route::delete('notifications', [NotificationController::class, 'destroy'])->name('notifications.delete')->middleware('auth');
+Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index')->middleware(['auth', 'verified']);
+Route::put('notifications/{notification}/seen', [NotificationSeenController::class, '__invoke'])->name('notification.seen')->middleware(['auth', 'verified']);
+Route::delete('notifications', [NotificationController::class, 'destroy'])->name('notifications.delete')->middleware(['auth', 'verified']);

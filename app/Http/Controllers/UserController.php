@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use App\Notifications\UserCreated;
+use App\Notifications\WelcomeUser;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -34,7 +36,14 @@ class UserController extends Controller
         $user->save();
         $user->assignRole('user'); //se asigna rol de usuario por defecto
         Auth::login($user);
+        event(new Registered($user));
 
+        /* Notificación para admin */
+        $user->notify(
+            new WelcomeUser($user)
+        );
+
+        /* Notificación para admin */
         $admin = User::all()->filter(fn($u) => $u->isAdmin() );
         foreach($admin as $a){
             $a->notify(

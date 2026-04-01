@@ -16,7 +16,7 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (auth()->guard($guard)->check()) {
                 // Si el usuario ya está autenticado, lo dirige a pagina principal (/home)
-                return redirect('/home');
+                return redirect()->route('inicio');
             }
         }
 

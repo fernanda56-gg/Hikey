@@ -132,9 +132,14 @@
                             </div>
 
                             <!-- USUARIOS -->
-                            <!-- Notificación de creación de usuario-->
+                            <!-- Notificación de creación de usuario (ADMIN)-->
                             <div v-if="notification.type === 'App\\Notifications\\UserCreated'" class="font-semibold">
                                 Se ha generado un nuevo usuario
+                                <span class="uppercase font-black underline">{{ notification.data.name }} {{ notification.data.last_name }}</span>
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\WelcomeUser'" class="font-semibold">
+                                Bienvenido a Hikey, 
                                 <span class="uppercase font-black underline">{{ notification.data.name }} {{ notification.data.last_name }}</span>
                             </div>
 

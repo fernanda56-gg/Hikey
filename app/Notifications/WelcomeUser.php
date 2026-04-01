@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UserCreated extends Notification
+class WelcomeUser extends Notification
 {
     use Queueable;
 
@@ -35,7 +35,10 @@ class UserCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line("Un nuevo usuario se ha registrado al sistema ({$this->user->name} {$this->user->last_name}). Para más información entra a la app.")
+            ->line("Bienvenido a Hikey {$this->user->name} {$this->user->last_name}. Para comenzar a utilizar nuestra aplicación entra al siguiente enlace.")
+            ->action('Abrir enlace',
+            route('inicio')
+            )
             ->line('Gracias por usar nuestra aplicación!');
     }
 
