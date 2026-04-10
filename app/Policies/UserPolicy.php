@@ -22,6 +22,11 @@ class UserPolicy
         return false;
     }
 
+    public function viewAccountUser(User $user, User $model): bool
+    {
+        return $user->id === $model->id;
+    }
+
     /**
      * Determine whether the user can create models.
      */
@@ -38,12 +43,22 @@ class UserPolicy
         return $user->hasRole('admin');
     }
 
+    public function updateAccountUser(User $user, User $model): bool
+    {
+        return $user->id === $model->id;
+    }
+
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, User $model): bool
     {
         return $user->hasRole('admin');
+    }
+
+    public function deleteAccountUser(User $user, User $model): bool
+    {
+        return $user->id === $model->id;
     }
 
     /**

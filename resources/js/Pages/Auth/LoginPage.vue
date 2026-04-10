@@ -50,10 +50,14 @@
                 </div>
 
                 <!--Link a registro de usuario-->
-                <div class="md:mb-6 m-4">
+                <div class="flex justify-between items-center md:mb-6 m-4 gap-3">
                     <Link class="flex items-center gap-1 bg-transparent cursor-pointer" :href="route('register')">
                         <PhArrowLeft class="text-neutral size-4"/>
                         <span class="text-xs text-neutral border-b hover:text-blue-600 hover:duration-200 duration-200">¿Aún no tienes cuenta? Regístrate!</span>
+                    </Link>
+
+                    <Link class="flex items-center bg-transparent cursor-pointer" :href="route('password.request')">
+                        <span class="text-xs text-neutral border-b hover:text-blue-600 hover:duration-200 duration-200">¿Olvidaste tu contraseña?</span>
                     </Link>
                 </div>
 

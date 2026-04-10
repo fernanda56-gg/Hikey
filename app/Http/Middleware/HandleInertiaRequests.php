@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
             'roles' => $request->user()->getRoleNames(),
             'permissions' => $request->user()->getAllPermissions()->pluck('name'),
             'notificationCount' => $request->user()->unreadNotifications()->count(),
+            'profile_photo_url' => $request->user()->profile_photo_url,
         ] : null,
             ],
         ]);

@@ -36,7 +36,7 @@
 
                     <!-- Botón para soft delete -->
                     <Link v-if="hasAnyRole(['admin', 'manager'])" :href="route('clients.trash')" class="btn btn-sm md:btn-md bg-error text-white border-0 hover:bg-red-700 hover:duration-200 duration-200">
-                        <span class="flex items-center space-x-1">
+                        <span class="flex items-center md:space-x-1">
                             <PhTrashSimple class="md:size-5 size-4" weight="bold" />
                             <span class="font-black hidden md:flex">Eliminados</span>
                         </span>

@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Password;
 use App\Models\User;
+use App\Notifications\MyAccountDeleted;
 use App\Notifications\UserCreated;
+use App\Notifications\UserEdited;
 use App\Notifications\WelcomeUser;
-use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -52,5 +55,50 @@ class UserController extends Controller
         }
 
         return redirect()->route('inicio')->with('success', 'Bienvenido a Hikey, ' . $user->name . '!');
+    }
+
+    public function update(Request $request, User $user)
+    {
+        try{
+            if(Gate::denies('updateAccountUser', $user))
+            {
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+            }
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email',
+            ]);
+
+            $user->update($validated);
+
+            /* notificación */
+            $request->user()->notify(
+                new UserEdited($user)
+            );
+
+            return redirect()->back()->with('success', 'Información de usuario actualizada exitosamente!');
+        }catch(\Exception $e){
+            throw $e;
+        }catch(\Exception $e){
+            //si los datos no se guardan, se muestra mensaje de error
+            return redirect()->back()->with('error', 'No se actualizo la información del usuario.')->withInput();//withInput mantiene los datos del form
+        }
+    }
+
+    public function destroy(User $user)
+    {
+        if(Gate::denies('deleteAccountUser', $user))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        /* notificación */
+        $user->notify(
+            new MyAccountDeleted($user)
+        );
+
+        $user->forceDelete();
+        return redirect('/');
     }
 }

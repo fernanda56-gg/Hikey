@@ -80,7 +80,7 @@
                     </button>
 
                     <!-- Botón de notificaciones -->
-                    <button v-if="user" class="btn btn-square border-0 bg-transparent hover:bg-base-200 hover:duration-300 duration-200 shadow-none">
+                    <button v-if="user" class="btn btn-square border-0 bg-transparent hover:bg-base-200 hover:duration-300 duration-200 shadow-none px-4">
                         <Link :href="route('notifications.index')" class="flex items-center gap-4">
                             <div class="relative pr-2 py-2">
                                 <PhBell class="text-neutral md:size-6 size-5" weight="duotone"/>
@@ -92,10 +92,12 @@
                     </button>
 
                 <!--Botón de usuario-->
-                    <div class="flex items-center justify-between">
-                        <button class="btn btn-circle border-0 bg-transparent shadow-none">
-                            <PhUserCircle weight="duotone" class="text-neutral size-6"/>
-                        </button>
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="avatar">
+                            <div class="w-10 rounded">
+                                <img :src="user.profile_photo_url ?? 'https://img.daisyui.com/images/profile/demo/batperson@192.webp'"/>
+                            </div>
+                        </div>
                         <span v-if="isAuthenticated" class="cursor-default whitespace-nowrap">{{ user.name }}</span>
                     </div>
 
@@ -106,7 +108,7 @@
                         </div>
                         <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-42 p-2 shadow-sm">
                             <li>
-                                <Link class="flex items-center">
+                                <Link :href="route('my-account.index', {user: user.id})" as="button" class="flex items-center">
                                     <PhGear class="size-5 text-base-content" :weight="bold"/>
                                     <span>Ajustes</span>
                                 </Link>
@@ -130,7 +132,7 @@
 import { Link} from '@inertiajs/vue3';
 import { ref, watchEffect} from 'vue';
 import { route } from 'ziggy-js';
-import { PhMoonStars, PhSunHorizon, PhUserCircle, PhCaretDown, PhGear, PhSignOut, PhBell } from '@phosphor-icons/vue';
+import { PhMoonStars, PhSunHorizon, PhCaretDown, PhGear, PhSignOut, PhBell } from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 import { useNotification } from '../../composables/UseNotification';
 

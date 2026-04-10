@@ -3,11 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationSeenController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileImgController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +20,12 @@ Route::get('/', [AuthController::class, 'create'])->name('login');
 Route::post('login', [AuthController::class, 'store'])->name('login.store');
 Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
 Route::get('home', [AuthController::class, 'show'])->name('inicio')->middleware(['auth', 'verified']);
+
+//Rutas para restablecer contraseña
+Route::get('/forgot-password', [ResetPasswordController::class, 'showForm'])->name('password.request')->middleware('guest');
+Route::post('/forgot-password', [ResetPasswordController::class, 'sendEmail'])->name('password.email')->middleware('guest');
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'resetPassword'])->name('password.reset')->middleware('guest');
+Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'])->name('password.update')->middleware('guest');
 
 //Rutas para registro de usuarios
 Route::get('register', [UserController::class, 'create'])->name('register');
@@ -85,3 +94,11 @@ Route::resource('clients', ClientController::class)->only(['destroy'])->withTras
 Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index')->middleware(['auth', 'verified']);
 Route::put('notifications/{notification}/seen', [NotificationSeenController::class, '__invoke'])->name('notification.seen')->middleware(['auth', 'verified']);
 Route::delete('notifications', [NotificationController::class, 'destroy'])->name('notifications.delete')->middleware(['auth', 'verified']);
+
+//Ajustes a cuenta de usuario
+Route::get('my-account/{user}/settings', [MyAccountController::class, 'index'])->name('my-account.index')->middleware(['auth', 'verified']);
+Route::put('my-account/{user}/edit', [UserController::class, 'update'])->name('my-account.edit-account')->middleware(['auth', 'verified']);
+Route::delete('my-account/{user}/delete', [UserController::class, 'destroy'])->name('my-account.delete-account')->middleware(['auth', 'verified']);
+
+//Img de perfil de usuario
+Route::post('my-account/{user}/profile-photo', [UserProfileImgController::class, 'store'])->name('my-account.profile-photo')->middleware(['auth', 'verified']);

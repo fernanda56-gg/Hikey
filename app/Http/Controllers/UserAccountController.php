@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Notifications\UserCreated;
 use App\Notifications\UserDeleted;
-use App\Notifications\UserEdited;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -141,12 +140,6 @@ class UserAccountController extends Controller
 
             $user->update($validated);
             $user->syncRoles($validated['roles']);
-
-            /* notificación */
-            $request->user()->notify(
-                new UserEdited($user)
-            );
-
 
             return redirect()->route('manage-account.index')->with('success', 'Usuario actualizado exitosamente.');
         }catch(\Exception $e){
