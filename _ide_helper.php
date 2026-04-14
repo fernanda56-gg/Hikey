@@ -28725,6 +28725,7 @@ namespace  {
     class View extends \Illuminate\Support\Facades\View {}
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
+    class LaRecipe extends \BinaryTorch\LaRecipe\LaRecipe {}
 }
 
 

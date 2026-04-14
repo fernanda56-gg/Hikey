@@ -124,7 +124,11 @@
                 </div>
         </div>
     </nav>
-
+    <div class="fixed left-4 bottom-10 z-50">
+        <a href="/docs" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-black cursor-pointer duration-200 hover:duration-200 hover:bg-primary-content">
+            <PhQuestionMark class="size-6" />
+        </a>
+    </div>
     <slot></slot>
 </template>
 
@@ -132,7 +136,7 @@
 import { Link} from '@inertiajs/vue3';
 import { ref, watchEffect} from 'vue';
 import { route } from 'ziggy-js';
-import { PhMoonStars, PhSunHorizon, PhCaretDown, PhGear, PhSignOut, PhBell } from '@phosphor-icons/vue';
+import { PhMoonStars, PhSunHorizon, PhCaretDown, PhGear, PhSignOut, PhBell, PhQuestionMark } from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 import { useNotification } from '../../composables/UseNotification';
 
