@@ -17,7 +17,7 @@ return [
         'route'   => '/docs',
         'path'    => '/resources/docs',
         'landing' => 'overview',
-        'middleware' => ['web','auth','verified'],
+        'middleware' => ['web','auth','verified'], //protege la ruta de los docs solo deja verlos si el usuario se autentifico y verifico correo
     ],
 
     /*
@@ -33,9 +33,12 @@ return [
     */
 
     'versions'      => [
-        'default'   => '1.0',
+        'default'   => 'user',
         'published' => [
-            '1.0'
+            'admin',
+            'manager',
+            'team-leader',
+            'user',
         ]
     ],
 
@@ -59,7 +62,7 @@ return [
         'guard'      => null,
         'ga_id'      => '',
         'middleware' => [
-            'web',
+            'web', 'auth', 'verified'
         ]
     ],
 

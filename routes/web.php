@@ -102,3 +102,8 @@ Route::delete('my-account/{user}/delete', [UserController::class, 'destroy'])->n
 
 //Img de perfil de usuario
 Route::post('my-account/{user}/profile-photo', [UserProfileImgController::class, 'store'])->name('my-account.profile-photo')->middleware(['auth', 'verified']);
+
+//Documentación
+Route::middleware(['docs.rol'])->group(function () {
+    Route::get('/docs', fn() => null);
+});

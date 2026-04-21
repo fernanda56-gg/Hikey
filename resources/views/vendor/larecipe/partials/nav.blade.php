@@ -32,6 +32,8 @@
             </larecipe-button>
 
             {{-- versions dropdown --}}
+            @if (auth()->user()->hasRole('admin'))
+            {{-- * Solo el admin puede ver la documentación de otros roles --}}
             <larecipe-dropdown>
                 <larecipe-button type="primary" class="flex">
                     {{ $currentVersion }} <i class="mx-1 fa fa-angle-down"></i>
@@ -41,12 +43,18 @@
                     <ul class="list-reset">
                         @foreach ($versions as $version)
                             <li class="py-2 hover:bg-grey-lightest">
-                                <a class="px-6 text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
+                                <a class="px-6 flex items-center text-grey-darkest" href="{{ route('larecipe.show', ['version' => $version, 'page' => $currentSection]) }}">{{ $version }}</a>
                             </li>
                         @endforeach
                     </ul>
                 </template>
             </larecipe-dropdown>
+            @else
+            {{-- ! Los demás roles solo tendrán un botón que les marcará el rol al que pertenecen --}}
+                <larecipe-button type="primary" class="flex" disabled>
+                    {{ $currentVersion }}
+                </larecipe-button>
+            @endif
             {{-- /versions dropdown --}}
 
             @auth
