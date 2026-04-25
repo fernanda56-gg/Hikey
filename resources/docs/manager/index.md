@@ -1,2 +1,2 @@
-- ## Get Started
+- ## Inicio
     - [Overview](/{{route}}/{{manager}}/overview)

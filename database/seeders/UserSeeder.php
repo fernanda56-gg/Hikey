@@ -17,23 +17,23 @@ class UserSeeder extends Seeder
         //USUARIOS
         $userAdmin = User::factory()->create([
             'email' => 'test@example.com',
-        ])->assignRole('admin');
+        ])->syncRoles(['admin']);
 
         $userManager = User::factory()->create([
             'email' => 'manager@example.com'
-        ])->assignRole('manager');
+        ])->syncRoles(['manager']);
 
         $userTeamLeader = User::factory()->create([
             'email' => 'team-leader@example.com'
-        ])->assignRole('team-leader');
+        ])->syncRoles(['team-leader']);
 
         $user = User::factory()->create([
             'email' => 'user@example.com'
-        ])->assignRole('user');
+        ])->syncRoles(['user']);
 
         User::factory(20)->create()
             ->each(function ($user) {
-                $user->assignRole('user');
+                $user->syncRoles(['user']);
             });
 
         //CREACIÓN DE COMPAÑÍA Y PROYECTOS

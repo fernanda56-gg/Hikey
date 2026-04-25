@@ -1,2 +1,2 @@
-- ## Get Started
-    - [Overview](/{{route}}/{{user}}/overview)
+- ## Inicio
+    - [Descripción](/{{route}}/{{user}}/overview)

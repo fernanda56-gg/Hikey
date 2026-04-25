@@ -26,9 +26,9 @@ class AuthServiceProvider extends ServiceProvider
 
             return match (true) {
                 $user->hasRole('admin') => true,
-                $user->hasRole('manager') => str_starts_with($title, 'Manager') || str_starts_with($title, 'Overview'),
-                $user->hasRole('team-leader') => str_starts_with($title, 'Líder') || str_starts_with($title, 'Overview'),
-                $user->hasRole('user') => str_starts_with($title, 'Usuario') || str_starts_with($title, 'Overview'),
+                $user->hasRole('manager') => str_starts_with($title, 'Manager') || str_starts_with($title, 'Descripción'),
+                $user->hasRole('team-leader') => str_starts_with($title, 'Líder') || str_starts_with($title, 'Descripción'),
+                $user->hasRole('user') => str_starts_with($title, 'Usuario') || str_starts_with($title, 'Descripción'),
                 default => false,
             };
         });

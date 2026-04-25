@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -42,7 +43,7 @@ class Company extends Model
     {
         do {
             $code = Str::upper(Str::random(10));
-        } while (Company::where('company_code', $code)->exists());
+        } while (DB::table('companies')->where('company_code', $code)->exists());
 
         return $code;
     }

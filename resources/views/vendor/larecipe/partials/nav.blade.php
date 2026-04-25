@@ -6,7 +6,7 @@
             <a href="{{ url('/') }}" class="flex items-center flex-no-shrink text-black mx-4">
                 @include("larecipe::partials.logo")
 
-                <p class="inline-block font-semibold mx-1 text-grey-dark">
+                <p class="inline-block font-semibold mx-1 text-black text-lg">
                     {{ config('app.name') }}
                 </p>
             </a>
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div class="block mx-4 flex items-center">
+        <div class="mx-4 flex items-center">
             @if(config('larecipe.search.enabled'))
                 <larecipe-button id="search-button"
                     :type="searchBox ? 'primary' : 'link'"
@@ -27,7 +27,7 @@
                 </larecipe-button>
             @endif
 
-            <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2 px-4">
+            <larecipe-button tag="a" href="https://github.com/saleem-hadad/larecipe" target="__blank" type="black" class="mx-2 px-4 md:flex hidden">
                 <i class="fab fa-github"></i>
             </larecipe-button>
 
@@ -36,7 +36,8 @@
             {{-- * Solo el admin puede ver la documentación de otros roles --}}
             <larecipe-dropdown>
                 <larecipe-button type="primary" class="flex">
-                    {{ $currentVersion }} <i class="mx-1 fa fa-angle-down"></i>
+                    <span class="text-black">{{ $currentVersion }}</span>
+                    <i class="mx-1 fa fa-angle-down text-black"></i>
                 </larecipe-button>
 
                 <template slot="list">
