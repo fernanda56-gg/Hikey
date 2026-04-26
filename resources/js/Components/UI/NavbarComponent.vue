@@ -40,7 +40,7 @@
                     </div>
                     <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-40 p-2 shadow-sm">
                         <li><Link :href="route('manage-account.index')" class="block">Lista de usuarios</Link></li>
-                        <li v-if="can('create projects')"><Link :href="route('manage-account.create')" class="block">Nuevo usuarios</Link></li>
+                        <li v-if="can('create projects')"><Link :href="route('manage-account.create')" class="block">Nuevo usuario</Link></li>
                     </ul>
                 </div>
 
