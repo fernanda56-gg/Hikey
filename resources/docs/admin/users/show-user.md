@@ -9,7 +9,7 @@
 <a name="section-user-list"></a>
 ## Lista de Usuarios
 
-Para visualizar la lista de usuarios , ve al menu principal y, en el apartado`Usuario`, selecciona`Lista de usuario`.
+Para visualizar la lista de usuarios , ve al apartado de **Usuario** y selecciona Lista de usuario.
 
 <br/>
 
@@ -24,7 +24,7 @@ Como se observa en la imagen se muestra la información del usuario, los botones
 <a name="section-filter-name"></a>
 ## Filtro por Nombre
 
-Puedes filtrar a los usuarios por su nombre, haz click en el botón de <larecipe-button type="success" size="sm" rounded>Filtrar</larecipe-button> , si el sistema encuentra una coincidencia entonces mostrara los usuarios que cumplen con este requisito, de lo contrario no mostrara nada.
+Puedes filtrar a los usuarios por su nombre, solo haz click en el botón de <larecipe-button type="success" size="sm" rounded>Filtrar</larecipe-button> , si el sistema encuentra una coincidencia entonces mostrara los usuarios que cumplen con este requisito, de lo contrario no mostrara nada.
 
 <img src="/images/admin-img/filter-by-name.png" width="80%" height="80%"/>
 
@@ -35,4 +35,4 @@ Puedes filtrar a los usuarios por su rol, solo selecciona el rol que quieras fil
 
 <img src="/images/admin-img/filter-by-role.png" width="80%" height="80%"/>
 
-> {info} Si deseas eliminar el filtrado solo haz click en el botón de `limpiar` , con esto se restablecen los valores de búsqueda y se vuelven a mostrar todos lo registros nuevamente.
+> {info} Si deseas eliminar el filtrado haz click en el botón de `limpiar` , con esto se restablecen los valores de búsqueda y se vuelven a mostrar todos lo registros nuevamente.

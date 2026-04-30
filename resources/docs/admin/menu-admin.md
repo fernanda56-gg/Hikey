@@ -8,19 +8,19 @@
 <a name="section-menu"></a>
 ## Descripción
 
-En el menu principal se despliegan los diferentes links a los cuales puedes acceder dependiendo de los permisos que tenga tu rol. En dispositivos como pc, tablets y laptops se puede visualizar este menu como una barra de navegación, mientras que en dispositivos móviles como un menu desplegable.
+El menu principal despliega diferentes links los cuales puede acceder el usuario dependiendo de los permisos de su rol. En dispositivos como pc, tablets y laptops puedes visualizar el menu como una barra de navegación, mientras que en dispositivos móviles como menu desplegable.
 
 ### Menu en pc, laptops y tablets
 
-<img src="/images/admin-img/menu-pc.png" width="100%" height="100%"/>
-
+<img src="/images/admin-img/menu-pc.png" width="70%" height="70%"/>
+<br/>
 ### Menu en dispositivos móviles
 <img src="/images/admin-img/menu-movil.png" width="30%" height="30%"/>
 
 <a name="section-icons"></a>
 ## Iconos
 
-En el menu principal se utilizan iconos para determinadas funcionalidades, a continuación se muestra una tabla con los iconos que se utilizan y su función.
+El menu principal utiliza ciertos iconos para determinadas funcionalidades, a continuación se muestra una tabla con los iconos que se utilizan y su función.
 
 | Icono | Función |
 | : | : |

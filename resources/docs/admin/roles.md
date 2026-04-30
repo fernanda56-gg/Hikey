@@ -8,7 +8,7 @@
 <a name="section-roles"></a>
 ## Descripción
 
-Actualmente existen 4 roles predefinidos en Hikey, los cuales son: Administrador, Gerente, Líder de Equipo y Usuario. A continuación se proporciona una breve descripción de cada uno de estos roles: 
+Actualmente existen 4 roles predefinidos en **Hikey**, los roles son: **Administrador**, **Gerente**, **Líder de Equipo** y **Usuario**. Aquí una breve descripción de cada uno de estos roles: 
 
 | Roles | Descripción  |
 | : |   :-   |

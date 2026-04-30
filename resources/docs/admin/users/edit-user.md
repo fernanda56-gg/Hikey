@@ -7,7 +7,7 @@
 <a name="section-edit"></a>
 ## Editar información
 
-Para modificar la información de un usuario, ve al menu principal y, en el apartado`Usuario`, selecciona`Lista de usuario`. Localiza al usuario y, una vez identificado, haz clic en <img src="/images/all/pencil.png" width="30" height="30"/> para acceder a la página donde podrás actualizar la información de su cuenta.
+Para modificar la información de un usuario, ve al apartado **Usuario** y selecciona **Lista de usuario**. Cuando localices al usuario haz click en <img src="/images/all/pencil.png" width="30" height="30"/> para acceder a la página donde podrás actualizar la información de su cuenta.
 
 <br/>
 

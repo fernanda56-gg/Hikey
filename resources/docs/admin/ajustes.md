@@ -8,23 +8,23 @@
 <a name="section-photo"></a>
 ## Foto de Perfil
 
-En este apartado el usuario puede cambiar su foto de perfil, por default todos los usuarios tienen una foto de perfil genérica, pero el usuario puede cambiarla.
+El usuario puede cambiar su foto de perfil, por default todos los usuarios tienen una foto de perfil genérica, pero puede cambiarse.
 <br/><br/>
-<img src="/images/all/profile-photo.png" width="100%" height="100%"/>
+<img src="/images/all/profile-photo.png" width="80%" height="80%"/>
 
-Para poder modificar la foto de perfil, el usuario tiene que hacer click en el botón <larecipe-button type="info" size="sm" rounded>Actualizar</larecipe-button>. Te solicitará que selecciones una foto de tu dispositivo, ya seleccionada la imagen te mostrará una vista previa, si esta conforme presiona el botón de <larecipe-button type="info" size="sm" rounded>Aceptar</larecipe-button> y se hará el cambio de foto de perfil.
+Para poder modificar la foto de perfil, el usuario tiene que hacer click en el botón <larecipe-button type="info" size="sm" rounded>Actualizar</larecipe-button>. Pedirá que selecciones una imagen de tu dispositivo, mostrará una vista previa, si estas conforme con tu nueva foto de perfil presiona el botón <larecipe-button type="info" size="sm" rounded>Aceptar</larecipe-button> .
 
-<img src="/images/all/profile-photo2.png" width="100%" height="100%"/>
+<img src="/images/all/profile-photo2.png" width="80%" height="80%"/>
 
 > {info} Puedes modificar tu foto de perfil las veces que desees, no hay un limite de veces para modificarla.
 
 <a name="section-account"></a>
 ## Información de cuenta
 
-En este apartado el usuario puede modificar la información de su cuenta, como nombre, apellido y correo electrónico. Para hacer que se realicen los cambios en la información debes de hacer click en el botón <larecipe-button type="success" size="sm" rounded>Actualizar</larecipe-button>, de igual forma puedes cancelar los cambios a la información de tu cuenta haciendo click en el botón <larecipe-button type="danger" size="sm" rounded>Cancelar</larecipe-button>
+El usuario puede modificar la información de su cuenta, como nombre, apellido y correo electrónico. Para hacer los cambios en tu cuenta haz click en el botón <larecipe-button type="success" size="sm" rounded>Actualizar</larecipe-button>, de igual forma puedes cancelar los cambios haciendo click en el botón <larecipe-button type="danger" size="sm" rounded>Cancelar</larecipe-button>
 <br/><br/>
-<img src="/images/all/acount-info.png" width="100%" height="100%"/>
+<img src="/images/all/acount-info.png" width="80%" height="80%"/>
 
-En este apartado no puedes modificar tu contraseña, para poder modificarla debes ir a inicio de sesión, hacer click en el enlace de `¿Olvidaste tu contraseña?`, y seguir las instrucciones para poder hacer el cambio.
+En este apartado no puedes cambiar tu contraseña, para modificarla ve al inicio de sesión, haz click en el enlace de `¿Olvidaste tu contraseña?` y sigue las pasos para cambiar tu contraseña.
 
-> {danger} También puedes eliminar tu cuenta en este apartado, pero ten en cuenta una vez que elimines tu cuenta no podrás recuperarla, y perderás toda la información relacionada con tu cuenta.
+> {danger} Puedes eliminar tu cuenta, pero considera que una vez que elimines tu cuenta no podrás recuperarla, y perderás toda la información relacionada a ella.

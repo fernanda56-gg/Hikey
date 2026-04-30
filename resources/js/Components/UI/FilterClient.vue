@@ -15,7 +15,7 @@
                 </div>
 
                 <!-- nombre de empresa -->
-                <div class="flex flex-nowrap items-center">
+                <div v-if="hasAnyRole(['admin'])" class="flex flex-nowrap items-center">
                     <input v-model="filterForm.companyName" class="w-48 bg-base-200 input input-sm md:input-md focus:outline-none" type="text" placeholder="Empresa">
                 </div>
 

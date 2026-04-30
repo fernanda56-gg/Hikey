@@ -37,6 +37,7 @@ El enlace que fue enviado a tu correo te llevará a una pagina donde deberás in
 <li>Al menos un carácter especial</li>
 </ul>
 
+<br/>
 <img src="/images/all/change-password-4.png" width="50%" height="50%"/>
 
 Si no cumples con alguno de estos requisitos, el sistema te dirá que tu nueva contraseña es invalida y no podrás restablecerla, una vez que cumplas con los requisitos haz el cambio.

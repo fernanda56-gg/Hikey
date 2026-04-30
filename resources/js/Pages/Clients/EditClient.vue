@@ -56,7 +56,7 @@
 
                         <!--Botón de crear cliente-->
                         <div class="flex items-center justify-center mt-8">
-                            <button type="submit" class="bg-primary-content w-full p-3 rounded-lg text-black font-black cursor-pointer tracking-wide">Agregar cliente</button>
+                            <button type="submit" class="bg-primary-content w-full p-3 rounded-lg text-black font-black cursor-pointer tracking-wide">Actualizar cliente</button>
                         </div>
                     </BoxComponent>
                 </div>

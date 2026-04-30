@@ -12,9 +12,9 @@ Con el rol`Administrador` tienes dos opciones, eliminar definitivamente al usuar
 
 <br/>
 
-Para eliminar a un usuario, ve al menu principal y, en el apartado`Usuario`, selecciona`Lista de usuario`. Localiza al usuario y, una vez identificado, haz clic en <img src="/images/all/trash.png" width="24" height="24"/>, enviaras al usuario al apartado de eliminados gracias al`soft delete`.
+Para eliminar a un usuario, ve al apartado **Usuario** y selecciona **Lista de usuario**. Cuando localices al usuario haz click en <img src="/images/all/trash.png" width="24" height="24"/>, enviaras al usuario al apartado de `eliminados` gracias al `soft delete`.
 
-<img src="/images/admin-img/user-trash.png" width="90%" height="90%"/>
+<img src="/images/admin-img/user-trash.png" width="90%" height="90%"/>  
 
 <a name="section-delete"></a>
 ## Eliminar usuario
