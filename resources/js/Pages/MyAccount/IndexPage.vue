@@ -41,7 +41,7 @@
                             <!--Contenedor de error en input-->
                             <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.name">
                                 <PhWarningCircle class="mx-1 size-4" weight="bold"/>
-                                    error
+                                    {{ form.errors.name }}
                             </div>
                         </div>
 
@@ -51,7 +51,7 @@
                             <!--Contenedor de error en input-->
                             <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.last_name">
                                 <PhWarningCircle class="mx-1 size-4" weight="bold"/>
-                                    error
+                                    {{ form.errors.last_name }}
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                             <!--Contenedor de error en input-->
                             <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.email">
                                 <PhWarningCircle class="mx-1 size-4" weight="bold"/>
-                                    error
+                                    {{ form.errors.email }}
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-# Unirse a empresa
+# Usuarios
 
 ---
 
@@ -18,3 +18,5 @@ Te solicitara que ingreses el código y presiones el botón <larecipe-button typ
 
 <img src="/images/user-img/company-user-info.png" width="90%" height="90%"/>
 <br/>
+
+> {danger} Una vez que te hayas unido a la empresa no podrás salir de ella, solo el propietario de la empresa o soporte podrán sacarte de la esta.
