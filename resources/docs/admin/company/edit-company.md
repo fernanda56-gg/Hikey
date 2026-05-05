@@ -7,7 +7,7 @@
 <a name="section-edit"></a>
 ## Editar información de empresa
 
-Para modificar la información de tu empresa debemos de ir al apartado **Empresa** y hacer click en el botón de editar <img src="/images/all/pencil.png" width="24" height="24"/> .
+Ve al apartado de **Empresa** y haz click en el botón de editar <img src="/images/all/pencil.png" width="24" height="24"/> .
 
 <img src="/images/user-img/company-info.png" width="90%" height="90%"/>
 <br/>

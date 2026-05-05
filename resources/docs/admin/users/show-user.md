@@ -9,7 +9,7 @@
 <a name="section-user-list"></a>
 ## Lista de Usuarios
 
-Para visualizar la lista de usuarios , ve al apartado de **Usuario** y selecciona Lista de usuario.
+Ve al apartado de **Usuario** y selecciona **Lista de usuario**.
 
 <br/>
 
@@ -17,7 +17,7 @@ Para visualizar la lista de usuarios , ve al apartado de **Usuario** y seleccion
 
 <br/>
 
-Como se observa en la imagen se muestra la información del usuario, los botones para poder editar o eliminar al usuario. Ademas de que la pagina cuenta con paginación esto significa que cada 10 registros se crea otra pagina, esto para facilitar la visualización de usuarios. En la parte superior se encuentra la sección de filtrado y botón para ir a la pagina de usuarios eliminados.
+Muestra la información del usuario, tiene las acciones para poder editar o eliminar al usuario. Ademas de que la pagina cuenta con paginación esto significa que cada 10 registros se crea otra pagina, esto para facilitar la visualización de usuarios. En la parte superior se encuentra la sección de filtrado y botón para ir a la pagina de usuarios eliminados.
 
 <br/>
 

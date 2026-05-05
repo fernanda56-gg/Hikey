@@ -8,7 +8,7 @@
 <a name="section-roles"></a>
 ## Descripción
 
-Actualmente existen 4 roles predefinidos en **Hikey**, los roles son: **Administrador**, **Gerente**, **Líder de Equipo** y **Usuario**. Aquí una breve descripción de cada uno de estos roles: 
+Actualmente existen 4 roles predefinidos en **Hikey**, los roles son: **Administrador**, **Gerente**, **Líder de Equipo** y **Usuario**. Aquí una breve descripción de cada uno de los roles: 
 
 | Roles | Descripción  |
 | : |   :-   |
@@ -39,7 +39,7 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 | Crear proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Editar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Eliminar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
-| Actualizar fechas | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Actualizar fechas | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 
 ### Clientes
 

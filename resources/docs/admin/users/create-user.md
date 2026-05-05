@@ -8,10 +8,10 @@
 <a name="section-intro"></a>
 ## Introducción
 
-Existen dos formas en la que puede generar un nuevo usuario, una opción es que usuario se registre por su cuenta al sistema y la segunda opción es por medio del rol de `Administrador` llenar el formulario y registrar al nuevo usuario.
+Existen dos formas en la que puede generar un nuevo usuario, opción uno es que el usuario se registre por su cuenta al sistema o la segunda opción por medio del rol de `Administrador` llenar el formulario y registrar al nuevo usuario.
 <br/><br/>
 
-Para poder registrar al nuevo usuario, ve al apartado de **Usuarios** ahi te mostrara la opción de `Nuevo usuario` haz click, te llevara a generar al nuevo usuario. Otra forma es desde la pagina de lista de usuario, ahi se encuentra un botón que también te llevara a la pagina de generar nuevo usuario.
+Para registrar al usuario, ve al apartado de **Usuarios** selecciona **Nuevo usuario** , te llevara a generar al nuevo usuario. Otra forma es desde el apartado de **Lista de usuario**, ahi se encuentra un botón que también te llevara a la pagina de generar nuevo usuario.
 <br/><br/>
 
 <img src="/images/admin-img/menu-pc.png" width="70%" height="70%"/>
@@ -19,7 +19,7 @@ Para poder registrar al nuevo usuario, ve al apartado de **Usuarios** ahi te mos
 <a name="section-create"></a>
 ## Creación de usuario
 
-Te mostrara un formulario, deberás llenarlo con la la información de la persona a la que le pertenecerá la cuenta.
+Llena el formulario con la la información de la persona a la que le pertenecerá la cuenta.
 
 <br/>
 

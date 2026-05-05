@@ -15,5 +15,3 @@
 - ## Clientes
     - [Visualizar clientes](/{{route}}/{{version}}/clients/show-client)
     - [Vincular cliente](/{{route}}/{{version}}/clients/attach-client)
-
-<!-- *TODO: arreglar las imagenes para que coincidan con su rol -->

@@ -8,7 +8,7 @@
 <a name="section-company-list"></a>
 ## Lista de empresas
 
-Al contar con el rol de `Administrador`, tienes acceso a todas las empresas registradas en el sistema. Para poder ver la lista de empresas debes de ir al apartado de **Empresa**. Aquí se te mostrara una tabla con la información de todas las empresas.
+Al contar con el rol de `Administrador`, tienes acceso a todas las empresas registradas en el sistema. Para ver la lista de empresas ve al apartado de **Empresa**. Aquí se mostrara una tabla con la información de todas las empresas.
 
 <img src="/images/admin-img/company-list.png" width="90%" height="90%"/>
 <br/>
