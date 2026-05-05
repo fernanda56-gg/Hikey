@@ -43,4 +43,4 @@ Para poder agregar o hacer cambios en las fechas debes de hacer click en el bot�
 
 <img src="/images/admin-img/project-dates.png" width="70%" height="70%"/>
 
-> {info} Solo el dueño del proyecto puede modificar las fechas de inicio y fin de proyecto.
+> {warning} Solo el dueño del proyecto puede modificar las fechas de inicio y fin de proyecto.

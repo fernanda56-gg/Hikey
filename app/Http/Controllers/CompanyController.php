@@ -126,8 +126,8 @@ class CompanyController extends Controller
         return inertia('Company/ShowCompany', [
             'company' => $company->load('member'),
             'can' => [
-                'delete' => $user->can('update', $company),
                 'update' => $user->can('delete', $company),
+                'delete' => $user->can('update', $company),
         ]
         ]);
     }

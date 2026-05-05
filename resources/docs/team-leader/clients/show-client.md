@@ -17,4 +17,4 @@ Una vez que el cliente haya sido registrado, te llevara de regreso a la pagina d
 
 <br/>   
 
-<img src="/images/user-img/client-info.png" width="85%" height="85%"/>
+<img src="/images/leader-img/project-info-2.png" width="85%" height="85%"/>

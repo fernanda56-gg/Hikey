@@ -18,3 +18,4 @@ Para poder acceder a la lista de miembros ve al apartado **Empresa**, haz click 
 Puedes filtrar a los usuarios por su nombre, solo haz click en el botón de <larecipe-button type="success" size="sm" rounded>Filtrar</larecipe-button> , si el sistema encuentra una coincidencia entonces mostrara los usuarios que cumplen con este requisito, de lo contrario no mostrara nada.
 
 > {info} Si deseas eliminar el filtrado haz click en el botón de `limpiar` , con esto se restablecen los valores de búsqueda y se vuelven a mostrar todos lo registros nuevamente.
+    

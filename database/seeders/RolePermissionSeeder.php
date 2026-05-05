@@ -108,6 +108,19 @@ class RolePermissionSeeder extends Seeder
             $assignClients,
         ]);
 
+        $leaderRole->givePermissionTo([
+            //permisos para proyectos
+            $viewProjects,
+            $editProjects,
+            //permisos para empresas
+            $viewCompanies,
+            $redirectCompanies,
+            $listMembers,
+            //permisos para clientes
+            $viewClients,
+            $assignClients,
+        ]);
+
 
         $userRole->givePermissionTo([
             //permisos para proyectos

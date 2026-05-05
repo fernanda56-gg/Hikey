@@ -28,7 +28,7 @@ class ClientPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasAnyRole(['admin', 'manager', 'team-leader']);
     }
 
     /**
@@ -61,5 +61,10 @@ class ClientPolicy
     public function forceDelete(User $user, Client $client): bool
     {
         return false;
+    }
+
+    public function assign(User $user): bool
+    {
+        return $user->hasAnyRole(['admin', 'manager', 'team-leader']);
     }
 }

@@ -44,7 +44,17 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        if($user->hasAnyRole(['admin', 'manager'])){
+        if($user->hasAnyRole(['admin', 'manager', 'team-leader'])){
+            return true;
+        }elseif($project->by_user_id === $user->id){
+            return true;
+        }
+        return false;
+    }
+
+    public function updateDate(User $user, Project $project): bool
+    {
+        if($user->hasRole('admin')){
             return true;
         }elseif($project->by_user_id === $user->id){
             return true;

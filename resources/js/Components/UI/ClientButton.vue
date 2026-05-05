@@ -16,7 +16,7 @@
                 <PhPhone @click="copy(client.phone)" class="size-5 cursor-pointer hover:text-accent" weight="bold"/>
             </div>
 
-            <div class="flex flex-row gap-3" v-if="hasAnyRole(['admin', 'manager'])">
+            <div class="flex flex-row gap-3" v-if="hasAnyRole(['admin', 'manager', 'team-leader'])">
                 <div class="flex items-center">
                     <Link v-if="client.client_update" :href="route('clients.destroy', {client: client.id})" method="delete" as="button"><PhTrash class="size-5 text-error cursor-pointer" weight="bold"/></Link>
                 </div>
@@ -25,7 +25,7 @@
                     <Link v-if="client.client_delete" :href="route('clients.edit', {client: client.id})"><PhPencil class="size-5 text-[#f8961e]" weight="bold"/></Link>
                 </div>
 
-                <div class="flex items-center" v-if="hasAnyRole(['admin', 'manager'])">
+                <div class="flex items-center" v-if="hasAnyRole(['admin', 'manager', 'team-leader'])">
                     <Link :href="route('clients.projects.detach', {project: projects.id, client: client.id})" method="delete" as="button" class="cursor-pointer"><PhLinkBreak class="size-5 text-accent" weight="bold"/></Link>
                 </div>
             </div>

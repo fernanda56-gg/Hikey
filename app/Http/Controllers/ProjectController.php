@@ -141,6 +141,7 @@ class ProjectController extends Controller
         $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador
             $client->client_update = $user->can('update', $client);
             $client->client_delete = $user->can('delete', $client);
+            $client->client_unlink = $user->can('assign', $client);
         });
 
         return inertia('Project/ShowProject', [
@@ -204,7 +205,7 @@ class ProjectController extends Controller
     public function updateDate(Request $request, Project $project)
     {
 
-        if(Gate::denies('update', $project))
+        if(Gate::denies('updateDate', $project))
         {
             return redirect()->back()->with('error', 'No tienes permiso para modificar fechas.');
         }

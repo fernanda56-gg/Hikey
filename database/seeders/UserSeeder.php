@@ -52,5 +52,10 @@ class UserSeeder extends Seeder
             'joined_at' => now(),
         ]);
 
+        $company->member()->attach($userTeamLeader->id, [
+        'role' => 'miembro',
+        'joined_at' => now(),
+    ]);
+
     }
 }

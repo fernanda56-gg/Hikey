@@ -249,9 +249,9 @@ class ClientController extends Controller
 
     public function assignClient(Project $project)
     {
-        if(Gate::denies('create', Client::class))
+        if(Gate::denies('assign', Client::class))
             {
-                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+                abort(403, 'No tienes los permisos necesarios para ver esta pagina. 8');
             }
         $user = Auth::user();
         if($user->hasRole('admin')){ //ADMIN: Puede ver todos los registros
@@ -295,7 +295,7 @@ class ClientController extends Controller
 
     public function detach(Client $client, Project $project)
     {
-        if(Gate::denies('delete', $client))
+        if(Gate::denies('assign', $client))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }
