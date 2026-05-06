@@ -4,10 +4,10 @@
 
 - [ Lista de Clientes](#section-client-list)
 - [ Filtro](#section-filter)
-- [ Proyectos](#section-projects)
+- [ Proyectos del cliente](#section-projects)
 
 <a name="section-client-list"></a>
-## Lista de Usuarios
+## Lista de Clientes
 
 Para visualizar la lista de clientes , ve al apartado de **Clientes**. 
 <br/>
@@ -24,7 +24,7 @@ Como se observa en la imagen se muestra la información del cliente, los botones
 Puedes filtrar a los clientes por su nombre o proyecto, solo haz click en el botón de <larecipe-button type="success" size="sm" rounded>Filtrar</larecipe-button> , si el sistema encuentra una coincidencia entonces mostrara los usuarios que cumplen con este requisito, de lo contrario no mostrara nada.
 
 <a name="section-projects"></a>
-## Proyectos
+## Proyectos del cliente
 
 Para visualizar los proyectos a los que están vinculados los clientes , ve al apartado de **Clientes**, busca al cliente que quieras ver y presiona el botón <img src="/images/all/kanban.png" width="25" height="25"/>. Te mostrara nombre de los proyectos y dos botones uno para desvincular al cliente del proyecto y el otro para ir a la pagina de información del proyecto.
 

@@ -2,12 +2,12 @@
 
 ---
 
-- [Listado](#section-list)
+- [Listado de proyectos](#section-list)
 - [Filtros](#section-filter)
 - [Visualizar proyecto](#section-view)
 
 <a name="section-list"></a>
-## Listado
+## Listado de proyectos
 
 Ve al apartado de **Proyectos** selecciona **Listado de proyectos**, desglosara la lista de proyectos pertenecientes a tu empresa, el listado proporciona información como: nombre, área, link y estatus, ademas de las acciones de edición, visualización y eliminación.
 

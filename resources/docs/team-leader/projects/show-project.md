@@ -2,13 +2,12 @@
 
 ---
 
-- [Listado](#section-list)
+- [Listado de proyectos](#section-list)
 - [Filtros](#section-filter)
 - [Visualizar proyecto](#section-view)
-- [Actualización de fechas](#section-dates)
 
 <a name="section-list"></a>
-## Listado
+## Listado de proyectos
 
 Ve al apartado de **Proyectos** selecciona **Listado de proyectos**, desglosara la lista de proyectos pertenecientes a tu empresa, el listado proporciona información como: nombre, área, link y estatus, ademas de las acciones de edición y visualización.
 
@@ -30,19 +29,4 @@ Para poder visualizar el proyecto haz click en el botón <img src="/images/all/e
 
 <img src="/images/user-img/project-info.png" width="70%" height="70%"/>
 
-<a name="section-dates"></a>
-## Actualización de fechas
 
-Como se observa en la imagen anterior se debe de añadir la fechas de inicio y finalización del proyecto ya que de eso depende el estatus del proyecto, que serian los siguientes:
-
-<ul>
-<li>Pendiente: El proyecto esta en espera de ser iniciado, representado por el color "Rojo"</li>
-<li>En progreso: El proyecto ha comenzado a elaborarse, representado por el color "Amarillo"</li>
-<li>Finalizado: El proyecto ha sido concluido, representado por el color "Verde"</li>
-</ul>
-
-Para poder agregar o hacer cambios en las fechas debes de hacer click en el botón <img src="/images/all/calendar-blank.png" width="25" height="25"/>, selecciona la fecha y listo en automático se actualizara.
-
-<img src="/images/admin-img/project-dates.png" width="70%" height="70%"/>
-
-> {info} Solo el dueño del proyecto puede modificar las fechas de inicio y fin de proyecto.
