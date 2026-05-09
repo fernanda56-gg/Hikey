@@ -44,7 +44,7 @@
                         <div class="md:w-1/2 w-full mt-2 md:mt-0">
                             <div class="flex items-center gap-2 bg-transparent border-b border-b-gray-700 py-2">
                                 <PhUser weight="regular" class="text-neutral size-6 md:hidden"/>
-                                <input id="apellido" v-model="form.last_name" type="text" placeholder="Ingresa tus apellidos" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
+                                <input id="last_name" v-model="form.last_name" type="text" placeholder="Ingresa tus apellidos" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
                             </div>
                             <!--Contenedor de error-->
                             <div class="flex items-center justify-start text-error text-xs m-2" v-if="form.errors.last_name">
