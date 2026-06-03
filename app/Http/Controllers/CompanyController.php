@@ -250,7 +250,7 @@ class CompanyController extends Controller
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            return redirect()->back()->with('error', 'Error al ingresar código.')->withInput();//withInput mantiene los datos del form
+            return redirect()->route('companies.join')->with('error', 'Error al ingresar código.')->withInput();//withInput mantiene los datos del form
         }
     }
 

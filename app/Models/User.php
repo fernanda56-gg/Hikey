@@ -100,7 +100,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     #[Scope]
-    protected function filter(Builder $query, array $filters): void
+    protected function filter(Builder $query, array $filters): Builder
     {
         $query
             ->when(
@@ -112,5 +112,6 @@ class User extends Authenticatable implements MustVerifyEmail
                 $filters['name'] ?? false,
                 fn($query, $value) => $query->where('name', 'like', "%$value%")
             );
+        return $query;
     }
 }

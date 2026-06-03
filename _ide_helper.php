@@ -23471,7 +23471,7 @@ namespace Barryvdh\Debugbar\Facades {
      * @method static void warning(mixed $message)
      * @see \Barryvdh\Debugbar\LaravelDebugbar
      */
-    class Debugbar extends \DebugBar\DebugBar {
+    class Debugbar {
         /**
          * Returns the HTTP driver
          * 

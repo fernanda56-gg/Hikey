@@ -23,7 +23,7 @@ class ProjectFactory extends Factory
             'description' => $this->faker->paragraph(),
             'image_path' => $this->faker->url(),
             'link' => $this->faker->imageUrl(640, 480, 'prueba', true),
-            'status' => $this->faker->randomElement(['planned', 'in_progress', 'completed']),
+            'status' => $this->faker->randomElement(['Pendiente', 'En progreso', 'Completado']),
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'area_id' => Area::inRandomOrder()->first()->id,

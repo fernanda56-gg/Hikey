@@ -193,7 +193,7 @@ class ProjectController extends Controller
         );
 
             //los datos se guardan en BD
-            return redirect()->route('projects.index')->with('success', 'Proyecto actualizado.');
+            return redirect()->route('projects.show', ['project' => $project])->with('success', 'Proyecto actualizado.');
         }catch(ValidationException $e){
             throw $e;
         }catch(\Exception $e){

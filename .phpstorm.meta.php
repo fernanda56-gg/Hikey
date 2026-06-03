@@ -1417,7 +1417,7 @@ namespace PHPSTORM_META {
             'ide-helper.models_filename' => 'string',
             'ide-helper.meta_filename' => 'string',
             'ide-helper.include_fluent' => 'boolean',
-            'ide-helper.include_factory_builders' => 'boolean',
+            'ide-helper.write_query_methods' => 'boolean',
             'ide-helper.write_model_magic_where' => 'boolean',
             'ide-helper.write_model_external_builder_methods' => 'boolean',
             'ide-helper.write_model_relation_count_properties' => 'boolean',
@@ -1442,6 +1442,7 @@ namespace PHPSTORM_META {
             'ide-helper.additional_relation_types' => 'array',
             'ide-helper.additional_relation_return_types' => 'array',
             'ide-helper.enforce_nullable_relationships' => 'boolean',
+            'ide-helper.soft_deletes_force_nullable' => 'boolean',
             'ide-helper.post_migrate' => 'array',
             'tinker.commands' => 'array',
             'tinker.alias' => 'array',
@@ -2008,7 +2009,7 @@ namespace PHPSTORM_META {
             'ide-helper.models_filename' => 'string',
             'ide-helper.meta_filename' => 'string',
             'ide-helper.include_fluent' => 'boolean',
-            'ide-helper.include_factory_builders' => 'boolean',
+            'ide-helper.write_query_methods' => 'boolean',
             'ide-helper.write_model_magic_where' => 'boolean',
             'ide-helper.write_model_external_builder_methods' => 'boolean',
             'ide-helper.write_model_relation_count_properties' => 'boolean',
@@ -2033,6 +2034,7 @@ namespace PHPSTORM_META {
             'ide-helper.additional_relation_types' => 'array',
             'ide-helper.additional_relation_return_types' => 'array',
             'ide-helper.enforce_nullable_relationships' => 'boolean',
+            'ide-helper.soft_deletes_force_nullable' => 'boolean',
             'ide-helper.post_migrate' => 'array',
             'tinker.commands' => 'array',
             'tinker.alias' => 'array',
@@ -2599,7 +2601,7 @@ namespace PHPSTORM_META {
             'ide-helper.models_filename' => 'string',
             'ide-helper.meta_filename' => 'string',
             'ide-helper.include_fluent' => 'boolean',
-            'ide-helper.include_factory_builders' => 'boolean',
+            'ide-helper.write_query_methods' => 'boolean',
             'ide-helper.write_model_magic_where' => 'boolean',
             'ide-helper.write_model_external_builder_methods' => 'boolean',
             'ide-helper.write_model_relation_count_properties' => 'boolean',
@@ -2624,12 +2626,12 @@ namespace PHPSTORM_META {
             'ide-helper.additional_relation_types' => 'array',
             'ide-helper.additional_relation_return_types' => 'array',
             'ide-helper.enforce_nullable_relationships' => 'boolean',
+            'ide-helper.soft_deletes_force_nullable' => 'boolean',
             'ide-helper.post_migrate' => 'array',
             'tinker.commands' => 'array',
             'tinker.alias' => 'array',
             'tinker.dont_alias' => 'array',
         ]));
-
 
     override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::mock(0), map(["" => "@&\Mockery\MockInterface"]));
     override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::partialMock(0), map(["" => "@&\Mockery\MockInterface"]));
@@ -2783,12 +2785,12 @@ namespace PHPSTORM_META {
 'debugbar.debug_backtrace_limit','inertia.ssr.enabled','inertia.ssr.url','inertia.ssr.ensure_bundle_exists','inertia.ensure_pages_exist',
 'inertia.page_paths','inertia.page_extensions','inertia.testing.ensure_pages_exist','inertia.testing.page_paths','inertia.testing.page_extensions',
 'inertia.history.encrypt','ide-helper.filename','ide-helper.models_filename','ide-helper.meta_filename','ide-helper.include_fluent',
-'ide-helper.include_factory_builders','ide-helper.write_model_magic_where','ide-helper.write_model_external_builder_methods','ide-helper.write_model_relation_count_properties','ide-helper.write_model_relation_exists_properties',
+'ide-helper.write_query_methods','ide-helper.write_model_magic_where','ide-helper.write_model_external_builder_methods','ide-helper.write_model_relation_count_properties','ide-helper.write_model_relation_exists_properties',
 'ide-helper.write_eloquent_model_mixins','ide-helper.include_helpers','ide-helper.helper_files','ide-helper.model_locations','ide-helper.ignored_models',
 'ide-helper.model_hooks','ide-helper.extra.Eloquent','ide-helper.extra.Session','ide-helper.magic','ide-helper.interfaces',
 'ide-helper.model_camel_case_properties','ide-helper.type_overrides.integer','ide-helper.type_overrides.boolean','ide-helper.include_class_docblocks','ide-helper.force_fqn',
 'ide-helper.use_generics_annotations','ide-helper.macro_default_return_types.Illuminate\\Http\\Client\\Factory','ide-helper.additional_relation_types','ide-helper.additional_relation_return_types','ide-helper.enforce_nullable_relationships',
-'ide-helper.post_migrate','tinker.commands','tinker.alias','tinker.dont_alias',);
+'ide-helper.soft_deletes_force_nullable','ide-helper.post_migrate','tinker.commands','tinker.alias','tinker.dont_alias',);
         registerArgumentsSet('middleware', 
 'web','api','auth','auth.basic','auth.session',
 'cache.headers','can','guest','password.confirm','precognitive',

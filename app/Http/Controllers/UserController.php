@@ -70,6 +70,11 @@ class UserController extends Controller
                 'email' => 'required|email',
             ]);
 
+            // * si el usuario cambia el correo deberá verificarlo otra vez
+            if ($request->email !== $user->email) {
+                $user->email_verified_at = null;
+            }
+
             $user->update($validated);
 
             /* notificación */
@@ -77,12 +82,12 @@ class UserController extends Controller
                 new UserEdited($user)
             );
 
-            return redirect()->back()->with('success', 'Información de usuario actualizada exitosamente!');
+            return redirect()->route('my-account.index', $user->id)->with('success', 'Información de usuario actualizada exitosamente!');
         }catch(\Exception $e){
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            return redirect()->back()->with('error', 'No se actualizo la información del usuario.')->withInput();//withInput mantiene los datos del form
+            return redirect()->route('my-account.index', $user->id)->with('error', 'No se actualizo la información del usuario.')->withInput();//withInput mantiene los datos del form
         }
     }
 
