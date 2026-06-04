@@ -67,7 +67,6 @@ Route::resource('projects', ProjectController::class)->only(['edit', 'update'])-
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->withTrashed()->name('projects.destroy')->middleware(['auth', 'verified']);
 
 //Empresas
-Route::get('companies/join', [CompanyController::class, 'joinCompany'])->name('companies.join')->middleware(['auth', 'verified']);
 Route::post('companies/check-code', [CompanyController::class, 'checkCode'])->name('companies.checkCode')->middleware(['auth', 'verified']);
 Route::get('companies/redirect', [CompanyController::class, 'redirectTo'])->name('companies.redirect')->middleware(['auth', 'verified']);
 Route::get('companies/{company}/members', [CompanyController::class, 'listMember'])->name('companies.listMember')->middleware(['auth', 'verified']);

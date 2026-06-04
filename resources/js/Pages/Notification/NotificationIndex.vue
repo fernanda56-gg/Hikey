@@ -21,7 +21,7 @@
                     <li v-for="notification in notifications.data" :key="notification.id" class="list-row bg-base-200">
                         <div class="flex items-center">
 
-                            <!-- PROYECTOS -->
+                            <!-- * PROYECTOS -->
                             <!-- Notificación de creación de proyecto -->
                             <div v-if="notification.type === 'App\\Notifications\\ProjectCreated'" class="font-semibold">
                                 Se ha generado un nuevo proyecto
@@ -61,7 +61,7 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                             </div>
 
-                            <!-- CLIENTES -->
+                            <!-- * CLIENTES -->
                             <!-- Notificación de creación de cliente -->
                             <div v-if="notification.type === 'App\\Notifications\\ClientCreated'" class="font-semibold">
                                 Se ha agregado al cliente
@@ -96,12 +96,12 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                             </div>
 
-                            <!-- EMPRESA  -->
+                            <!-- * EMPRESA  -->
                             <!-- Notificación de unirse a la empresa-->
                             <div v-if="notification.type === 'App\\Notifications\\CompanyJoin'" class="font-semibold">
                                 Felicidades te has unido a
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
-                                para conocer mas entra a este
+                                para conocer más entra a este
                                 <Link :href="route('companies.show', {company: notification.data.company_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     enlace
                                     <PhCards class="md:size-5 size-4" />
@@ -131,7 +131,7 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                             </div>
 
-                            <!-- USUARIOS -->
+                            <!-- * USUARIOS -->
                             <!-- Notificación de creación de usuario (ADMIN)-->
                             <div v-if="notification.type === 'App\\Notifications\\UserCreated'" class="font-semibold">
                                 Se ha generado un nuevo usuario
@@ -161,7 +161,7 @@
                             </div>
                         </div>
 
-                        <!-- Botón para marcar leída la notificación -->
+                        <!-- ? Botón para marcar leída la notificación -->
                         <div class="flex items-center justify-end gap-2">
                             <Link :href="route('notification.seen', {notification: notification.id})" as="button" method="put" v-if="!notification.read_at" class="flex items-center gap-2 btn btn-sm md:btn-md border-0 bg-primary hover:bg-primary-content text-black hover:duration-200 duration-200">
                                 <PhEnvelopeOpen class="md:size-5 size-4" weight="duotone"/>

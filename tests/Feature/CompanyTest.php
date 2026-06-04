@@ -28,17 +28,6 @@ test('El usuario puede visualizar la pagina de crear empresa', function () {
     $response->assertStatus(200);
 });
 
-test('El usuario puede visualizar la pagina de unirse a empresa', function () {
-    /** @var \App\Models\User $user */
-    $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
-    $user->assignRole('user');
-
-    actingAs($user);
-    $response = get(route('companies.join'));
-    $response->assertStatus(200);
-});
-
 test('El usuario puede visualizar la pagina de empresa', function () {
     /** @var \App\Models\User $user */
     $user = User::factory()->create();

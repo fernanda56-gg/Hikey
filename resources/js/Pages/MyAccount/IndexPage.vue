@@ -94,12 +94,8 @@
                         </div>
                     </form>
 
-                    <!-- * Modal para borrar cuenta -->
+                    <!-- ! Modal para borrar cuenta -->
                     <div class="flex flex-row items-start md:space-x-4 space-x-2 mt-3">
-                            <!-- <Link :href="route('my-account.delete-account', {user: props.user.id})" method="delete" as="button" class="btn btn-sm ml-auto btn-error border-0 hover:duration-200 duration-200 hover:bg-red-700 p-2 rounded-lg text-white text-sm font-semibold cursor-pointer tracking-wide">
-                                Borrar cuenta
-                            </Link> -->
-
                         <dialog id="my_modal_1" class="modal">
                             <div class="modal-box">
 
@@ -107,10 +103,10 @@
                                 <fieldset class="fieldset">
                                     <legend class="fieldset-legend text-error">Ingresa tu contraseña para eliminar tu cuenta</legend>
                                     <input v-model="deleteAcc.current_password" type="password" class="input outline-none text-neutral border-neutral" placeholder="Contraseña" />
-                                    <div class="label text-red-600">
-                                    <PhWarningCircle class="mx-1 size-4" weight="bold" v-if="deleteAcc.errors.current_password"/>
-                                        {{ deleteAcc.errors.current_password }}
-                                </div>
+                                    <div class="label text-red-600" v-if="deleteAcc.errors.current_password">
+                                        <PhWarningCircle class="mx-1 size-4" weight="bold"/>
+                                            {{ deleteAcc.errors.current_password }}
+                                    </div>
                                 </fieldset>
 
                                 <!-- *botones del modal -->
