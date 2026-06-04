@@ -4,6 +4,8 @@
 
 - [Foto de Perfil](#section-photo)
 - [Información de cuenta](#section-account)
+- [Actualizar contraseña](#section-update-password)
+- [Eliminar cuenta](#section-delete-account)
 
 <a name="section-photo"></a>
 ## Foto de Perfil
@@ -27,4 +29,20 @@ El usuario puede modificar la información de su cuenta, como nombre, apellido y
 
 En este apartado no puedes cambiar tu contraseña, para modificarla ve al inicio de sesión, haz click en el enlace de `¿Olvidaste tu contraseña?` y sigue las pasos para cambiar tu contraseña.
 
-> {danger} Puedes eliminar tu cuenta, pero considera que una vez que elimines tu cuenta no podrás recuperarla, y perderás toda la información relacionada a ella.
+<a name="section-update-password"></a>
+## Actualizar contraseña
+
+El usuario puede actualizar su contraseña, para modificarla tienes que ingresar la contraseña actual y escribir la nueva. Si la contraseña cumple con los requisitos hara el cambio y deberas iniciar sesion de nuevo.
+
+<br/>
+<img src="/images/all/update-pass.png" width="80%" height="80%"/>
+
+> {info} Si no puedes recordar tu contraseña actual, deberas restablecerla desde el login.
+
+<a name="section-delete-account"></a>
+## Eliminar cuenta 
+
+El usuario puede eliminar su contraseña, para hacerlo tiene que hacer click en el botón  <larecipe-button type="danger" size="sm" rounded>Borrar cuenta</larecipe-button>  , mostrara un pequeño recuadro donde ingresara su contraseña, una vez hecho eso solo haz click en `Borrar cuenta` y eliminara tu cuenta. **Esta acción es irreversible, por lo que no podras recuperar tu cuenta.**
+
+<br/>
+<img src="/images/all/delete-account.png" width="80%" height="80%"/>

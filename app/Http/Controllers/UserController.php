@@ -91,19 +91,32 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         if(Gate::denies('deleteAccountUser', $user))
         {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
 
-        /* notificación */
-        $user->notify(
-            new MyAccountDeleted($user)
-        );
+        $request->validate([
+                'current_password' => 'required|current_password',
+            ]);
 
-        $user->forceDelete();
-        return redirect('/');
+        try {
+            /* notificación */
+            $user->notify(
+                new MyAccountDeleted($user)
+            );
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            $user->forceDelete();
+
+            return redirect()->route('login');
+        }catch (\Exception $e) {
+            return back()->withErrors('error', 'No se pudo actualizar la contraseña intentalo de nuevo');
+        }
     }
 }

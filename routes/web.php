@@ -98,6 +98,7 @@ Route::delete('notifications', [NotificationController::class, 'destroy'])->name
 //Ajustes a cuenta de usuario
 Route::get('my-account/{user}/settings', [MyAccountController::class, 'index'])->name('my-account.index')->middleware(['auth', 'verified']);
 Route::put('my-account/{user}/edit', [UserController::class, 'update'])->name('my-account.edit-account')->middleware(['auth', 'verified']);
+Route::put('my-account/{user}/update-password', [MyAccountController::class, 'update'])->name('my-account.update-password')->middleware(['auth', 'verified']);
 Route::delete('my-account/{user}/delete', [UserController::class, 'destroy'])->name('my-account.delete-account')->middleware(['auth', 'verified']);
 
 //Img de perfil de usuario

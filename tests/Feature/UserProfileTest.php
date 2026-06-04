@@ -5,10 +5,6 @@ use function Pest\Laravel\{actingAs, get};
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
-// TODO:modificar la función de eliminar cuenta para que el usuario necesite escribir su contraseña para eliminarla lo que esta comentado es para eso.
-// TODO: agregar algo para que la contraseña pueda modificarse desde la vista del perfil de usuario y genera un test sobre eso
-// ? checa en notas los minutos
-
 test('Se muestra la vista de perfil de usuario', function () {
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
@@ -104,17 +100,39 @@ test('El usuario no puede cambiar su foto de perfil si no cumple con los requeri
 });
 
 test('El usuario puede eliminar su cuenta', function () {
+    $password = 'Zbz9vvMKO0Ph{';
+
     /** @var \App\Models\User $user */
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'password' => bcrypt($password),
+    ]);
 
     $response = actingAs($user)
-    ->delete(route('my-account.delete-account', $user));
-    /* ->delete('/my-account/' . $user->id . '/delete', [
-        'password' => 'password',
-    ]); */
+    ->delete(route('my-account.delete-account', $user), [
+        'current_password' => $password,
+    ]);
 
     $response->assertSessionHasNoErrors()
     ->assertRedirect(route('login'));
 });
 
 
+test('El usuario puede actualizar su contraseña', function () {
+    $password = 'Zbz9vvMKO0Ph{';
+    $new_password = 'fXQu$erBxoE5';
+
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create([
+        'password' => bcrypt($password),
+    ]);
+
+    $response = actingAs($user)
+    ->put(route('my-account.update-password', $user), [
+        'current_password' => $password,
+        'password' => $new_password,
+        'password_confirmation' => $new_password,
+    ]);
+
+    $response->assertSessionHasNoErrors()
+    ->assertRedirect(route('login'));
+});

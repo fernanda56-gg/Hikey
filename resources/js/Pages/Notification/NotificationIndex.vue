@@ -139,7 +139,7 @@
                             </div>
 
                             <div v-if="notification.type === 'App\\Notifications\\WelcomeUser'" class="font-semibold">
-                                Bienvenido a Hikey, 
+                                Bienvenido a Hikey,
                                 <span class="uppercase font-black underline">{{ notification.data.name }} {{ notification.data.last_name }}</span>
                             </div>
 
@@ -153,6 +153,11 @@
                             <div v-if="notification.type === 'App\\Notifications\\UserDeleted'" class="font-semibold">
                                 Se ha eliminado al usuario
                                 <span class="uppercase font-black underline">{{ notification.data.name }} {{ notification.data.last_name }}</span>
+                            </div>
+
+                            <!-- Notificación de cambio de contraseña -->
+                            <div v-if="notification.type === 'App\\Notifications\\UpdatePassword'" class="font-semibold">
+                                Has actualizado tu contraseña
                             </div>
                         </div>
 
