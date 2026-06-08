@@ -35,6 +35,7 @@ class CompanyEdited extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Modificación de información de ' . $this->company->name)
             ->line("Se ha modificado la información de '{$this->company->name}'. Para conocer más entra al siguiente enlace.")
             ->action('Abrir enlace',
             route('companies.show', ['company' => $this->company])

@@ -35,6 +35,7 @@ class WelcomeUser extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Bienvenida')
             ->line("Bienvenido a Hikey {$this->user->name} {$this->user->last_name}. Para comenzar a utilizar nuestra aplicación entra al siguiente enlace.")
             ->action('Abrir enlace',
             route('inicio')

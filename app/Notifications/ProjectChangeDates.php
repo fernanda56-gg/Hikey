@@ -35,6 +35,7 @@ class ProjectChangeDates extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Modificación de fecha en ' . $this->project->name)
             ->line("Se han modificado las fechas del proyecto '{$this->project->name}'.")
             ->action('Ver proyecto',
             route('projects.show', ['project' => $this->project])

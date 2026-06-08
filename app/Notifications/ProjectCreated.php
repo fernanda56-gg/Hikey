@@ -35,6 +35,7 @@ class ProjectCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Nuevo proyecto generado')
             ->line("Un nuevo proyecto '{$this->project->name}' ha sido generado.")
             ->action('Ver proyecto',
             route('projects.show', ['project' => $this->project])

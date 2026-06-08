@@ -35,6 +35,7 @@ class UserCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Nuevo usuario agregado')
             ->line("Un nuevo usuario se ha registrado al sistema ({$this->user->name} {$this->user->last_name}). Para más información entra a la app.")
             ->line('Gracias por usar nuestra aplicación!');
     }

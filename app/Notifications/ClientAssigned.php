@@ -36,6 +36,7 @@ class ClientAssigned extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->subject('Cliente asignado para ' . $this->project->name)
             ->line("Se ha asignado al cliente {$this->client->name} para el proyecto '{$this->project->name}', para mas información entra al siguiente enlace.")
             ->action('Abrir enlace',
             route('projects.show', ['project' => $this->project])

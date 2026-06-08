@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="grid grid-col-1 w-full mt-4 gap-4">
+        <div v-if="can?.showCode" class="grid grid-col-1 w-full mt-4 gap-4">
             <div class="flex flex-col w-full">
                 <h1 class="uppercase font-bold md:text-lg text-base">código de invitación</h1>
                 <div class="flex items-center gap-2">
@@ -64,8 +64,10 @@
 import { PhLink, PhCopySimple } from '@phosphor-icons/vue';
 import { ref } from 'vue';
 
-defineProps(
-    {'company': Object,}
+defineProps({
+        company: Object,
+        can: Object,
+    }
 )
 
 const copyText = ref('Copiar')

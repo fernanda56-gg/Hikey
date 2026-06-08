@@ -35,6 +35,7 @@ class CompanyLeave extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Removido de ' . $this->company->name)
             ->line("Has sido removido de '{$this->company->name}'. Únete a una nueva empresa o crea tu propia empresa y comienza a gestionar tus proyectos.")
             ->line('Gracias por usar nuestra aplicación!');
     }

@@ -111,4 +111,22 @@ class CompanyPolicy
     {
         return $user->hasRole('admin');
     }
+
+    public function sendInvitation(User $user, Company $company): bool
+    {
+        if($user->hasRole('admin')){
+            return true;
+        } elseif($user->isOwner($company)){
+            return true;
+        } elseif($user->hasRole('team-leader') && $user->companies()->where('user_id', $user->id)->exists()){
+            return true;
+        }return false;
+    }
+
+    public function showCode(User $user, Company $company): bool
+    {
+        if($user->hasRole('user')){
+            return false;
+        }return true;
+    }
 }

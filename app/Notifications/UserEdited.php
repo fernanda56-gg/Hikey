@@ -35,6 +35,7 @@ class UserEdited extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Información de usuario')
             ->line("Se ha editado tu información {$this->user->name} {$this->user->last_name}. Para conocer más entra siguiente enlace.")
             ->action('Abrir enlace',
             route('inicio')

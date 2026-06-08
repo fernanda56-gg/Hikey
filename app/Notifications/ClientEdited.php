@@ -35,6 +35,7 @@ class ClientEdited extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Modificación de información de cliente')
             ->line("La información del cliente '{$this->client->name}' ha sido modificada.")
             ->line('Gracias por usar nuestra aplicación!');
     }

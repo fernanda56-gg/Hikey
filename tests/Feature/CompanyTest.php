@@ -207,6 +207,71 @@ test('El dueño de la empresa no puede salir de la empresa', function () {
     expect($company->member()->where('user_id', $user->id)->exists())->toBeTrue();
 });
 
+test('El usuario puede mandar correo con código de invitación a otros usuarios', function () {
+    //* se generan los 2 usuarios
+    /** @var \App\Models\User $owner */
+    $owner =  User::factory()->create();
+
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create([
+        'email' => 'example@test.com'
+    ]);
+
+    //se asignan roles
+    seed(RolePermissionSeeder::class);
+    $owner->assignRole('manager');
+
+    // se vincula al usuario owner con la empresa
+    $company = Company::factory()->create([
+        'owner_id' => $owner->id,
+        'company_code' => 'ABCD1234',
+    ]);
+    $owner->companies()->attach($company->id);
+
+    $response = actingAs($owner)
+    ->post(route('companies.sendInvitation', $company), [
+        'email' => 'example@test.com',
+    ]);
+
+    $response->assertSessionHasNoErrors()
+    ->assertRedirect(route('companies.show', $company));
+});
+
+test('El usuario no puede mandar correo con código de invitación por no tener los permisos necesarios', function () {
+    //* se generan los 2 usuarios
+    /** @var \App\Models\User $owner */
+    $owner =  User::factory()->create();
+
+    /** @var \App\Models\User $member */
+    $member =  User::factory()->create();
+
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create([
+        'email' => 'example@test.com'
+    ]);
+
+    //se asignan roles
+    seed(RolePermissionSeeder::class);
+    $owner->assignRole('manager');
+    $member->assignRole('user');
+
+    // se vincula al usuario owner con la empresa
+    $company = Company::factory()->create([
+        'owner_id' => $owner->id,
+        'company_code' => 'ABCD1234',
+    ]);
+    $owner->companies()->attach($company->id);
+
+    $response = actingAs($member)
+    ->post(route('companies.sendInvitation', $company), [
+        'email' => 'example@test.com',
+    ]);
+
+    $response->assertForbidden();
+});
+
+
+
 test('El usuario puede unirse a la empresa', function () {
     //* se generan los 2 usuarios
     /** @var \App\Models\User $owner */

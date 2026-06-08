@@ -35,6 +35,7 @@ class UserDeleted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Usuario eliminado')
             ->line("Se ha eliminado al usuario {$this->user->name} {$this->user->last_name}.")
             ->line('Gracias por usar nuestra aplicación!');
     }

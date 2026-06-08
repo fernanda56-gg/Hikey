@@ -35,6 +35,7 @@ class ProjectDeleted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Proyecto eliminado')
             ->line("El proyecto '{$this->project->name}' has sido eliminado")
             /* ->action('Notification Action', url('/')) */
             ->line('Gracias por usar nuestra aplicación!');

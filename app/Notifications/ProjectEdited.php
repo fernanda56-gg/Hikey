@@ -35,6 +35,7 @@ class ProjectEdited extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Modificación a información de proyecto' . $this->project->name)
             ->line("Ha sido modificada la información de '{$this->project->name}'.")
             ->action('Ver proyecto',
             route('projects.show', ['project' => $this->project])

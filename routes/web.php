@@ -68,6 +68,7 @@ Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->wit
 
 //Empresas
 Route::post('companies/check-code', [CompanyController::class, 'checkCode'])->name('companies.checkCode')->middleware(['auth', 'verified']);
+Route::post('/companies/{company}/send-invitation', [CompanyController::class, 'sendInvitation'])->name('companies.sendInvitation')->middleware(['auth', 'verified']);
 Route::get('companies/redirect', [CompanyController::class, 'redirectTo'])->name('companies.redirect')->middleware(['auth', 'verified']);
 Route::get('companies/{company}/members', [CompanyController::class, 'listMember'])->name('companies.listMember')->middleware(['auth', 'verified']);
 Route::delete('companies/{company}/leave/{user}', [CompanyController::class, 'leaveCompany'])->name('companies.leave')->middleware(['auth', 'verified']);

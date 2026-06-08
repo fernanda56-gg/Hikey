@@ -35,7 +35,8 @@ class CompanyCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line("Se ha generado una nueva empresa '{$this->company->name}'. Para ver detalles de la empresa entra al siguiente enlace.")
+        ->subject('Registro de empresa ' . $this->company->name)
+            ->line("Se ha generado '{$this->company->name}' exitosamente. Para ver los detalles de tu empresa entra al siguiente enlace.")
             ->action('Abrir enlace',
             route('companies.show', ['company' => $this->company])
             )

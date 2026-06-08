@@ -113,12 +113,12 @@
                                 <div class="modal-action">
                                     <form @submit.prevent="deleteAccount">
                                         <!-- botón de cancelar -->
-                                        <button class="btn btn-error">Borrar cuenta</button>
+                                        <button class="btn btn-primary text-black">Borrar cuenta</button>
                                     </form>
 
                                     <form method="dialog">
                                         <!-- botón de cancelar -->
-                                        <button class="btn btn-info" @click="deleteAcc.reset()">Cancelar</button>
+                                        <button class="btn btn-error text-white" @click="deleteAcc.reset()">Cancelar</button>
                                     </form>
                                 </div>
                             </div>

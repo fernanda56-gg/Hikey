@@ -46,7 +46,7 @@
                         </form>
 
                         <form method="dialog">
-                            <button class="btn btn-error" @click="form.reset()">Cancelar</button>
+                            <button class="btn btn-error text-white" @click="form.reset()">Cancelar</button>
                         </form>
                     </div>
                 </div>

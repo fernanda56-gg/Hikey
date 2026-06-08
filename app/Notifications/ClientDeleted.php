@@ -35,6 +35,7 @@ class ClientDeleted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Cliente eliminado')
             ->line("El cliente '{$this->client->name}' ha sido eliminado, este ya no esta vinculado a ningún proyecto.")
             ->line('Gracias por usar nuestra aplicación!');
     }

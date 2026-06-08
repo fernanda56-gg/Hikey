@@ -36,6 +36,7 @@ class UpdatePassword extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+        ->subject('Contraseña actualizada')
             ->line("Hola {$this->user->name}, has actualizado tu contraseña, si no fuiste tu quien hizo este cambio, por favor contacta al soporte para recuperar tu cuenta.")
             ->line('Gracias por usar nuestra aplicación!');
     }

@@ -35,7 +35,8 @@ class CompanyJoin extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line("Has sido agregado a '{$this->company->name}'. Para conocer detalles de la empresa entra al siguiente enlace.")
+        ->subject('Bienvenido a ' . $this->company->name)
+            ->line("Has sido añadido a '{$this->company->name}'. Para conocer más detalles sobre la empresa entra al siguiente enlace.")
             ->action('Abrir enlace',
             route('companies.show', ['company' => $this->company])
             )

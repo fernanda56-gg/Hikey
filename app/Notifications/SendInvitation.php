@@ -2,19 +2,20 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
+use App\Models\Company;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MyAccountDeleted extends Notification
+class SendInvitation extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(private User $user)
+    public function __construct(private Company $company)
     {
         //
     }
@@ -35,9 +36,11 @@ class MyAccountDeleted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->subject('Eliminación de cuenta')
-            ->line("{$this->user->name} {$this->user->last_name}. Lamentamos que hayas decidido eliminar tu cuenta. Si cambias de opinión, siempre serás bienvenido de nuevo. Si necesitas ayuda o tienes alguna pregunta, no dudes en contactarnos.")
-            ->line('Gracias por usar nuestra aplicación!');
+            ->subject('Invitación para unirte a ' . $this->company->name)
+            ->line('Has sido invitado a unirte a ' . $this->company->name . '.')
+            ->line('Tu código de invitación es: ' . $this->company->company_code)
+            ->line('Ingresa a tu cuenta y únete a la empresa o crea una cuenta haciendo click en el enlace')
+            ->action('Crear cuenta', route('register') );
     }
 
     /**
@@ -48,9 +51,7 @@ class MyAccountDeleted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'user_id' => $this->user->id,
-            'name' => $this->user->name,
-            'last_name' => $this->user->last_name,
+            //
         ];
     }
 }

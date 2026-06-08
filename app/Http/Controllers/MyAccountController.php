@@ -62,7 +62,7 @@ class MyAccountController extends Controller
             return redirect()->route('login');
 
     } catch (\Exception $e) {
-        return back()->withErrors('error', 'No se pudo actualizar la contraseña intentalo de nuevo');
+        return back()->withErrors('error', 'No se pudo actualizar la contraseña inténtalo de nuevo');
     }
     }
 }

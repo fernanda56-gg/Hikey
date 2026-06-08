@@ -13,6 +13,8 @@ use App\Notifications\CompanyLeave;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Notifications\SendInvitation;
+use Illuminate\Support\Facades\Notification;
 
 class CompanyController extends Controller
 {
@@ -128,6 +130,8 @@ class CompanyController extends Controller
             'can' => [
                 'update' => $user->can('delete', $company),
                 'delete' => $user->can('update', $company),
+                'sendInvitation' => $user->can('sendInvitation', $company),
+                'showCode' => $user->can('showCode', $company),
         ]
         ]);
     }
@@ -214,15 +218,6 @@ class CompanyController extends Controller
         return redirect()->route('companies.index')->with('success', 'Empresa eliminada exitosamente.');
     }
 
-    public function joinCompany()
-    {
-        if(Gate::denies('joinCompany', Company::class))
-            {
-                return redirect()->route('inicio')->with('error', 'No puedes unirte a esta empresa.');
-            }
-        return inertia('Company/JoinCompany');
-    }
-
     public function checkCode(Request $request)
     {
         try{
@@ -250,7 +245,8 @@ class CompanyController extends Controller
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            return redirect()->route('companies.join')->with('error', 'Error al ingresar código.')->withInput();//withInput mantiene los datos del form
+            dd($e);
+            return redirect()->back();
         }
     }
 
@@ -314,5 +310,24 @@ class CompanyController extends Controller
 
         return redirect()->route('companies.listMember', $company->id)->with('success', 'Has sacado al usuario de la empresa exitosamente.');
     }
-}
 
+    public function sendInvitation(Request $request, Company $company)
+    {
+        if (Gate::denies('sendInvitation', $company)) {
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
+
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        try {
+            Notification::route('mail', $request->email)
+                ->notify(new SendInvitation($company));
+
+            return redirect()->route('companies.show', $company->id)->with('success', 'Se ha enviado una invitación a ' . $request->email .'.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['email' => 'Error al enviar invitación, inténtalo de nuevo.']);
+        }
+    }
+}
