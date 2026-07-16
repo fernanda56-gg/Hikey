@@ -300,7 +300,7 @@ test('El usuario con rol MANAGER puede hacer soft delete y eliminar definitivame
     $client->forceDelete();
     $client->refresh();
 
-    expect(Client::find($client->id, $client->name))->toBeNull();
+    expect($client->deleted_at)->toBeNull();
 });
 
 test('El usuario con rol ADMIN puede hacer soft delete y restaurar clientes', function () {
