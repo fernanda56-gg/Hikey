@@ -44,7 +44,12 @@
                         <div class="md:w-1/2 w-full">
                             <div class="flex items-center gap-2 bg-transparent border-b border-b-gray-700 py-2">
                                 <PhLockKey class="text-neutral size-6"/>
-                                <input id="password" v-model="form.password" type="password" placeholder="Ingresa tu contraseña" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
+                                <input id="password" :type="inputType.password ? 'text' : 'password'" v-model="form.password" placeholder="Ingresa tu contraseña" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
+                                <!-- botón de ocultar la contraseña -->
+                                <button type="button" @click="showPass('password')">
+                                    <PhEyeClosed v-if="!inputType.password" class="text-neutral size-6" />
+                                    <PhEye v-else class="text-neutral size-6" />
+                                </button>
                             </div>
                     <!--Contenedor de error-->
                             <div class="flex items-center justify-start text-error text-xs m-2" v-if="form.errors.password">
@@ -57,7 +62,12 @@
                         <div class="md:w-1/2 w-full mt-2 md:mt-0">
                             <div class="flex items-center gap-2 bg-transparent border-b border-b-gray-700 py-2">
                                 <PhLockKey class="text-neutral size-6"/>
-                                <input id="password_confirmation" v-model="form.password_confirmation" type="password" placeholder="Confirma tu contraseña" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
+                                <input id="password_confirmation" :type="inputType.password_confirmation ? 'text' : 'password'" v-model="form.password_confirmation" placeholder="Confirma tu contraseña" class="w-full bg-transparent focus:outline-none placeholder-shown:text-neutral/50 md:text-base text-sm text-neutral"/>
+                                <!-- botón de ocultar la contraseña -->
+                                <button type="button" @click="showPass('password_confirmation')">
+                                    <PhEyeClosed v-if="!inputType.password_confirmation" class="text-neutral size-6" />
+                                    <PhEye v-else class="text-neutral size-6" />
+                                </button>
                             </div>
                     <!--Contenedor de error-->
                             <div class="flex items-center justify-start text-error text-xs m-2" v-if="form.errors.password">
@@ -79,8 +89,19 @@
 </template>
 <script setup>
 import { useForm } from '@inertiajs/vue3';
-import { PhWarningCircle, PhAt, PhLockKey} from '@phosphor-icons/vue';
+import { PhWarningCircle, PhAt, PhLockKey, PhEyeClosed, PhEye} from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
+import { reactive } from 'vue';
+
+/* para mostrar contraseña */
+const inputType = reactive({
+    password: false,
+    password_confirmation: false,
+});
+
+const showPass = (field) => {
+    inputType[field] = !inputType[field];
+}
 
 const props =defineProps({
     'token': String,

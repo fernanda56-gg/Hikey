@@ -142,12 +142,19 @@
                         <div class="flex flex-row items-start md:space-x-4 space-x-2">
                             <div class="flex flex-col space-y-2 w-full">
                                 <label class="font-bold text-neutral md:text-base text-sm">Contraseña actual</label>
-                                <input v-model="passForm.current_password" type="password" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" />
-                                    <!--Contenedor de error en input-->
-                                    <div class="flex items-center justify-start text-xs text-error" v-if="passForm.errors.current_password">
-                                        <PhWarningCircle class="mx-1 size-4" weight="bold"/>
-                                            {{ passForm.errors.current_password }}
-                                    </div>
+                                <div class="relative w-full">
+                                    <input :type="inputType.current_password ? 'text' : 'password'" class="bg-base-100 rounded-lg p-2 pr-10 text-neutral w-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"/>
+                                    <!-- botón para ocultar contraseña -->
+                                    <button type="button" @click="showPass('current_password')" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                        <PhEyeClosed weight="duotone" v-if="!inputType.current_password" class="text-neutral size-5" />
+                                        <PhEye weight="duotone" v-else class="text-neutral size-6" />
+                                    </button>
+                                </div>
+                                <!--Contenedor de error en input-->
+                                <div class="flex items-center justify-start text-xs text-error" v-if="passForm.errors.current_password">
+                                    <PhWarningCircle class="mx-1 size-4" weight="bold"/>
+                                    {{ passForm.errors.current_password }}
+                                </div>
                             </div>
                         </div>
 
@@ -155,7 +162,14 @@
                         <div class="flex flex-row items-start md:space-x-4 space-x-2 mt-3">
                             <div class="flex flex-col space-y-2 w-1/2">
                                 <label class="font-bold text-neutral md:text-base text-sm">Nueva contraseña</label>
-                                <input v-model="passForm.password" type="password" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" />
+                                <div class="relative w-full">
+                                    <input :type="inputType.password ? 'text' : 'password'" class="bg-base-100 rounded-lg p-2 pr-10 text-neutral w-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"/>
+                                    <!-- botón para ocultar contraseña -->
+                                    <button type="button" @click="showPass('password')" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                        <PhEyeClosed weight="duotone" v-if="!inputType.password" class="text-neutral size-5" />
+                                        <PhEye weight="duotone" v-else class="text-neutral size-6" />
+                                    </button>
+                                </div>
                                 <!--Contenedor de error en input-->
                                 <div class="flex items-center justify-start text-xs text-error" v-if="passForm.errors.password">
                                     <PhWarningCircle class="mx-1 size-4" weight="bold"/>
@@ -165,7 +179,14 @@
 
                             <div class="flex flex-col space-y-2 w-1/2">
                                 <label class="font-bold text-neutral md:text-base text-sm">Confirmar contraseña</label>
-                                <input v-model="passForm.password_confirmation" type="password" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" />
+                                <div class="relative w-full">
+                                    <input :type="inputType.password_confirmation ? 'text' : 'password'" class="bg-base-100 rounded-lg p-2 pr-10 text-neutral w-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"/>
+                                    <!-- botón para ocultar contraseña -->
+                                    <button type="button" @click="showPass('password_confirmation')" class="absolute right-2 top-1/2 -translate-y-1/2">
+                                        <PhEyeClosed weight="duotone" v-if="!inputType.password_confirmation" class="text-neutral size-5" />
+                                        <PhEye weight="duotone" v-else class="text-neutral size-6" />
+                                    </button>
+                                </div>
                                 <!--Contenedor de error en input-->
                                 <div class="flex items-center justify-start text-xs text-error" v-if="passForm.errors.password_confirmation">
                                     <PhWarningCircle class="mx-1 size-4" weight="bold"/>
@@ -193,12 +214,23 @@ import BoxComponent from '../../Components/UI/BoxComponent.vue';
 import { PhUploadSimple } from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
 import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { PhWarningCircle, PhUserFocus, PhPassword } from '@phosphor-icons/vue';
+import { ref, reactive } from 'vue';
+import { PhWarningCircle, PhUserFocus, PhPassword, PhEyeClosed, PhEye } from '@phosphor-icons/vue';
 
 const props = defineProps({
     'user': Object,
 })
+
+/* para mostrar contraseña */
+const inputType = reactive({
+    current_password: false,
+    password: false,
+    password_confirmation: false,
+});
+
+const showPass = (field) => {
+    inputType[field] = !inputType[field];
+}
 
 const fileInput = ref(null)
 

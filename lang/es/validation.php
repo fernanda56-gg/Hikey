@@ -172,6 +172,8 @@ return [
     'web_address' => 'sitio web',
     'tax_id' => 'identificación fiscal',
     'area_id' => 'área',
+    'current_password' => 'contraseña actual',
+    'password_confirmation' => 'confirmación de contraseña',
 ],
 
 ];
