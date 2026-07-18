@@ -26,4 +26,12 @@ export default defineConfig({
                 ziggy: path.resolve("vendor/tightenco/ziggy/dist/index.esm.js"),
         },
     },
+    /* soluciona problema de CORS por el host 0.0.0.0 en los navegadores no basados en Chromium */
+    server: {
+        origin: 'http://localhost:5173',
+        cors: true,
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });

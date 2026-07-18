@@ -54,9 +54,8 @@
 import { PhStar, PhPlus, PhAt, PhPhone, PhPencil, PhTrash, PhLinkBreak} from '@phosphor-icons/vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-/* import { useClipboard } from '@vueuse/core'; no funcionara hasta que este en un sea https
-import { ref, watch } from 'vue'; */
-import { ref } from 'vue';
+import { useClipboard } from '@vueuse/core';
+import { ref, watch } from 'vue';
 import { usePermission } from '../../composables/usePermission';
 
 //Comprobar permisos de usuario
@@ -66,40 +65,12 @@ defineProps({
     projects: Object,
 })
 
-
 const copyText = ref('Copiar')
-const copy = async (text) => {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text)
-        } else {
-            const textarea = document.createElement('textarea')
-            textarea.value = text
-            textarea.style.position = 'fixed'
-            textarea.style.left = '-9999px'
-            document.body.appendChild(textarea)
-            textarea.focus()
-            textarea.select()
-            document.execCommand('copy')
-            document.body.removeChild(textarea)
-        }
-
-        copyText.value = 'Copiado!'
-
-        setTimeout(() => {
-            copyText.value = 'Copiar'
-        }, 1500)
-
-    } catch (e) {
-        console.error(e)
-    }
-}
-
-/* const { copy, copied, isSupported } = useClipboard({
+const { copy, copied } = useClipboard({
     timeout: 2000,
 })
 
 watch(copied, (value) => {
     copyText.value = value ? 'Copiado' : 'Copiar'
-}) */
+})
 </script>

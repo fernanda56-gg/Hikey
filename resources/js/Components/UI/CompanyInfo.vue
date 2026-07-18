@@ -62,7 +62,8 @@
 
 <script  setup>
 import { PhLink, PhCopySimple } from '@phosphor-icons/vue';
-import { ref } from 'vue';
+import { useClipboard } from '@vueuse/core';
+import { ref, watch } from 'vue';
 
 defineProps({
         company: Object,
@@ -71,30 +72,11 @@ defineProps({
 )
 
 const copyText = ref('Copiar')
-const copy = async (text) => {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text)
-        } else {
-            const textarea = document.createElement('textarea')
-            textarea.value = text
-            textarea.style.position = 'fixed'
-            textarea.style.left = '-9999px'
-            document.body.appendChild(textarea)
-            textarea.focus()
-            textarea.select()
-            document.execCommand('copy')
-            document.body.removeChild(textarea)
-        }
+const { copy, copied } = useClipboard({
+    timeout: 2000,
+})
 
-        copyText.value = 'Copiado!'
-
-        setTimeout(() => {
-            copyText.value = 'Copiar'
-        }, 1500)
-
-    } catch (e) {
-        console.error(e)
-    }
-}
+watch(copied, (value) => {
+    copyText.value = value ? 'Copiado' : 'Copiar'
+})
 </script>
