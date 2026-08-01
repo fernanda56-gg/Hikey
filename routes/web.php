@@ -7,6 +7,7 @@ use App\Http\Controllers\MyAccountController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationSeenController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTeamController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
@@ -108,3 +109,10 @@ Route::post('my-account/{user}/profile-photo', [UserProfileImgController::class,
 Route::middleware(['docs.rol'])->group(function () {
     Route::get('/docs', fn() => null);
 });
+
+// Equipos
+Route::get('projects/{project}/team/available-members', [ProjectTeamController::class, 'index'])->name('project-team.index')->middleware(['auth', 'verified']);
+Route::post('projects/{project}/team', [ProjectTeamController::class, 'store'])->name('project-team.store')->middleware(['auth', 'verified']);
+Route::patch('projects/{project}/team/{user}/update-role', [ProjectTeamController::class, 'update'])->name('project-team.update-role')->middleware(['auth', 'verified']);
+Route::put('projects/{project}/team/{user}/remove-leader', [ProjectTeamController::class, 'removeLeader'])->name('project-team.remove-leader')->middleware(['auth', 'verified']);
+Route::delete('projects/{project}/team/{user}', [ProjectTeamController::class, 'destroy'])->name('project-team.destroy')->middleware(['auth', 'verified']);

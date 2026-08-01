@@ -136,7 +136,7 @@ class ProjectController extends Controller
         }
 
         $user = Auth::user();
-        $project->load('area', 'company', 'clients');
+        $project->load('area', 'company', 'clients', 'users');
 
         $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador
             $client->client_update = $user->can('update', $client);

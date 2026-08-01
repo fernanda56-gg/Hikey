@@ -1,16 +1,16 @@
 <template>
     <div class="text-neutral">
         <h1 class="uppercase font-bold md:text-xl text-base">proyecto</h1>
-        <span class="text-lg">{{ projects.name }}</span>
+        <span class="md:text-lg text-sm">{{ projects.name }}</span>
         <h1 class="uppercase font-bold md:text-xl text-base mt-2">descripción</h1>
-        <p class="text-lg">{{ projects.description }}</p>
+        <p class="md:text-lg text-sm text-justify break-all">{{ projects.description }}</p>
 
         <!--Links-->
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
                 <h1 class="uppercase font-bold md:text-lg text-base">link de proyecto</h1>
                 <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
-                    <span>Link</span>
+                    <span class="md:text-lg text-sm">Link</span>
                     <PhLink :size="20" weight="bold"/>
                 </a>
             </div>
@@ -18,7 +18,7 @@
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-base">link de img</h1>
                 <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
-                    <span>Link</span>
+                    <span class="md:text-lg text-sm">Link</span>
                     <PhLink :size="20" weight="bold"/>
                 </a>
             </div>
@@ -43,12 +43,12 @@
         <!--Fechas-->
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
-                <h1 class="uppercase font-bold md:text-lg text-base">fecha de inicio</h1>
+                <h1 class="uppercase font-bold md:text-lg text-sm">fecha de inicio</h1>
                 <input class="focus:outline-none" type="date" v-model="form.start_date" @change="updateDate" @input="form.start_date = $event.target.value || null" :disabled="form.end_date">
             </div>
 
             <div class="flex flex-col">
-                <h1 class="uppercase font-bold md:text-lg text-base">fecha de finalización</h1>
+                <h1 class="uppercase font-bold md:text-lg text-sm">fecha de finalización</h1>
                 <input class="focus:outline-none" type="date" v-model="form.end_date" @change="updateDate" @input="form.end_date = $event.target.value || null" :disabled="!form.start_date">
             </div>
         </div>
@@ -57,7 +57,7 @@
         <div class="flex flex-row gap-4 items-start">
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-base mt-4">estatus de proyecto</h1>
-                <div class="flex items-center mt-2 space-x-2 text-neutral font-bold text-lg">
+                <div class="flex items-center mt-2 space-x-2 text-neutral font-bold md:text-lg text-sm">
                     <span :class="[
                         projects.status === 'Pendiente' ? 'status bg-[#d90429] status-lg' :
                         projects.status === 'En progreso' ? 'status bg-[#ffc300] status-lg' :
@@ -69,7 +69,7 @@
 
             <div v-if="hasRole('admin')" class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-base mt-4">Empresa propietaria</h1>
-                <span class="mt-2 font-stretch-expanded text-lg">
+                <span class="mt-2 font-stretch-expanded md:text-lg text-sm">
                     {{ projects.company.name }}
                 </span>
             </div>

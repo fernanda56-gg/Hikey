@@ -42,6 +42,27 @@ class Project extends Model
         return $this->belongsTo(Area::class);
     }
 
+    public function users() //Relación N:N utilizando tabla pivote para establecer equipos
+    {
+        return $this->belongsToMany(User::class, 'project_team')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
+
+    public function leader() //Relación N:N utilizando tabla pivote para establecer equipos
+    {
+        return $this->belongsToMany(User::class, 'project_team')
+                    ->withPivot('role', 'Lider')
+                    ->withTimestamps();
+    }
+
+    public function members() //Relación N:N utilizando tabla pivote para establecer equipos
+    {
+        return $this->belongsToMany(User::class, 'project_team')
+                    ->withPivot('role', 'Miembro')
+                    ->withTimestamps();
+    }
+
     protected static function booted() //Registra las fechas del proyecto y actualiza los estados antes de que lleguen a la BD
     {
         static::saving(function ($project) {

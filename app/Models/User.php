@@ -64,6 +64,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Project::class, 'by_user_id');
     }
 
+
+    public function project_team() //Relación N:N usando tabla pivote para relación entre usuario y proyecto
+    {
+        return $this->belongsToMany(Project::class, 'project_team')
+                    ->withPivot('role')
+                    ->withTimestamps();
+    }
+
     public function companyOwner() //Relación 1:N con el usuario dueño y la empresa creada
     {
         return $this->hasMany(Company::class, 'owner_id');

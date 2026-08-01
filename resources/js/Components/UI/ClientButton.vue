@@ -1,10 +1,10 @@
 <template>
     <div class="flex items-center justify-center w-full">
-        <h2 class="font-black uppercase text-center">cliente</h2>
+        <h2 class="font-black text-center">Cliente</h2>
     </div>
 
     <!-- Contenedor de info de clientes (cuando ya se asigno a uno) -->
-    <div v-if="projects.clients.length" class=" flex items-center justify-start md:mt-3 mt-1.5 pb-6 md:pb-0 mx-2">
+    <div v-if="projects.clients.length" class=" flex items-center justify-start md:mt-3 mt-1.5 pb-6 md:pb-0 mx-2 mb-4">
         <div v-for="client in projects.clients" :key="client.id" class="flex flex-row items-center gap-3">
             <h1 class="font-black">{{ client.name }}</h1>
 
@@ -33,18 +33,18 @@
     </div>
 
     <!-- Botones para acceder a clientes -->
-        <div v-else class="flex flex-row items-center gap-2 mt-2 pb-6 md:pb-0">
+        <div v-else class="flex flex-row lg:flex-row md:flex-col items-center justify-center w-full gap-2 mt-2 pb-6 md:pb-0">
             <div class="btn md:btn-sm btn-md text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
                     <Link :href="route('clients.create', { project: projects.id })" class="flex items-center space-x-1">
                         <PhPlus class="size-4" weight="bold"/>
-                        <span class="md:text-xs text-sm">Nuevo cliente</span>
+                        <span class="text-xs">Nuevo cliente</span>
                     </Link>
             </div>
 
             <div class="btn md:btn-sm btn-md text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
                     <Link :href="route('clients.projects.assign', { project: projects.id })" class="flex items-center space-x-1">
                         <PhStar class="size-4" weight="bold"/>
-                        <span class="md:text-xs text-sm">Asignar cliente</span>
+                        <span class="text-xs">Asignar cliente</span>
                     </Link>
             </div>
         </div>
