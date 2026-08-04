@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //USUARIOS
+        // * USUARIOS
         $userAdmin = User::factory()->create([
             'email' => 'test@example.com',
         ])->syncRoles(['admin']);
@@ -31,12 +31,13 @@ class UserSeeder extends Seeder
             'email' => 'user@example.com'
         ])->syncRoles(['user']);
 
+        // ? Usuarios random
         User::factory(20)->create()
             ->each(function ($user) {
                 $user->syncRoles(['user']);
             });
 
-        //CREACIÓN DE COMPAÑÍA Y PROYECTOS
+        // * CREACIÓN DE COMPAÑÍA Y PROYECTOS
         $company = Company::factory(1)->create([
             'owner_id' => $userManager->id,
         ]);
@@ -53,9 +54,19 @@ class UserSeeder extends Seeder
         ]);
 
         $company->member()->attach($userTeamLeader->id, [
-        'role' => 'miembro',
-        'joined_at' => now(),
-    ]);
+            'role' => 'miembro',
+            'joined_at' => now(),
+        ]);
 
+        // ! CREACION DE USUARIOS VINCULADOS A $company
+        User::factory(20)->create()
+            ->each(function ($user) use ($company) {
+                $user->syncRoles(['user']);
+
+                $company->member()->attach($user->id, [
+                    'role' => 'miembro',
+                    'joined_at' => now(),
+                ]);
+            });
     }
 }

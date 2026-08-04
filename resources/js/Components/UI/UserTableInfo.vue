@@ -29,7 +29,15 @@
                     <tr v-for="userAccount in userAccounts.data" :key="userAccount.id">
                         <td class="w-20">{{ userAccount.id }}</td>
                         <td class="w-80">{{ userAccount.name }} {{ userAccount.last_name }}</td>
-                        <td class="w-75">{{ userAccount.email }}</td>
+                        <td class="w-75">
+                            <div class="flex items-center gap-2 text-neutral">
+                                <span>{{ userAccount.email }}</span>
+                                <div class="tooltip tooltip-right tooltip-end" :data-tip="copyText">
+                                    <PhCopySimple @click="copy(userAccount.email)"
+                                        class="md:size-5 size-4 cursor-pointer hover:text-accent" weight="bold" />
+                                </div>
+                            </div>
+                        </td>
                         <!--rol de usuario-->
                         <td class="w-75">
                         <span v-for="role in userAccount.roles" :key="role.id" :class="[
@@ -66,7 +74,9 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { PhPencil, PhTrash, PhUserFocus, PhHouseLine} from '@phosphor-icons/vue';
+import { useClipboard } from '@vueuse/core';
+import { ref, watch } from 'vue';
+import { PhPencil, PhTrash, PhUserFocus, PhHouseLine, PhCopySimple} from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
 import PaginationComponent from '../../Components/UI/PaginationComponent.vue';
 import FilterUser from './FilterUser.vue';
@@ -80,4 +90,13 @@ defineProps({
     'filters': Object,
     'roles': Object,
     })
+
+const copyText = ref('Copiar')
+const { copy, copied } = useClipboard({
+    timeout: 2000,
+})
+
+watch(copied, (value) => {
+    copyText.value = value ? 'Copiado' : 'Copiar'
+})
 </script>
