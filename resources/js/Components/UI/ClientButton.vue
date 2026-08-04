@@ -4,29 +4,49 @@
     </div>
 
     <!-- Contenedor de info de clientes (cuando ya se asigno a uno) -->
-    <div v-if="projects.clients.length" class=" flex items-center justify-start md:mt-3 mt-1.5 pb-6 md:pb-0 mx-2 mb-4">
-        <div v-for="client in projects.clients" :key="client.id" class="flex flex-row items-center gap-3">
-            <h1 class="font-black">{{ client.name }}</h1>
+    <div v-if="projects.clients.length" class=" flex items-center justify-start md:mt-3 mt-1.5 pb-6 md:pb-0 mb-4 p-4">
+        <div v-for="client in projects.clients" :key="client.id" class="flex flex-row items-center gap-2">
+            <span class="font-semibold text-sm mr-3">{{ client.name }}</span>
 
-            <div class="tooltip tooltip-bottom" :data-tip="copyText">
-                <PhAt @click="copy(client.email)" class="size-5 cursor-pointer hover:text-accent" weight="bold"/>
-            </div>
+            <button
+                    class="btn btn-square btn-sm btn-ghost text-neutral"
+                    :data-tip="copyText">
+                <PhAt @click="copy(client.email)" class="size-4" weight="bold"/>
+            </button>
 
-            <div class="tooltip tooltip-bottom" :data-tip="copyText">
-                <PhPhone @click="copy(client.phone)" class="size-5 cursor-pointer hover:text-accent" weight="bold"/>
-            </div>
+            <button
+                    class="btn btn-square btn-sm btn-ghost text-neutral"
+                    :data-tip="copyText">
+                <PhPhone @click="copy(client.phone)" class="size-4" weight="bold"/>
+            </button>
 
-            <div class="flex flex-row gap-3" v-if="hasAnyRole(['admin', 'manager', 'team-leader'])">
+            <div class="flex items-center" v-if="hasAnyRole(['admin', 'manager'])">
+                    <Link
+                            class="btn btn-square btn-sm btn-soft btn-warning"
+                            v-if="client.client_update"
+                            type="button"
+                            :href="route('clients.edit', {client: client.id})">
+                        <PhPencilSimple class="size-4" weight="fill"/>
+                    </Link>
+                </div>
+
+            <div class="flex flex-row gap-2" v-if="hasAnyRole(['admin', 'manager', 'team-leader'])">
                 <div class="flex items-center">
-                    <Link v-if="client.client_update" :href="route('clients.destroy', {client: client.id})" method="delete" as="button"><PhTrash class="size-5 text-error cursor-pointer" weight="bold"/></Link>
+                    <Link
+                            class="btn btn-square btn-sm btn-soft btn-error"
+                            v-if="client.client_delete"
+                            :href="route('clients.destroy', {client: client.id})" method="delete" as="button">
+                        <PhTrash class="size-4" weight="fill"/>
+                    </Link>
                 </div>
 
-                <div class="flex items-center" v-if="hasAnyRole(['admin', 'manager'])">
-                    <Link v-if="client.client_delete" :href="route('clients.edit', {client: client.id})"><PhPencil class="size-5 text-[#f8961e]" weight="bold"/></Link>
-                </div>
-
-                <div class="flex items-center" v-if="hasAnyRole(['admin', 'manager', 'team-leader'])">
-                    <Link :href="route('clients.projects.detach', {project: projects.id, client: client.id})" method="delete" as="button" class="cursor-pointer"><PhLinkBreak class="size-5 text-accent" weight="bold"/></Link>
+                <div class="flex items-center">
+                    <Link
+                            class="btn btn-square btn-sm btn-soft btn-info"
+                            type="button"
+                            :href="route('clients.projects.detach', {project: projects.id, client: client.id})" method="delete" as="button">
+                        <PhLinkBreak class="size-4" weight="bold"/>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -51,7 +71,7 @@
 </template>
 
 <script setup>
-import { PhStar, PhPlus, PhAt, PhPhone, PhPencil, PhTrash, PhLinkBreak} from '@phosphor-icons/vue';
+import { PhStar, PhPlus, PhAt, PhPhone, PhPencilSimple, PhTrash, PhLinkBreak} from '@phosphor-icons/vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { useClipboard } from '@vueuse/core';

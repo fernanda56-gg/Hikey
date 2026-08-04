@@ -19,7 +19,7 @@
             <!--Contenedor de información de proyecto-->
             <div class="flex flex-col lg:flex-row md:p-4 text-neutral">
                 <!--Contenedor de información (grande)-->
-                <div class="card border-2 border-base-300 bg-base-200 rounded-box h-auto min-w-3/4 grow place-items-start p-4">
+                <div class="card border-2 border-base-300 bg-base-200 rounded-box h-auto min-w-2/3 grow place-items-start p-4">
                     <ProjectInformation :projects="project" />
                 </div>
 

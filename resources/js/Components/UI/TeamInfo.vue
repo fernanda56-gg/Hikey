@@ -20,15 +20,15 @@
         <input type="checkbox" />
         <div class="collapse-title text-sm link">Mostrar integrantes</div>
         <div class="collapse-content text-sm">
-            <div class="flex flex-row items-center gap-2 justify-center w-full min-w-0 mt-2 pb-6 md:pb-0">
+            <div class="flex flex-row items-center gap-2 justify-between w-full min-w-0 mt-2 pb-6 md:pb-0">
                 <div class="flex items-center justify-between w-full md:w-fit min-w-0">
                     <div class="w-full md:w-fit overflow-x-auto">
                         <table class="table table-sm w-auto">
                             <thead>
                                 <tr>
-                                    <th class="w-100 text-neutral">Integrantes - {{ props.project.users.length }}/9</th>
-                                    <th class="w-40"></th>
-                                    <th class="w-40 text-end">
+                                    <th class="text-neutral">Integrantes - {{ props.project.users.length }}/9</th>
+                                    <th class=""></th>
+                                    <th class="text-end">
                                         <button
                                             class="btn btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200 outline-none disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
                                             @click="openModal" :disabled="props.project.users.length === 9">
@@ -40,14 +40,14 @@
                             </thead>
                             <tbody>
                                 <tr v-for="user in organizedUsers" :key="user.id">
-                                    <td class="w-100 font-semibold">{{ user.name }}</td>
-                                    <td class="w-40">
+                                    <td class="font-semibold">{{ user.name }}</td>
+                                    <td class="">
                                         <span class="badge badge-sm badge-soft font-semibold"
                                             :class="user.pivot.role === 'Lider' ? 'badge-success' : 'badge-info'">
                                             {{ user.pivot.role }}
                                         </span>
                                     </td>
-                                    <td class="w-40 text-center space-x-2">
+                                    <td class="text-center flex justify-center items-center flex-nowrap gap-1.5">
 
                                         <!-- botón para cambiar de rol miembro-lider -->
                                         <button v-if="user.pivot.role === 'Miembro' && !isLeader"
