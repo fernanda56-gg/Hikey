@@ -54,7 +54,7 @@ class ClientController extends Controller
         $user = Auth::user();
         if(Gate::denies('create', Client::class))
             {
-                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+                return back()->with('error', 'No tienes los permisos necesarios para realizar esta acción.');
             }
 
         return inertia('Clients/CreateClient', [
@@ -251,7 +251,7 @@ class ClientController extends Controller
     {
         if(Gate::denies('assign', Client::class))
             {
-                abort(403, 'No tienes los permisos necesarios para ver esta pagina. 8');
+                return back()->with('error', 'No tienes los permisos necesarios para realizar esta acción.');
             }
         $user = Auth::user();
         if($user->hasRole('admin')){ //ADMIN: Puede ver todos los registros

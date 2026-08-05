@@ -1,18 +1,18 @@
 <template>
     <div class="text-neutral">
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-4 w-1/2">
-            <div class="flex flex-col ">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            <div class="flex flex-col w-full min-w-0">
                 <h1 class="uppercase font-bold md:text-xl text-base">nombre</h1>
                 <span class="md:text-lg text-base whitespace-nowrap">{{ company.name }}</span>
             </div>
-            <div class="flex flex-col w-1/2 md:ml-15">
+            <div class="flex flex-col w-full min-w-0">
                 <h1 class="uppercase font-bold md:text-xl text-base whitespace-nowrap">correo electrónico</h1>
                 <span class="md:text-lg text-base">{{ company.email }}</span>
             </div>
         </div>
 
 
-        <div class="grid md:grid-cols-3 grid-cols-1 gap-4 w-3/4 mt-6">
+        <div class="grid md:grid-cols-3 grid-cols-1 gap-4 w-3/4 mt-4">
             <div class="flex flex-col w-full">
                 <h1 class="uppercase font-bold md:text-lg text-base">dirección</h1>
                 <span class="md:text-lg text-base">{{ company.address }}</span>

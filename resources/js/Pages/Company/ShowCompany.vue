@@ -19,7 +19,7 @@
             </div>
 
             <!--Contenedor de info de empresa-->
-            <div class="flex flex-col lg:flex-row md:p-4 text-neutral">
+            <div class="flex flex-col lg:flex-row md:p-4 text-neutral mt-4 md:mt-0">
                 <!--Contenedor de información (grande)-->
                 <div class="card border-2 border-base-300 bg-base-200 rounded-box h-auto min-w-4/5 grow place-items-start p-4">
                     <CompanyInfo :company="company" :can="can" />

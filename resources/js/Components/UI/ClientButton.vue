@@ -20,7 +20,7 @@
                 <PhPhone @click="copy(client.phone)" class="size-4" weight="bold"/>
             </button>
 
-            <div class="flex items-center" v-if="hasAnyRole(['admin', 'manager'])">
+            <div class="flex items-center">
                     <Link
                             class="btn btn-square btn-sm btn-soft btn-warning"
                             v-if="client.client_update"
@@ -30,7 +30,7 @@
                     </Link>
                 </div>
 
-            <div class="flex flex-row gap-2" v-if="hasAnyRole(['admin', 'manager', 'team-leader'])">
+            <div class="flex flex-row gap-2">
                 <div class="flex items-center">
                     <Link
                             class="btn btn-square btn-sm btn-soft btn-error"
@@ -42,6 +42,7 @@
 
                 <div class="flex items-center">
                     <Link
+                            v-if="client.client_unlink"
                             class="btn btn-square btn-sm btn-soft btn-info"
                             type="button"
                             :href="route('clients.projects.detach', {project: projects.id, client: client.id})" method="delete" as="button">
