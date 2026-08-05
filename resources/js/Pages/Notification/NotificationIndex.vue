@@ -26,8 +26,8 @@
                             <div v-if="notification.type === 'App\\Notifications\\ProjectCreated'" class="font-semibold">
                                 Se ha generado un nuevo proyecto
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
-                                para más información entra al
-                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                para más información entra al siguiente
+                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     proyecto
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -37,8 +37,8 @@
                             <div v-if="notification.type === 'App\\Notifications\\ProjectEdited'" class="font-semibold">
                                 Se ha modificado información de
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
-                                para más información entra al
-                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                para más información entra al siguiente
+                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     proyecto
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -49,7 +49,7 @@
                                 Se ha modificado las fechas de
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 entra para ver las modificaciones
-                                <Link :href="route('projects.show', { project: notification.data.project_id })" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                <Link :href="route('projects.show', { project: notification.data.project_id })" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     {{ notification.data.project_name }}
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -67,7 +67,7 @@
                                 Se ha agregado al cliente
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 para
-                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     {{ notification.data.project_name }}
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -78,7 +78,7 @@
                                 Se ha asignado al cliente
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 para
-                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     {{ notification.data.project_name }}
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -101,8 +101,8 @@
                             <div v-if="notification.type === 'App\\Notifications\\CompanyJoin'" class="font-semibold">
                                 Felicidades te has unido a
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
-                                para conocer más entra a este
-                                <Link :href="route('companies.show', {company: notification.data.company_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                para conocer más entra al siguiente
+                                <Link :href="route('companies.show', {company: notification.data.company_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     enlace
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -118,8 +118,8 @@
                             <div v-if="notification.type === 'App\\Notifications\\CompanyCreated'" class="font-semibold">
                                 Se ha generado exitosamente la empresa
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
-                                para ver la empresa entra a este
-                                <Link :href="route('companies.show', {company: notification.data.company_id})" class="hover:text-blue-600 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                para ver la empresa entra al siguiente
+                                <Link :href="route('companies.show', {company: notification.data.company_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
                                     enlace
                                     <PhCards class="md:size-5 size-4" />
                                 </Link>
@@ -158,6 +158,37 @@
                             <!-- Notificación de cambio de contraseña -->
                             <div v-if="notification.type === 'App\\Notifications\\UpdatePassword'" class="font-semibold">
                                 Has actualizado tu contraseña
+                            </div>
+
+                            <!-- * EQUIPOS -->
+                            <!-- Notificación de miembro añadido a equipo para proyecto -->
+                            <div v-if="notification.type === 'App\\Notifications\\TeamProjectMembers'" class="font-semibold">
+                                Has sido añadido al equipo del proyecto
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                para más informacion sobre el proyecto entra al siguiente
+                                <Link :href="route('projects.show', {project: notification.data.project_id})" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                    enlace
+                                    <PhCards class="md:size-5 size-4" />
+                                </Link>
+                            </div>
+
+                            <!-- Notificación de asignación de lider -->
+                            <div v-if="notification.type === 'App\\Notifications\\TeamProjectLeader'" class="font-semibold">
+                                Has sido asignado com el lider de equipo para el proyecto
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                            </div>
+
+                            <!-- Notificación de miembro removido de equipo -->
+                            <div v-if="notification.type === 'App\\Notifications\\TeamProjectRemoveMember'" class="font-semibold">
+                                Has sido removido del equipo para el proyecto
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                            </div>
+
+                            <!-- Notificación de rol de LIDER de equipo revocado -->
+                            <div v-if="notification.type === 'App\\Notifications\\TeamProjectRemoveLeader'" class="font-semibold">
+                                Tu rol como lider del proyecto
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                ha sido revocado, continuaras trabajando en el proyecto otro integrante tomará tu posición
                             </div>
                         </div>
 

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Notifications\TeamProjectLeader;
+use App\Notifications\TeamProjectMembers;
+use App\Notifications\TeamProjectRemoveLeader;
+use App\Notifications\TeamProjectRemoveMember;
 use App\Services\ProjectTeamService;
 use Gate;
 use Illuminate\Http\Request;
@@ -61,7 +65,9 @@ public function index(Project $project)
         ]);
 
         foreach ($validated['members_ids'] as $user_id) {
-            $this->teamService->addMembers($project, User::findOrFail($user_id), 'Miembro');
+            $user = User::findOrFail($user_id);
+            $this->teamService->addMembers($project, $user, 'Miembro');
+            $user->notify(new TeamProjectMembers($project));
         }
 
         return back()->with('success', 'Integrantes agregados exitosamente');
@@ -78,6 +84,8 @@ public function index(Project $project)
         ]);
 
         $this->teamService->changeRole($project, $user, $validated['role']);
+        $user->notify(new TeamProjectLeader($project));
+
         return back()->with('success', 'Rol de integrante actualizado');
     }
 
@@ -88,6 +96,8 @@ public function index(Project $project)
         }
 
         $this->teamService->removeMember($project, $user);
+        $user->notify(new TeamProjectRemoveMember($project));
+
         return back()->with('success', 'Integrante eliminado');
     }
 
@@ -98,6 +108,8 @@ public function index(Project $project)
         }
 
         $this->teamService->removeLeader($project, $user);
+        $user->notify(new TeamProjectRemoveLeader($project));
+        
         return back()->with('success', 'Lider de equipo removido exitosamente');
     }
 }

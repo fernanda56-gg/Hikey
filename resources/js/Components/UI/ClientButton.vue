@@ -77,10 +77,6 @@ import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { useClipboard } from '@vueuse/core';
 import { ref, watch } from 'vue';
-import { usePermission } from '../../composables/usePermission';
-
-//Comprobar permisos de usuario
-const {hasAnyRole} = usePermission();
 
 defineProps({
     projects: Object,
