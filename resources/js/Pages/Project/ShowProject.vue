@@ -31,7 +31,7 @@
                     <div class="divider"></div>
                     <ClientButton :projects="project"/>
                     <div class="divider"></div>
-                    <TeamInfo :project="project" />
+                    <TeamInfo :project="project" :can-manage-team="canManageTeam" :can-manage-leader="canManageLeader" />
                 </div>
             </div>
         </div>
@@ -50,6 +50,8 @@
     defineProps({
         'project': Object,
         'can': Object,
+        'canManageTeam': Boolean,
+        'canManageLeader': Boolean,
         })
 </script>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\User;
 use App\Services\ProjectTeamService;
+use Gate;
 use Illuminate\Http\Request;
 
 use function Pest\Laravel\json;
@@ -18,6 +19,10 @@ class ProjectTeamController extends Controller
 
 public function index(Project $project)
 {
+    if(Gate::denies('manageTeam', $project)){
+        abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+    }
+
     $companyMembers = User::whereHas('companies', function ($query) use ($project) {
             $query->where('companies.id', $project->company_id);
         })
@@ -45,6 +50,10 @@ public function index(Project $project)
 
     public function store(Request $request, Project $project)
     {
+        if(Gate::denies('manageTeam', $project)){
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
+
         /* al ser varios integrante los id llegan en un array por lo que se valida el array de esa forma */
         $validated = $request->validate([
             'members_ids' => 'required|array|min:1',
@@ -60,6 +69,10 @@ public function index(Project $project)
 
     public function update(Request $request, Project $project, User $user)
     {
+        if(Gate::denies('manageLeaders', $project)){
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
+
         $validated = $request->validate([
             'role' => 'required|in:Lider,Miembro'
         ]);
@@ -70,12 +83,20 @@ public function index(Project $project)
 
     public function destroy(Project $project, User $user)
     {
+        if(Gate::denies('manageTeam', $project)){
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
+
         $this->teamService->removeMember($project, $user);
         return back()->with('success', 'Integrante eliminado');
     }
 
     public function removeLeader(Project $project, User $user)
     {
+        if(Gate::denies('manageLeaders', $project)){
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
+        }
+
         $this->teamService->removeLeader($project, $user);
         return back()->with('success', 'Lider de equipo removido exitosamente');
     }

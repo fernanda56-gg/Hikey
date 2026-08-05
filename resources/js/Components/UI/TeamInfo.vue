@@ -8,6 +8,7 @@
     <div class="flex flex-row items-center gap-2 justify-center w-full mt-2 pb-6 md:pb-0"
         v-if="!props.project.users.length">
         <button
+            v-if="canManageTeam"
             class="btn md:btn-sm btn-md text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200 outline-none"
             @click="openModal">
             <PhPlus class="size-4" weight="bold" />
@@ -30,6 +31,7 @@
                                     <th class=""></th>
                                     <th class="text-end">
                                         <button
+                                            v-if="canManageTeam"
                                             class="btn btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200 outline-none disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
                                             @click="openModal" :disabled="props.project.users.length === 9">
                                             <PhPlus class="size-4" weight="bold" />
@@ -50,7 +52,7 @@
                                     <td class="text-center flex justify-center items-center flex-nowrap gap-1.5">
 
                                         <!-- botón para cambiar de rol miembro-lider -->
-                                        <button v-if="user.pivot.role === 'Miembro' && !isLeader"
+                                        <button v-if="user.pivot.role === 'Miembro' && !isLeader && canManageLeader"
                                             @click="makeLeader(user.id)"
                                             :preserve-scroll="true"
                                             class="btn btn-square btn-sm border-0 hover:bg-mist-300/50">
@@ -58,7 +60,7 @@
                                         </button>
 
                                         <!-- boton para quitar rol de lider -->
-                                        <button v-if="user.pivot.role === 'Lider'"
+                                        <button v-if="user.pivot.role === 'Lider' && canManageLeader"
                                             @click="removeLeader(user.id)"
                                             :preserve-scroll="true"
                                             class="btn btn-square btn-sm border-0 hover:bg-mist-300/50">
@@ -67,7 +69,7 @@
 
                                         <!-- botón para sacar a integrante de equipo -->
                                         <Link
-                                            v-if="user.pivot.role === 'Miembro'"
+                                            v-if="user.pivot.role === 'Miembro' && canManageTeam"
                                             :href="route('project-team.destroy', { project: project.id, user: user.id })"
                                             method="delete" as="button" :preserve-scroll="true"
                                             class="btn btn-square btn-sm border-0 hover:bg-mist-300/50">
@@ -167,6 +169,8 @@ const searchUser = ref('');
 
 const props = defineProps({
     project: Object,
+    canManageTeam: Boolean,
+    canManageLeader: Boolean,
 });
 
 async function openModal(){
