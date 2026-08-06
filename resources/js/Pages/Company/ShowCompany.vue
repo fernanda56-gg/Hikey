@@ -103,6 +103,4 @@ const sendInvitation = () => {
         }
     })
 }
-
-//TODO; ya funciona ahora lo que falta es  hacer test y cambiar los subject de todos los correos
 </script>
