@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use App\Observers\CompanyObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([CompanyObserver::class])]
 class Company extends Model
 {
     //
@@ -61,7 +64,7 @@ class Company extends Model
     #[Scope]
     public function MostRecent($query)
     {
-        return $query->orderByDesc('created_at');
+        return $query->orderBy('created_at');
     }
 
     #[Scope]

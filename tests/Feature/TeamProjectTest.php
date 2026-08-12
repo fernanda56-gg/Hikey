@@ -1,7 +1,18 @@
 <?php
 
-test('example', function () {
-    $response = $this->get('/');
+use function Pest\Laravel\{actingAs, get, seed};
 
-    $response->assertStatus(200);
+use App\Models\Company;
+use App\Models\User;
+
+test('El usuario manager puede visualizar un proyecto en especifico', function () {
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+
+    expect($manager->fresh()->hasRole('manager'))->toBeTrue();
 });
+

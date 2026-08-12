@@ -7,9 +7,11 @@ use App\Models\Company;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Notifications\CompanyCreated;
+use App\Notifications\CompanyDeleted;
 use App\Notifications\CompanyEdited;
 use App\Notifications\CompanyJoin;
 use App\Notifications\CompanyLeave;
+use App\Notifications\DeletedCompany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -88,14 +90,8 @@ class CompanyController extends Controller
         'role' => 'propietario' //cambia el rol a propietario por crear la empresa
     ]);
 
-    $user = $request->user(); //cambio el rol del usuario a gerente de proyectos
-    if($user->hasRole('user') && !$user->hasRole('manager'))
-        {
-            $user->removeRole('user');
-            $user->assignRole('manager');
-        }
-
     /* Notificación */
+    $user = $request->user();
     $user->notify(
         new CompanyCreated($company)
     );
@@ -211,9 +207,10 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        $user = Auth::user(); //revoca el permiso de gerente de proyectos y lo devuelve a usuario
-        $user->removeRole('manager');
-        $user->assignRole('user');
+        /* Notificación */
+        $user = $company->owner;
+        $user->notify(
+            new CompanyDeleted($company));
 
         return redirect()->route('companies.index')->with('success', 'Empresa eliminada exitosamente.');
     }
