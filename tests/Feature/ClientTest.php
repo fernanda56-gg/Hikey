@@ -7,13 +7,18 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Project;
 use App\Models\Area;
-use Database\Seeders\RolePermissionSeeder;
+use Spatie\Permission\Models\Role;
 use Database\Seeders\AreaSeeder;
 
 test('El usuario con rol MANAGER puede visualizar la lista de clientes de su empresa', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
+
     $user->assignRole('manager');
 
     $company = Company::factory()->create([
@@ -27,9 +32,12 @@ test('El usuario con rol MANAGER puede visualizar la lista de clientes de su emp
 });
 
 test('El usuario con rol ADMIN puede visualizar la lista de clientes', function () {
+    /* se crea rol para usuario */
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $user->assignRole('admin');
 
     $response = actingAs($user)
@@ -38,9 +46,12 @@ test('El usuario con rol ADMIN puede visualizar la lista de clientes', function 
 });
 
 test('Usuario con otro tipo de rol no puede visualizar la lista de clientes', function () {
+    /* se crea rol para usuario */
+    Role::create(['name' => 'user']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $user->assignRole('user');
 
     $response = actingAs($user)
@@ -49,10 +60,13 @@ test('Usuario con otro tipo de rol no puede visualizar la lista de clientes', fu
 });
 
 test('El usuario con rol MANAGER puede visualizar la lista de proyectos vinculados al cliente', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -86,10 +100,14 @@ test('El usuario con rol MANAGER puede visualizar la lista de proyectos vinculad
 });
 
 test('El usuario con rol ADMIN puede visualizar la lista de proyectos vinculados al cliente', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -127,10 +145,13 @@ test('El usuario con rol ADMIN puede visualizar la lista de proyectos vinculados
 });
 
 test('El usuario con rol MANAGER puede editar la info del cliente', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -173,10 +194,14 @@ test('El usuario con rol MANAGER puede editar la info del cliente', function () 
 });
 
 test('El usuario con rol ADMIN puede editar la info del cliente', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -224,10 +249,13 @@ test('El usuario con rol ADMIN puede editar la info del cliente', function () {
 });
 
 test('El usuario con rol MANAGER puede hacer soft delete y restaurar clientes', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -256,7 +284,7 @@ test('El usuario con rol MANAGER puede hacer soft delete y restaurar clientes', 
     $response = actingAs($manager)
     ->delete(route('clients.destroy', $client));
 
-    $this->assertSoftDeleted('clients', ['id' => $client->id]);
+    expect($client->fresh()->deleted_at)->not->toBeNull();
     $client->restore();
     $client->refresh();
 
@@ -264,10 +292,13 @@ test('El usuario con rol MANAGER puede hacer soft delete y restaurar clientes', 
 });
 
 test('El usuario con rol MANAGER puede hacer soft delete y eliminar definitivamente clientes', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -296,18 +327,22 @@ test('El usuario con rol MANAGER puede hacer soft delete y eliminar definitivame
     $response = actingAs($manager)
     ->delete(route('clients.destroy', $client));
 
-    $this->assertSoftDeleted('clients', ['id' => $client->id]);
+    expect($client->fresh()->deleted_at)->not->toBeNull();
     $client->forceDelete();
     $client->refresh();
 
-    expect($client->deleted_at)->toBeNull();
+    expect(Client::find($client->id))->toBeNull();
 });
 
 test('El usuario con rol ADMIN puede hacer soft delete y restaurar clientes', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -341,7 +376,7 @@ test('El usuario con rol ADMIN puede hacer soft delete y restaurar clientes', fu
     $response = actingAs($admin)
     ->delete(route('clients.destroy', $client));
 
-    $this->assertSoftDeleted('clients', ['id' => $client->id]);
+    expect($client->fresh()->deleted_at)->not->toBeNull();
     $client->restore();
     $client->refresh();
 
@@ -349,10 +384,14 @@ test('El usuario con rol ADMIN puede hacer soft delete y restaurar clientes', fu
 });
 
 test('El usuario con rol ADMIN puede hacer soft delete y eliminar definitivamente clientes', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -386,7 +425,7 @@ test('El usuario con rol ADMIN puede hacer soft delete y eliminar definitivament
     $response = actingAs($admin)
     ->delete(route('clients.destroy', $client));
 
-    $this->assertSoftDeleted('clients', ['id' => $client->id]);
+    expect($client->fresh()->deleted_at)->not->toBeNull();
     $client->forceDelete();
     $client->refresh();
 
@@ -394,10 +433,13 @@ test('El usuario con rol ADMIN puede hacer soft delete y eliminar definitivament
 });
 
 test('El usuario con rol MANAGER puede crear clientes', function () {
-    //* generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -444,10 +486,14 @@ test('El usuario con rol MANAGER puede crear clientes', function () {
 });
 
 test('El usuario con rol ADMIN puede crear clientes', function () {
-    //* generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -499,10 +545,13 @@ test('El usuario con rol ADMIN puede crear clientes', function () {
 });
 
 test('El usuario con rol MANAGER puede vincular a un cliente con un proyecto', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
 
     // se genera la empresa
@@ -543,11 +592,16 @@ test('El usuario con rol MANAGER puede vincular a un cliente con un proyecto', f
 });
 
 test('El usuario con rol ADMIN puede vincular a un cliente con un proyecto', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
+
 
     // se genera la empresa
     $company = Company::factory()->create([
@@ -592,11 +646,15 @@ test('El usuario con rol ADMIN puede vincular a un cliente con un proyecto', fun
 });
 
 test('El usuario con rol MANAGER puede desvincular a un cliente de un proyecto', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
+
 
     // se genera la empresa
     $company = Company::factory()->create([
@@ -641,11 +699,16 @@ test('El usuario con rol MANAGER puede desvincular a un cliente de un proyecto',
 });
 
 test('El usuario con rol ADMIN puede desvincular a un cliente de un proyecto', function () {
-    //*generamos el manager
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $manager */
     $manager = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $manager->assignRole('manager');
+
 
     // se genera la empresa
     $company = Company::factory()->create([
@@ -695,11 +758,16 @@ test('El usuario con rol ADMIN puede desvincular a un cliente de un proyecto', f
 });
 
 test('El usuario puede filtrar por nombre del cliente', function () {
-    //*generamos al admin
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
+
 
     //* generamos los otros 2 usuarios
     $user_a = User::factory()->create();
@@ -782,10 +850,14 @@ test('El usuario puede filtrar por nombre del cliente', function () {
 });
 
 test('El usuario puede filtrar por nombre del proyecto', function () {
-    //*generamos al admin
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
 
     //* generamos los otros 2 usuarios
@@ -869,10 +941,14 @@ test('El usuario puede filtrar por nombre del proyecto', function () {
 });
 
 test('El usuario puede filtrar por nombre de la empresa', function () {
-    //*generamos al admin
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
 
     //* generamos los otros 2 usuarios
@@ -956,10 +1032,14 @@ test('El usuario puede filtrar por nombre de la empresa', function () {
 });
 
 test('El usuario no introduce nada en los filtros y retorna todos los registros', function () {
-    //*generamos al admin
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
 
     //* generamos los otros 2 usuarios
@@ -1044,10 +1124,14 @@ test('El usuario no introduce nada en los filtros y retorna todos los registros'
 });
 
 test('El usuario utiliza todos los filtros', function () {
-    //*generamos al admin
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
 
     //* generamos los otros 2 usuarios
@@ -1133,10 +1217,14 @@ test('El usuario utiliza todos los filtros', function () {
 });
 
 test('El filtro no retorna nada si no hay coincidencias', function () {
-    //*generamos al admin
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
 
     //* generamos los otros 2 usuarios

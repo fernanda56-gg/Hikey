@@ -93,9 +93,9 @@ class Project extends Model
     }
 
     #[Scope]
-    protected function filter(Builder $query, array $filters): void
+    protected function filter(Builder $query, array $filters): Builder
     {
-        $query
+        return $query
             ->when(
                 $filters['status'] ?? false, //Evalúa la condición si existe el valor o no
                 fn($query, $value) => $query->where('status', $value)

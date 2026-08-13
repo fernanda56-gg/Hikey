@@ -7,7 +7,8 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\Project;
 use Database\Seeders\AreaSeeder;
-use Database\Seeders\RolePermissionSeeder;
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
 test('El usuario puede visualizar la vista de proyectos', function () {
@@ -20,22 +21,27 @@ test('El usuario puede visualizar la vista de proyectos', function () {
 });
 
 test('El usuario puede visualizar la vista de crear proyectos', function () {
+    /* se crea el rol de usuario */
+    Role::create(['name' => 'admin']);
+
+    /* se genera el usuario */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $user->assignRole('admin');
-    $user->givePermissionTo('create projects');
-    actingAs($user);
 
+    actingAs($user);
     $response = get(route('projects.create'));
     $response->assertStatus(200);
 });
 
 
 test('El usuario puede crear proyectos', function () {
-    /** @var \App\Models\User $user */
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
 
     /* el usuario se genera */
+    /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
     /* se crea una compañía, asignamos que el dueño de la empresa es el usuario creado */
@@ -70,9 +76,12 @@ test('El usuario puede crear proyectos', function () {
 });
 
 test('El usuario puede visualizar un proyecto en especifico', function () {
-    /** @var \App\Models\User $user */
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
 
     /* el usuario se genera */
+    /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
     /* se crea la empresa, el usuario creado es el dueño de la empresa */
@@ -93,7 +102,6 @@ test('El usuario puede visualizar un proyecto en especifico', function () {
     ]);
 
     actingAs($user);
-
     get(route('projects.show', $project))
     ->assertOk()
     ->assertSee($project->name)
@@ -101,6 +109,10 @@ test('El usuario puede visualizar un proyecto en especifico', function () {
 });
 
 test('El usuario no puede editar el proyecto si no es dueño de este', function () {
+    /* se crean los roles para usuarios */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /* se genera al usuario dueño del proyecto y al usuario normal */
     $owner = User::factory()->create();
 
@@ -130,6 +142,11 @@ test('El usuario no puede editar el proyecto si no es dueño de este', function 
 
 
 test('El usuario puede editar proyectos', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -166,14 +183,17 @@ test('El usuario puede editar proyectos', function () {
     $response->assertSessionHasNoErrors()
     ->assertRedirect(route('projects.show', $project));
 
-    $this->assertDatabaseHas('projects', [
-        'id' => $project->id,
-        'name' => 'Titulo nuevo',
-        'description' => 'Sinopsis nueva',
-    ]);
+    expect($project->fresh())
+    ->name->toBe('Titulo nuevo')
+    ->description->toBe('Sinopsis nueva');
 });
 
 test('El usuario puede hacer soft delete y restaurar el proyecto', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -196,7 +216,8 @@ test('El usuario puede hacer soft delete y restaurar el proyecto', function () {
 
     //* Se elimina el proyecto y aseguramos que este en el soft delete
     $project->delete();
-    $this->assertSoftDeleted('projects', ['id' => $project->id]);
+    /* $this->assertSoftDeleted('projects', ['id' => $project->id]); */
+    expect($project->fresh()->deleted_at)->not->toBeNull(); // ? alternativa a assertSoftDeleted
 
     //* Restauramos el proyecto, refrescamos la BD y esperamos que el timestamp de deleted_at este en NULL
     $project->restore();
@@ -206,6 +227,11 @@ test('El usuario puede hacer soft delete y restaurar el proyecto', function () {
 });
 
 test('El usuario puede hacer soft delete y eliminar definitivamente', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -228,17 +254,24 @@ test('El usuario puede hacer soft delete y eliminar definitivamente', function (
 
     //* Se elimina el proyecto y aseguramos que este en el soft delete
     $project->delete();
-    $this->assertSoftDeleted('projects', ['id' => $project->id]);
+    expect($project->fresh()->deleted_at)->not->toBeNull();
 
     //* Forzamos la eliminación del proyecto, refrescamos la BD y aseguramos que ya no este el proyecto en la tabla
     $project->forceDelete();
     $project->refresh();
-    $this->assertDatabaseMissing('projects', ['id' => $project->id] );
+
+    /* $this->assertDatabaseMissing('projects', ['id' => $project->id] ); */
+    expect(Project::find($project->id))->toBeNull(); // ? alternativa del assertDatabaseMissing
     expect(Project::withTrashed()->find($project->id))->toBeNull();
 
 });
 
 test('El usuario puede filtrar los proyectos por nombre', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -275,6 +308,11 @@ test('El usuario puede filtrar los proyectos por nombre', function () {
 });
 
 test('El usuario puede filtrar los proyectos por area', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -309,6 +347,11 @@ test('El usuario puede filtrar los proyectos por area', function () {
 });
 
 test('El usuario puede filtrar los proyectos por su estatus', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -358,6 +401,11 @@ test('El usuario puede filtrar los proyectos por su estatus', function () {
 });
 
 test('El usuario no coloca nada en los filtros y retorna todos los registros', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -414,6 +462,11 @@ test('El usuario no coloca nada en los filtros y retorna todos los registros', f
 });
 
 test('El usuario utiliza los 3 filtros y da un registro en especifico', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -471,6 +524,11 @@ test('El usuario utiliza los 3 filtros y da un registro en especifico', function
 });
 
 test('El filtro no retorna nada si no hay coincidencias con la información', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
