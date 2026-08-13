@@ -55,14 +55,16 @@ class Project extends Model
     public function leader() //Relación N:N utilizando tabla pivote para establecer equipos
     {
         return $this->belongsToMany(User::class, 'project_team')
-                    ->withPivot('role', 'Lider')
+                    ->wherePivot('role', 'Lider')
+                    ->withPivot('role')
                     ->withTimestamps();
     }
 
     public function members() //Relación N:N utilizando tabla pivote para establecer equipos
     {
         return $this->belongsToMany(User::class, 'project_team')
-                    ->withPivot('role', 'Miembro')
+                    ->wherePivot('role', 'Miembro')
+                    ->withPivot('role')
                     ->withTimestamps();
     }
 
