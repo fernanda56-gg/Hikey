@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Notifications\SendInvitation;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -268,7 +269,12 @@ class CompanyController extends Controller
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para ver esta empresa.');
             }
 
-        $query = $company->member()->mostRecent();
+        /* $query = $company->member()->mostRecent(); */
+        $query = $company->member()
+        ->with(['project_team' => function ($q) use ($company) {
+            $q->where('projects.company_id', $company->id)
+            ->select('projects.id', 'projects.name', 'projects.status');
+        }])->orderByDesc(DB::raw("(company_user.role = 'propietario')"))->mostRecent();
 
         /* filtro y paginación */
         $filters = $request->only(['name']);
@@ -289,7 +295,8 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function leaveCompany(Company $company, User $user){
+    public function leaveCompany(Company $company, User $user)
+    {
         if(Gate::denies('leaveCompany', $company))
             {
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para salir de esta empresa.');
