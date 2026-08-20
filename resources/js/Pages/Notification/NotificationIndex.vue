@@ -131,6 +131,13 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                             </div>
 
+                            <!-- Notificación de eliminación de empresa -->
+                            <div v-if="notification.type === 'App\\Notifications\\CompanyDeleted'" class="font-semibold">
+                                Tu empresa
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                ha sido eliminada, puedes crear una nueva empresa o unirte a una
+                            </div>
+
                             <!-- * USUARIOS -->
                             <!-- Notificación de creación de usuario (ADMIN)-->
                             <div v-if="notification.type === 'App\\Notifications\\UserCreated'" class="font-semibold">

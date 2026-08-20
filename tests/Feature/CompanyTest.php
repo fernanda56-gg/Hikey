@@ -2,14 +2,19 @@
 
 use App\Models\User;
 use App\Models\Company;
-use Database\Seeders\RolePermissionSeeder;
+use App\Models\Project;
+use App\Models\Area;
+use App\Services\ProjectTeamService;
+use Database\Seeders\AreaSeeder;
+use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\{actingAs, get, seed};
 
 test('El usuario puede visualizar la pagina de empresa a pesar de no formar parte de una', function () {
+    Role::create(['name' => 'user']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $user->assignRole('user');
 
     actingAs($user);
@@ -18,9 +23,10 @@ test('El usuario puede visualizar la pagina de empresa a pesar de no formar part
 });
 
 test('El usuario puede visualizar la pagina de crear empresa', function () {
+    Role::create(['name' => 'user']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $user->assignRole('user');
 
     actingAs($user);
@@ -29,8 +35,12 @@ test('El usuario puede visualizar la pagina de crear empresa', function () {
 });
 
 test('El usuario puede visualizar la pagina de empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
+    $user->assignRole('user');
 
     $company = Company::factory()->create([
         'owner_id' => $user->id,
@@ -43,11 +53,11 @@ test('El usuario puede visualizar la pagina de empresa', function () {
 });
 
 test('El usuario puede crear una empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-
-    // se ejecuta el seeder y se le asigna el rol USER al usuario
-    seed(RolePermissionSeeder::class);
     $user->assignRole('user');
 
     // se crea la empresa
@@ -77,10 +87,12 @@ test('El usuario puede crear una empresa', function () {
 });
 
 test('El usuario puede editar la información de la empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
-    $user->assignRole('manager');
+    $user->assignRole('user');
 
     $company = Company::factory()->create([
         'owner_id' => $user->id,
@@ -104,19 +116,19 @@ test('El usuario puede editar la información de la empresa', function () {
     $response->assertSessionHasNoErrors()
     ->assertRedirect(route('companies.show', $company));
 
-    $this->assertDatabaseHas('companies', [
-        'id' => $company->id,
-        'name' => 'Empresa X',
-        'city' => 'London',
-        'country' => 'United Kingdom',
-    ]);
+    expect($company->fresh())
+    ->name->toBe('Empresa X')
+    ->city->toBe('London')
+    ->country->toBe('United Kingdom');
 });
 
 test('El usuario puede eliminar su empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
-    $user->assignRole('manager');
+    $user->assignRole('user');
 
     $company = Company::factory()->create([
         'owner_id' => $user->id,
@@ -140,13 +152,17 @@ test('El usuario puede eliminar su empresa', function () {
 });
 
 test('El usuario puede visualizar la pagina de miembros de la empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
+    $user->assignRole('user');
 
     $company = Company::factory()->create([
         'owner_id' => $user->id,
     ]);
-    $user->companies()->attach($company->id); // vinculamos al usuario con la empresa
+    $user->companies()->attach($company->id);
 
     actingAs($user);
     $response = get(route('companies.listMember', $company))
@@ -154,12 +170,14 @@ test('El usuario puede visualizar la pagina de miembros de la empresa', function
 });
 
 test('El usuario puede sacar a miembros de la empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $owner, $member */
     $owner =  User::factory()->create();
     $member = User::factory()->create();
 
     //se asignan roles para ambos usuarios
-    seed(RolePermissionSeeder::class);
     $owner->assignRole('manager');
     $member->assignRole('user');
 
@@ -184,10 +202,12 @@ test('El usuario puede sacar a miembros de la empresa', function () {
 });
 
 test('El dueño de la empresa no puede salir de la empresa', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
-    $user->assignRole('manager');
+    $user->assignRole('user');
 
     $company = Company::factory()->create([
         'owner_id' => $user->id,
@@ -208,7 +228,9 @@ test('El dueño de la empresa no puede salir de la empresa', function () {
 });
 
 test('El usuario puede mandar correo con código de invitación a otros usuarios', function () {
-    //* se generan los 2 usuarios
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $owner */
     $owner =  User::factory()->create();
 
@@ -218,7 +240,6 @@ test('El usuario puede mandar correo con código de invitación a otros usuarios
     ]);
 
     //se asignan roles
-    seed(RolePermissionSeeder::class);
     $owner->assignRole('manager');
 
     // se vincula al usuario owner con la empresa
@@ -238,7 +259,9 @@ test('El usuario puede mandar correo con código de invitación a otros usuarios
 });
 
 test('El usuario no puede mandar correo con código de invitación por no tener los permisos necesarios', function () {
-    //* se generan los 2 usuarios
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $owner */
     $owner =  User::factory()->create();
 
@@ -251,7 +274,6 @@ test('El usuario no puede mandar correo con código de invitación por no tener 
     ]);
 
     //se asignan roles
-    seed(RolePermissionSeeder::class);
     $owner->assignRole('manager');
     $member->assignRole('user');
 
@@ -270,17 +292,16 @@ test('El usuario no puede mandar correo con código de invitación por no tener 
     $response->assertForbidden();
 });
 
-
-
 test('El usuario puede unirse a la empresa', function () {
-    //* se generan los 2 usuarios
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $owner */
     $owner =  User::factory()->create();
     /** @var \App\Models\User $member */
     $member = User::factory()->create();
 
     //se asignan roles para ambos usuarios
-    seed(RolePermissionSeeder::class);
     $owner->assignRole('manager');
     $member->assignRole('user');
 
@@ -312,9 +333,11 @@ test('El usuario puede unirse a la empresa', function () {
 });
 
 test('El usuario no puede unirse a la empresa con el código incorrecto', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    seed(RolePermissionSeeder::class);
     $user->assignRole('user');
 
     $response = actingAs($user)
@@ -326,13 +349,16 @@ test('El usuario no puede unirse a la empresa con el código incorrecto', functi
 });
 
 test('El usuario con rol de ADMIN puede visualizar el listado de empresas', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -348,13 +374,16 @@ test('El usuario con rol de ADMIN puede visualizar el listado de empresas', func
 });
 
 test('El usuario con rol ADMIN puede ver una empresa en especifico', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -370,13 +399,16 @@ test('El usuario con rol ADMIN puede ver una empresa en especifico', function ()
 });
 
 test('El usuario ADMIN puede filtrar por nombre a las empresas', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -403,13 +435,16 @@ test('El usuario ADMIN puede filtrar por nombre a las empresas', function () {
 });
 
 test('El usuario ADMIN puede filtrar por la ciudad de las empresas', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -436,13 +471,16 @@ test('El usuario ADMIN puede filtrar por la ciudad de las empresas', function ()
 });
 
 test('El usuario ADMIN puede filtrar por el país de las empresas', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -469,13 +507,16 @@ test('El usuario ADMIN puede filtrar por el país de las empresas', function () 
 });
 
 test('El usuario ADMIN no coloca nada en los filtros y retorna todos los registros', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -509,13 +550,16 @@ test('El usuario ADMIN no coloca nada en los filtros y retorna todos los registr
 });
 
 test('El usuario ADMIN utiliza los 3 filtros y da un registro en especifico', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -550,13 +594,16 @@ test('El usuario ADMIN utiliza los 3 filtros y da un registro en especifico', fu
 });
 
 test('El filtro no retorna nada si no hay coincidencias', function () {
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'admin']);
+
     /** @var \App\Models\User $admin */
     $admin = User::factory()->create();
 
     /** @var \App\Models\User $owner */
     $owner = User::factory()->create();
 
-    seed(RolePermissionSeeder::class);
     $admin->assignRole('admin');
     $owner->assignRole('manager');
 
@@ -589,3 +636,60 @@ test('El filtro no retorna nada si no hay coincidencias', function () {
     expect($filter)->toBeEmpty();
 });
 
+test('La lista de miembros de la empresa incluye los proyectos en los que este trabajando', function () {
+    /* se generan los roles */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* se crea usuario manager y empresa */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario de prueba y vincularlo con la empresa y proyecto */
+    $user = User::factory()->create();
+    $company->member()->attach($user);
+    $project->users()->attach($user, ['role' => 'Miembro']);
+
+    /* generar datos de otra empresa para la prueba */
+    $otherUser = User::factory()->create();
+    $otherCompany = Company::factory()->create([
+        'owner_id' => $otherUser->id
+    ]);
+    $otherProject = Project::factory()->create([
+        'by_user_id' => $otherUser->id,
+        'area_id' => $area,
+        'company_id' => $otherCompany->id
+    ]);
+    $otherProject->users()->attach($otherUser, ['role' => 'Miembro']);
+
+    /* probar que de los datos del $user de $company y no los de $otherCompany */
+    $response = actingAs($manager)
+    ->get(route('companies.listMember', $company));
+
+    $response->assertInertia( fn ($page) => $page
+            ->component('Company/MemberListCompany')
+            ->where('members.data', function ($members) use ($user, $project) {
+                $memberData = collect($members)->firstWhere('id', $user->id);
+
+                return $memberData !== null
+                    && count($memberData['project_team']) === 1
+                    && $memberData['project_team'][0]['id'] === $project->id;
+            })
+    );
+});

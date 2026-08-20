@@ -9,10 +9,9 @@ use App\Notifications\TeamProjectMembers;
 use App\Notifications\TeamProjectRemoveLeader;
 use App\Notifications\TeamProjectRemoveMember;
 use App\Services\ProjectTeamService;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
-use function Pest\Laravel\json;
 
 class ProjectTeamController extends Controller
 {
@@ -109,7 +108,7 @@ public function index(Project $project)
 
         $this->teamService->removeLeader($project, $user);
         $user->notify(new TeamProjectRemoveLeader($project));
-        
+
         return back()->with('success', 'Lider de equipo removido exitosamente');
     }
 }

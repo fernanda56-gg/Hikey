@@ -76,9 +76,9 @@ class ProjectTeamService{
     }
 
     // * función para cambiar de rol a líder
-    public function changeRole(Project $project, User $user, string $newRole)
+    public function changeRole(Project $project, User $user, string $role)
     {
-        if($newRole === 'Lider'){
+        if($role === 'Lider'){
             $currentLeader = $project->users()->wherePivot('role', 'Lider')->first();
 
             // ? Si ya existe un líder para el proyecto marcara error
@@ -90,7 +90,7 @@ class ProjectTeamService{
         }
 
         // * actualizar el rol
-        $project->users()->updateExistingPivot($user->id, ['role' => $newRole]);
+        $project->users()->updateExistingPivot($user->id, ['role' => $role]);
 
         // * actualiza el rol con spatie
         $this->spatieRole($user);

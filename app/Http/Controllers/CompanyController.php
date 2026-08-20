@@ -7,14 +7,17 @@ use App\Models\Company;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Notifications\CompanyCreated;
+use App\Notifications\CompanyDeleted;
 use App\Notifications\CompanyEdited;
 use App\Notifications\CompanyJoin;
 use App\Notifications\CompanyLeave;
+use App\Notifications\DeletedCompany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Notifications\SendInvitation;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -88,14 +91,8 @@ class CompanyController extends Controller
         'role' => 'propietario' //cambia el rol a propietario por crear la empresa
     ]);
 
-    $user = $request->user(); //cambio el rol del usuario a gerente de proyectos
-    if($user->hasRole('user') && !$user->hasRole('manager'))
-        {
-            $user->removeRole('user');
-            $user->assignRole('manager');
-        }
-
     /* Notificación */
+    $user = $request->user();
     $user->notify(
         new CompanyCreated($company)
     );
@@ -211,9 +208,10 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        $user = Auth::user(); //revoca el permiso de gerente de proyectos y lo devuelve a usuario
-        $user->removeRole('manager');
-        $user->assignRole('user');
+        /* Notificación */
+        $user = $company->owner;
+        $user->notify(
+            new CompanyDeleted($company));
 
         return redirect()->route('companies.index')->with('success', 'Empresa eliminada exitosamente.');
     }
@@ -271,7 +269,12 @@ class CompanyController extends Controller
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para ver esta empresa.');
             }
 
-        $query = $company->member()->mostRecent();
+        /* $query = $company->member()->mostRecent(); */
+        $query = $company->member()
+        ->with(['project_team' => function ($q) use ($company) {
+            $q->where('projects.company_id', $company->id)
+            ->select('projects.id', 'projects.name', 'projects.status');
+        }])->orderByDesc(DB::raw("(company_user.role = 'propietario')"))->mostRecent();
 
         /* filtro y paginación */
         $filters = $request->only(['name']);
@@ -292,7 +295,8 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function leaveCompany(Company $company, User $user){
+    public function leaveCompany(Company $company, User $user)
+    {
         if(Gate::denies('leaveCompany', $company))
             {
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para salir de esta empresa.');

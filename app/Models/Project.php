@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Observers\ProjectObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy([ProjectObserver::class])]
 class Project extends Model
 {
     //
@@ -52,14 +55,16 @@ class Project extends Model
     public function leader() //Relación N:N utilizando tabla pivote para establecer equipos
     {
         return $this->belongsToMany(User::class, 'project_team')
-                    ->withPivot('role', 'Lider')
+                    ->wherePivot('role', 'Lider')
+                    ->withPivot('role')
                     ->withTimestamps();
     }
 
     public function members() //Relación N:N utilizando tabla pivote para establecer equipos
     {
         return $this->belongsToMany(User::class, 'project_team')
-                    ->withPivot('role', 'Miembro')
+                    ->wherePivot('role', 'Miembro')
+                    ->withPivot('role')
                     ->withTimestamps();
     }
 
@@ -90,9 +95,9 @@ class Project extends Model
     }
 
     #[Scope]
-    protected function filter(Builder $query, array $filters): void
+    protected function filter(Builder $query, array $filters): Builder
     {
-        $query
+        return $query
             ->when(
                 $filters['status'] ?? false, //Evalúa la condición si existe el valor o no
                 fn($query, $value) => $query->where('status', $value)

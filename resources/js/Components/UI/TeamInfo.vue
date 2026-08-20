@@ -59,7 +59,7 @@
                                             <PhArrowFatLinesUp class="size-4 text-neutral" weight="fill" />
                                         </button>
 
-                                        <!-- boton para quitar rol de lider -->
+                                        <!-- botón para quitar rol de líder -->
                                         <button v-if="user.pivot.role === 'Lider' && canManageLeader"
                                             @click="removeLeader(user.id)"
                                             :preserve-scroll="true"
@@ -76,7 +76,7 @@
                                             <PhX class="size-4 text-neutral" weight="bold" />
                                         </Link>
 
-                                        <!-- botón para copiar correo electronico de integrante -->
+                                        <!-- botón para copiar correo electrónico de integrante -->
                                         <button :data-tip="copyText"
                                                 @click="copy(user.email)"
                                                 class="btn btn-square btn-sm border-0 hover:bg-mist-300/50">
