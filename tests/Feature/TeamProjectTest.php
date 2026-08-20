@@ -246,7 +246,7 @@ test('El usuario admin puede agregar miembros a un equipo', function () {
     }
 });
 
-test('El usuario manager puede hacer lider a un integrante del equipo', function () {
+test('El usuario manager puede hacer líder a un integrante del equipo', function () {
     /* se generan los roles */
     Role::create(['name' => 'user']);
     Role::create(['name' => 'manager']);

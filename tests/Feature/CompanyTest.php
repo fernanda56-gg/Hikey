@@ -2,7 +2,10 @@
 
 use App\Models\User;
 use App\Models\Company;
-use Database\Seeders\RolePermissionSeeder;
+use App\Models\Project;
+use App\Models\Area;
+use App\Services\ProjectTeamService;
+use Database\Seeders\AreaSeeder;
 use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\{actingAs, get, seed};
@@ -159,7 +162,7 @@ test('El usuario puede visualizar la pagina de miembros de la empresa', function
     $company = Company::factory()->create([
         'owner_id' => $user->id,
     ]);
-    $user->companies()->attach($company->id); // vinculamos al usuario con la empresa
+    $user->companies()->attach($company->id);
 
     actingAs($user);
     $response = get(route('companies.listMember', $company))
@@ -633,3 +636,60 @@ test('El filtro no retorna nada si no hay coincidencias', function () {
     expect($filter)->toBeEmpty();
 });
 
+test('La lista de miembros de la empresa incluye los proyectos en los que este trabajando', function () {
+    /* se generan los roles */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* se crea usuario manager y empresa */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario de prueba y vincularlo con la empresa y proyecto */
+    $user = User::factory()->create();
+    $company->member()->attach($user);
+    $project->users()->attach($user, ['role' => 'Miembro']);
+
+    /* generar datos de otra empresa para la prueba */
+    $otherUser = User::factory()->create();
+    $otherCompany = Company::factory()->create([
+        'owner_id' => $otherUser->id
+    ]);
+    $otherProject = Project::factory()->create([
+        'by_user_id' => $otherUser->id,
+        'area_id' => $area,
+        'company_id' => $otherCompany->id
+    ]);
+    $otherProject->users()->attach($otherUser, ['role' => 'Miembro']);
+
+    /* probar que de los datos del $user de $company y no los de $otherCompany */
+    $response = actingAs($manager)
+    ->get(route('companies.listMember', $company));
+
+    $response->assertInertia( fn ($page) => $page
+            ->component('Company/MemberListCompany')
+            ->where('members.data', function ($members) use ($user, $project) {
+                $memberData = collect($members)->firstWhere('id', $user->id);
+
+                return $memberData !== null
+                    && count($memberData['project_team']) === 1
+                    && $memberData['project_team'][0]['id'] === $project->id;
+            })
+    );
+});
