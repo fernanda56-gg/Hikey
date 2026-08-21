@@ -19,6 +19,7 @@
     - [Unirse a empresa](/{{route}}/{{version}}/company/join-company)
     - [Abandonar empresa](/{{route}}/{{version}}/company/leave-company)
     - [Lista de miembros](/{{route}}/{{version}}/company/members-list)
+    - [Invitación a usuarios](/{{route}}/{{version}}/company/send-invitation)
 
 - ## Proyectos
     - [Crear proyecto](/{{route}}/{{version}}/projects/create-project)

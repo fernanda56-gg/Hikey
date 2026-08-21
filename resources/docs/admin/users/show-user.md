@@ -13,7 +13,7 @@ Ve al apartado de **Usuario** y selecciona **Lista de usuario**.
 
 <br/>
 
-<img src="/images/admin-img/user-list.png" width="80%" height="80%"/>
+<img src="/images/admin-img/user-list-2.png" width="80%" height="80%"/>
 
 <br/>
 

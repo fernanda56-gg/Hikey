@@ -20,7 +20,7 @@ Llena el formulario con la información solicitada, una vez llenado el formulari
 
 Una vez generada la empresa recibirás una notificación y seras redirigido a una nueva pagina que te mostrara toda la información de tu empresa. En este apartado podrás editar, eliminar y visualizar los miembros de tu empresa.
 
-<img src="/images/user-img/company-info.png" width="90%" height="90%"/>
+<img src="/images/user-img/company-info-2.png" width="90%" height="90%"/>
 
 > {warning} Al crear una empresa, el rol del usuario se actualiza a `Gerente`.
 

@@ -26,7 +26,7 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 
 | Permisos | Admin | Gerente | Líder de equipo | Usuario |
 | : | : | : | : | : |
-| Ver usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Visualizar usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Generar usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Modificar usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Eliminar usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
@@ -35,17 +35,18 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 
 | Permisos | Admin | Gerente | Líder de equipo | Usuario |
 | : | : | : | : | : |
-| Ver proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
+| Visualizar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Crear proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Editar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Eliminar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Actualizar fechas | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 
+
 ### Clientes
 
 | Permisos | Admin | Gerente | Líder de equipo | Usuario |
 | : | : | : | : | : |
-| Ver clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
+| Visualizar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Crear clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Editar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Eliminar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
@@ -56,7 +57,7 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 ### Empresas
 | Permisos | Admin | Gerente | Líder de equipo | Usuario |
 | : | : | : | : | : |
-| Ver empresa | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
+| Visualizar empresa | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Crear empresa | <img src="/images/x-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Editar empresa | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Eliminar empresa | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
@@ -64,8 +65,19 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 | Enviar invitación | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Verificar código | <img src="/images/x-bold.png" width="25" height="25"/> | <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Lista de Miembros | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
+| Visualizar proyectos de usuario | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Abandonar empresa | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Invitar usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 
 
 > {info} Al momento de crear una nueva empresa, se actualiza el rol de usuario a `Gerente`, y cuando se elimina la empresa, se actualiza el rol a `Usuario`.
 
+### Equipos
+| Permisos | Admin | Gerente | Líder de equipo | Usuario |
+| : | : | : | : | : |
+| Crear equipo | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Asignar líder de equipo | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Agregar miembros | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Sacar miembro | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Remover líder de equipo | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Visualizar equipo | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
