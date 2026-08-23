@@ -19,7 +19,7 @@ const notyf = new Notyf({
 })
 
 //router se encarga de manejar los eventos de inertia
-router.on('finish', () => {
+router.on('navigate', () => {
     const flash = page.props.flash
 
     if (flash?.success) { //evento en caso de éxito
@@ -32,4 +32,12 @@ router.on('finish', () => {
     flash.error = null
     }
 })
+
+/* watch(
+    () => page.props.flash,
+    (flash) => {
+        if (flash?.success) notyf.success(flash.success)
+        if (flash?.error) notyf.error(flash.error)
+    }
+) */
 </script>
