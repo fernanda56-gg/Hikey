@@ -1,4 +1,4 @@
-# Miembro de equipo
+# Manager
 
 ---
 
@@ -24,7 +24,7 @@ Dentro de la tabla de disponibilidad de usuarios te pueden aparecer tres tipos d
 
 <br/>
 
-<img src="/images/admin-img/available-members.png" width="70%" height="70%"/>
+<img src="/images/manager-img/available-members.png" width="70%" height="70%"/>
 
 <a name="section-remove-member"></a>
 

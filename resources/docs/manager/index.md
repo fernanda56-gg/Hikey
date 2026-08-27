@@ -10,6 +10,7 @@
     - [Eliminar empresa](/{{route}}/{{version}}/company/delete-company)
     - [Lista de miembros](/{{route}}/{{version}}/company/members-list)
     - [Abandonar empresa](/{{route}}/{{version}}/company/leave-company)
+    - [Invitación a usuarios](/{{route}}/{{version}}/company/send-invitation)
 
 - ## Proyectos
     - [Crear proyecto](/{{route}}/{{version}}/projects/create-project)
@@ -23,3 +24,14 @@
     - [Editar cliente](/{{route}}/{{version}}/clients/edit-client)
     - [Eliminar cliente](/{{route}}/{{version}}/clients/delete-client)
     - [Vincular cliente](/{{route}}/{{version}}/clients/assign-client)
+
+- ## Equipos
+    - [Crear equipo](/{{route}}/{{version}}/teams/create-team)
+    - [Líder de equipo](/{{route}}/{{version}}/teams/leader-team)
+    - [Miembro de equipo](/{{route}}/{{version}}/teams/members-team)
+
+<!-- Las cosas que se deben de cambiar es edit, delete de empresa(imagenes),
+el show project (imagenes) 
+
+
+-->
