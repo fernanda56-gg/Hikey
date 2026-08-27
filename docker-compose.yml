@@ -1,6 +1,7 @@
 # se crea el volumen de nuestro dockerfile
 volumes:
     mariadb_data:
+    mailpit_data:
 
 # se crea la red de nuestro dockerfile
 networks:
@@ -41,7 +42,7 @@ services:
         volumes:
             - mariadb_data:/var/lib/mysql
         networks:
-            - hikey 
+            - hikey
 
     php:
         build:
@@ -113,7 +114,7 @@ services:
         image: axllent/mailpit:latest
         restart: unless-stopped
         volumes:
-            - ./data:/data
+            - mailpit_data:/data
         ports:
             - "8025:8025"
             - "1025:1025"

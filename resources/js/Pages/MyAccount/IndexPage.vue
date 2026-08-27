@@ -90,13 +90,16 @@
                                 Cancelar
                             </button>
 
-                            <button type="button" class="btn btn-sm ml-auto btn-error outline-none border-0 hover:duration-200 duration-200 hover:bg-red-700 p-2 rounded-lg text-white text-sm font-semibold cursor-pointer tracking-wide" onclick="my_modal_1.showModal()" @click="deleteAc.reset()">Borrar cuenta</button>
+                            <button type="button" class="btn btn-sm ml-auto btn-error outline-none border-0 hover:duration-200 duration-200 hover:bg-red-700 p-2 rounded-lg text-white text-sm font-semibold cursor-pointer tracking-wide"
+                                @click="deleteAcc.reset(); deleteAccountDialog?.showModal()">
+                                Borrar cuenta
+                            </button>
                         </div>
                     </form>
 
                     <!-- ! Modal para borrar cuenta -->
                     <div class="flex flex-row items-start md:space-x-4 space-x-2 mt-3">
-                        <dialog id="my_modal_1" class="modal">
+                        <dialog ref="deleteAccountDialog" class="modal">
                             <div class="modal-box">
 
                                 <!-- *contenedor de contraseña -->
@@ -273,6 +276,8 @@ const update = () => form.put(route('my-account.edit-account', {user: props.user
 const updatePassword = () => passForm.put(route('my-account.update-password', {user: props.user.id}))
 
 const deleteAccount = () => deleteAcc.delete(route('my-account.delete-account', {user: props.user.id}))
+
+const deleteAccountDialog = ref(null)
 </script>
 
 

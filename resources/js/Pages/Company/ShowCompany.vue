@@ -37,14 +37,15 @@
                     <div class="divider"></div>
                     <div class="space-x-6 md:space-x-0 md:space-y-4 flex flex-row md:flex-col items-start justify-start m-4">
                         <!-- botón para enviar código de invitación -->
-                        <button v-if="can?.sendInvitation" type="button" class="flex items-center gap-2 font-bold link link-hover hover:text-neutral hover:duration-200 duration-200" onclick="my_modal_1.showModal()" @click="showInviteModal = true">
+                        <button v-if="can?.sendInvitation" type="button" class="flex items-center gap-2 font-bold link link-hover hover:text-neutral hover:duration-200 duration-200"
+                            @click="showInviteModal = true; inviteDialog?.showModal()">
                             <PhEnvelopeSimpleOpen class="md:size-5 size-4" />
                             <span>Enviar invitación</span>
                         </button>
                     </div>
 
                     <!-- modal para código de invitación -->
-                    <dialog v-if="showInviteModal" open id="my_modal_1" class="modal">
+                    <dialog v-if="showInviteModal" ref="inviteDialog" class="modal">
                         <div class="modal-box">
                             <!-- input de modal -->
                             <fieldset class="fieldset">
@@ -103,4 +104,6 @@ const sendInvitation = () => {
         }
     })
 }
+
+const inviteDialog = ref(null)
 </script>

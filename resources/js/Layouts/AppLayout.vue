@@ -32,12 +32,4 @@ router.on('navigate', () => {
     flash.error = null
     }
 })
-
-/* watch(
-    () => page.props.flash,
-    (flash) => {
-        if (flash?.success) notyf.success(flash.success)
-        if (flash?.error) notyf.error(flash.error)
-    }
-) */
 </script>

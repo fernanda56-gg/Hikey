@@ -18,7 +18,7 @@
 
                 <!--Botón para unirte a una empresa-->
                 <div class="link text-neutral link-hover font-bold md:text-sm text-xs">
-                    <button type="button" class="btn btn-sm md:btn-md btn-link text-neutral" onclick="my_modal_1.showModal()" @click="form.reset()">
+                    <button type="button" class="btn btn-sm md:btn-md btn-link text-neutral" @click="form.reset() ; joinCompanyDialog?.showModal()">
                         <span>Unirse a empresa</span>
                         <PhCaretRight class="md:size-5 size-4" :weight="bold" />
                     </button>
@@ -26,7 +26,7 @@
             </div>
 
             <!-- modal para unirse a empresa -->
-            <dialog id="my_modal_1" class="modal">
+            <dialog ref="joinCompanyDialog" class="modal">
                 <div class="modal-box">
 
                     <!-- input del modal -->
@@ -71,6 +71,7 @@ import { PhPlus, PhCaretRight, PhWarningCircle } from '@phosphor-icons/vue';
 import { route } from 'ziggy-js';
 import CompanyTableInfo from '../../Components/UI/CompanyTableInfo.vue';
 import { usePermission } from '../../composables/usePermission';
+import { ref } from 'vue';
 
 defineProps(
     {'companies': Object,
@@ -86,4 +87,6 @@ const form = useForm({
 const {hasRole} = usePermission();
 
 const checkCode = () => form.post(route('companies.checkCode'));
+
+const joinCompanyDialog = ref(null)
 </script>
