@@ -13,6 +13,8 @@ Si olvidaste tu contraseña, no te preocupes, puedes recuperarla fácilmente. Pa
 
 En la página de inicio de sesión, haz click en el enlace de `¿Olvidaste tu contraseña?`, este enlace te llevará a la página de recuperación de contraseña.
 
+<br/>
+
 <img src="/images/all/change-password-1.png" width="50%" height="50%"/>
 
 ### Paso 2: Ingresar correo de recuperación
@@ -20,7 +22,7 @@ En la página de inicio de sesión, haz click en el enlace de `¿Olvidaste tu co
 El enlace te lleva a una página donde debes de ingresar el correo a donde se enviara el link de recuperación de contraseña, una vez ingresado el correo verifica tu bandeja de entrada y haz click en el botón de <larecipe-button type="info" size="sm" rounded>Restablecer contraseña</larecipe-button>
 <br/><br/>
 
-<img src="/images/all/change-password-2.png" width="50%" height="50%"/>
+<img src="/images/all/change-password-2.png" width="48%" height="48%"/>
 
 <img src="/images/all/change-password-3.png" width="25%" height="25%"/>
 

@@ -1,4 +1,4 @@
-# Invitación a usuarios a empresa
+# Invitación a nuevos usuarios a empresa
 
 ---
 

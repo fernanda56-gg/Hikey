@@ -11,6 +11,8 @@
 
 Para poder acceder a la lista de miembros ve al apartado **Empresa**, haz click en <img src="/images/all/user-list.png" width="24" height="24"/> miembros. Te mandara a la pagina de lista de miembros; aquí podrás ver la información de usuario como su nombre y correo, ademas cuanta con dos acciones que son abandonar empresa y un listado de todos los proyectos en los que ha colaborado el usuario.
 
+<br/>
+
 <img src="/images/user-img/list-member.png" width="90%" height="90%"/>
 
 > {warning} Solo el  `Propietario` de la empresa puede sacar a usuarios de la empresa, los demás usuarios solo pueden ver los proyectos en los que ha colaborado dicho usuario.
@@ -27,9 +29,13 @@ Puedes filtrar a los usuarios por su nombre, solo haz click en el botón de <lar
 
 Para conocer los proyectos en los que este trabajando un usuario ve al apartado **Empresa**, haz click en <img src="/images/all/kanban.png" width="24" height="24"/>, te mostrara una tabla con la información de los proyectos en los que el usuario este trabajando. 
 
+<br/>
+
 <img src="/images/user-img/member-projects-2.png" width="90%" height="90%"/> 
 <br/>
 
 En dado caso de que el usuario aún no haya colaborado en ningún proyecto mostrara el siguiente mensaje.
+
+<br/>
 
 <img src="/images/user-img/member-projects-1.png" width="90%" height="90%"/>

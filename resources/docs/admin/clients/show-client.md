@@ -10,6 +10,7 @@
 ## Lista de Usuarios
 
 Para visualizar la lista de clientes , ve al apartado de **Clientes**. 
+
 <br/>
 
 <img src="/images/admin-img/show-clients.png" width="80%" height="80%"/>
@@ -27,5 +28,7 @@ Puedes filtrar a los clientes por su nombre o proyecto, solo haz click en el bot
 ## Proyectos
 
 Para visualizar los proyectos a los que están vinculados los clientes , ve al apartado de **Clientes**, busca al cliente que quieras ver y presiona el botón <img src="/images/all/kanban.png" width="25" height="25"/>. Te mostrara nombre de los proyectos y dos botones uno para desvincular al cliente del proyecto y el otro para ir a la pagina de información del proyecto.
+
+<br/>
 
 <img src="/images/admin-img/client-project-2.png" width="80%" height="80%"/>

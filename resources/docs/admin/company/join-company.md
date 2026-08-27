@@ -14,6 +14,7 @@ Para unirse a una empresa, debemos de ir debemos ir al apartado de **Empresas**,
 
 Te solicitara que ingreses el código y presiones el botón <larecipe-button type="success" size="sm" rounded>Unirse</larecipe-button> . El sistema verificara el código proporcionado si es correcto te enviara a la pagina de información de la empresa, de lo contrario marcara **error** en el código proporcionado.
 
+<br/>
 
 <img src="/images/user-img/company-user-info.png" width="80%" height="80%"/>
 <br/>

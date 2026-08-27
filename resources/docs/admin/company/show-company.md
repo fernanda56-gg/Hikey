@@ -10,6 +10,8 @@
 
 Al contar con el rol de `Administrador`, tienes acceso a todas las empresas registradas en el sistema. Para ver la lista de empresas ve al apartado de **Empresa**. Aquí se mostrara una tabla con la información de todas las empresas.
 
+<br/>
+
 <img src="/images/admin-img/company-list.png" width="90%" height="90%"/>
 <br/>
 

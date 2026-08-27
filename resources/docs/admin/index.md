@@ -33,3 +33,8 @@
     - [Editar cliente](/{{route}}/{{version}}/clients/edit-client)
     - [Eliminar cliente](/{{route}}/{{version}}/clients/delete-client)
     - [Vincular cliente](/{{route}}/{{version}}/clients/attach-client)
+
+- ## Equipos
+    - [Crear equipo](/{{route}}/{{version}}/teams/create-team)
+    - [Líder de equipo](/{{route}}/{{version}}/teams/leader-team)
+    - [Miembro de equipo](/{{route}}/{{version}}/teams/members-team)

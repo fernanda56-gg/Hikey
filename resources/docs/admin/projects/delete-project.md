@@ -14,6 +14,8 @@ Tienes dos opciones, eliminar definitivamente el proyecto o mandarlo al apartado
 
 Para eliminar un proyecto, ve al apartado **Proyectos** y selecciona **Lista de Proyectos**. Cuando localices el proyecto haz click en <img src="/images/all/trash.png" width="24" height="24"/>, enviaras el proyecto al apartado de `eliminados` gracias al `soft delete`.
 
+<br/>
+
 <img src="/images/admin-img/project-trash.png" width="70%" height="70%"/>  
 
 
