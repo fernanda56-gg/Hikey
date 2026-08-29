@@ -7,6 +7,8 @@
 <a name="section-show"></a>
 ##Visualizar empresa
 
-Para visualizar la empresa a la que perteneces debes de ir al apartado de **Empresa**, ahi te mostrara todos los detalles sobre tu empresa.
+Para visualizar la empresa a la que perteneces, debes ir a la sección **Empresa**, ahí se mostrarán todos sus detalles.
 
-<img src="/images/leader-img/company-info.png" width="90%" height="90%"/>
+<br/>
+
+<img src="/images/leader-img/company-info-2.png" width="90%" height="90%"/>

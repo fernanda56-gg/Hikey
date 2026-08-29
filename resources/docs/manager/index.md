@@ -30,8 +30,4 @@
     - [Líder de equipo](/{{route}}/{{version}}/teams/leader-team)
     - [Miembro de equipo](/{{route}}/{{version}}/teams/members-team)
 
-<!-- Las cosas que se deben de cambiar es edit, delete de empresa(imagenes),
-el show project (imagenes) 
 
-
--->

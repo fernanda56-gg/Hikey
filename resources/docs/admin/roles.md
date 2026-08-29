@@ -67,7 +67,6 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 | Lista de Miembros | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Visualizar proyectos de usuario | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
 | Abandonar empresa | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
-| Invitar usuarios | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 
 
 > {info} Al momento de crear una nueva empresa, se actualiza el rol de usuario a `Gerente`, y cuando se elimina la empresa, se actualiza el rol a `Usuario`.

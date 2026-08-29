@@ -11,10 +11,14 @@
 ## Foto de Perfil
 
 El usuario puede cambiar su foto de perfil, por default todos los usuarios tienen una foto de perfil genérica, pero puede cambiarse.
-<br/><br/>
+
+<br/>
+
 <img src="/images/all/profile-photo.png" width="80%" height="80%"/>
 
 Para poder modificar la foto de perfil, el usuario tiene que hacer click en el botón <larecipe-button type="info" size="sm" rounded>Actualizar</larecipe-button>. Pedirá que selecciones una imagen de tu dispositivo, mostrará una vista previa, si estas conforme con tu nueva foto de perfil presiona el botón <larecipe-button type="info" size="sm" rounded>Aceptar</larecipe-button> .
+
+<br/>
 
 <img src="/images/all/profile-photo2.png" width="80%" height="80%"/>
 

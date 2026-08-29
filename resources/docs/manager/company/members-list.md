@@ -31,11 +31,11 @@ Para conocer los proyectos en los que este trabajando un usuario ve al apartado 
 
 <br/>
 
-<img src="/images/user-img/member-projects-2.png" width="90%" height="90%"/> 
+<img src="/images/admin-img/member-projects-2.png" width="90%" height="90%"/> 
 <br/>
 
 En dado caso de que el usuario aún no haya colaborado en ningún proyecto mostrara el siguiente mensaje.
 
 <br/>
 
-<img src="/images/user-img/member-projects-1.png" width="90%" height="90%"/>
+<img src="/images/admin-img/member-projects-1.png" width="90%" height="90%"/>
