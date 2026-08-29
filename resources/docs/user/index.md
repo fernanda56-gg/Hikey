@@ -14,3 +14,6 @@
 
 - ## Clientes
     - [Visualizar clientes](/{{route}}/{{version}}/clients/show-client)
+
+- ## Equipos
+    - [Visualizar equipo](/{{route}}/{{version}}/teams/show-team)
