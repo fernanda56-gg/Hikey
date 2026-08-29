@@ -208,7 +208,7 @@ class ClientController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Cliente eliminado exitosamente.');
+        return redirect()->route('clients.index')->with('success', 'Cliente eliminado exitosamente.');
     }
 
     public function trash()
