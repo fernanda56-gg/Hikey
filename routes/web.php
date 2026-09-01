@@ -81,7 +81,7 @@ Route::resource('companies', CompanyController::class)->only(['destroy'])->middl
 //Clientes
 Route::get('/projects/{project}/clients', [ClientController::class, 'create'])->name('clients.create')->middleware(['auth', 'verified']);
 Route::get('/clients/{client}/projects', [ClientController::class, 'clientProjects'])->name('clients.projects')->middleware(['auth', 'verified']);
-Route::get('/projects/{project}/clients/assign-client', [ClientController::class, 'assignClient'])->name('clients.projects.assign')->middleware(['auth', 'verified']);
+Route::get('/projects/{project}/clients/client-list', [ClientController::class, 'clientList'])->name('clients.projects.client-list')->middleware(['auth', 'verified']);
 Route::post('/projects/{project}/clients', [ClientController::class, 'attach'])->name('clients.projects.attach')->middleware(['auth', 'verified']);
 Route::delete('/clients/{client}/{project}/projects', [ClientController::class, 'detach'])->name('clients.projects.detach')->middleware(['auth', 'verified']);
 Route::get('clients/trash', [ClientController::class, 'trash'])->name('clients.trash')->middleware(['auth', 'verified']);

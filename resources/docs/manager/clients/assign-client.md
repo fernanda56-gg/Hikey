@@ -7,10 +7,10 @@
 <a name="section-attach"></a>
 ## Vincular cliente
 
-Para vincular a un cliente debes de ir al apartado de **Proyectos** selecciona **Listado de proyectos**, busca el proyecto al que quieras asignar el cliente, presiona el botón <img src="/images/all/eye.png" width="25" height="25"/>, te llevara a la visualización del proyecto ahi presiona el botón <larecipe-button type="success" size="sm" rounded>Asignar cliente</larecipe-button> , te llevara a la pagina que te mostrara todos tu cliente registrados, solo haz click en <img src="/images/all/star.png" width="25" height="25"/> del cliente que quieras vincular y listo te llevara de regreso a la pagina de visualización de proyecto pero ya podrás ver la información del cliente.
+Para vincular a un cliente debes de ir al apartado de **Proyectos** selecciona **Listado de proyectos**, busca el proyecto al que quieras asignar el cliente, presiona el botón <img src="/images/all/eye.png" width="25" height="25"/>, te llevara a la visualización del proyecto ahi presiona el botón <larecipe-button type="success" size="sm" rounded>Asignar cliente</larecipe-button> , te mostrara una tabla con todos los clientes registrados, solo haz click en **Asignar** y listo el cliente estará vinculado al proyecto y podrás ver su información.
 
 <br/>
-<img src="/images/admin-img/assign-client.png" width="70%" height="70%"/>
+<img src="/images/manager-img/attach-client.png" width="70%" height="70%"/>
 
 <a name="section-client-unlink"></a>
 ## Desvincular cliente

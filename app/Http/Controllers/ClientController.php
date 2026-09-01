@@ -208,7 +208,7 @@ class ClientController extends Controller
             }
         }
 
-        return redirect()->route('clients.index')->with('success', 'Cliente eliminado exitosamente.');
+        return redirect()->back()->with('success', 'Cliente eliminado exitosamente.');
     }
 
     public function trash()
@@ -247,24 +247,22 @@ class ClientController extends Controller
         return redirect()->route('clients.index')->with('success', 'Cliente recuperado con éxito.');
     }
 
-    public function assignClient(Project $project)
+    public function clientList(Project $project)
     {
         if(Gate::denies('assign', Client::class))
             {
                 return back()->with('error', 'No tienes los permisos necesarios para realizar esta acción.');
             }
         $user = Auth::user();
+
         if($user->hasRole('admin')){ //ADMIN: Puede ver todos los registros
-            $client = Client::all();
+            $clients = Client::all();
         }else{
             $company = $user->companies()->first(); //MANAGER: Solo puede ver los registros de su empresa
-            $client = Client::where('company_id', $company->id)->with('projects')->get();
+            $clients = Client::where('company_id', $company->id)->with('projects')->get();
         }
 
-        return inertia('Clients/AssignClient',[
-            'project' => $project,
-            'client' => $client,
-        ]);
+        return response()->json(['clients' => $clients]);
     }
 
     public function attach(Request $request, Project $project)
@@ -279,18 +277,18 @@ class ClientController extends Controller
         ]);
 
         /* notificación */
-        $project = Project::with('project_owner')->find($project->id);
+        $project->load('project_owner');
         $client = Client::find($validated['client_id']);
 
-        if($project->project_owner()){
+        if($project->project_owner){
             $project->project_owner->notify(
                 new ClientAssigned($client, $project)
             );
         }
 
-        $project->clients()->attach($validated);
+        $project->clients()->attach($validated['client_id']);
 
-        return redirect()->route('projects.show', $project)->with('success', 'Cliente vinculado a ' . $project->name);
+        return redirect()->back()->with('success', 'Cliente vinculado a ' . $project->name);
     }
 
     public function detach(Client $client, Project $project)
@@ -301,6 +299,6 @@ class ClientController extends Controller
             }
 
         $client->projects()->detach($project->id);
-        return redirect()->route('projects.show', $project)->with('success', 'El cliente ya no esta vinculado a'. $project->name );
+        return redirect()->back()->with('success', 'El cliente ya no esta vinculado a '. $project->name );
     }
 }

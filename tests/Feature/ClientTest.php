@@ -582,7 +582,7 @@ test('El usuario con rol MANAGER puede vincular a un cliente con un proyecto', f
     ]);
 
     $response->assertSessionHasNoErrors()
-    ->assertRedirect(route('projects.show', $project));
+    ->assertRedirect();
 
     //* se comprueba que exista el registro en la tabla pivote
     $this->assertDatabaseHas('client_project', [
@@ -636,7 +636,7 @@ test('El usuario con rol ADMIN puede vincular a un cliente con un proyecto', fun
     ]);
 
     $response->assertSessionHasNoErrors()
-    ->assertRedirect(route('projects.show', $project));
+    ->assertRedirect();
 
     //* se comprueba que exista el registro en la tabla pivote
     $this->assertDatabaseHas('client_project', [
@@ -689,7 +689,7 @@ test('El usuario con rol MANAGER puede desvincular a un cliente de un proyecto',
     ->delete(route('clients.projects.detach', [$client, $project]));
 
     $response->assertSessionHasNoErrors()
-    ->assertRedirect(route('projects.show', $project));
+    ->assertRedirect();
 
     //* se comprueba que no exista el registro en la tabla pivote
     $this->assertDatabaseMissing('client_project', [
@@ -748,7 +748,7 @@ test('El usuario con rol ADMIN puede desvincular a un cliente de un proyecto', f
     ->delete(route('clients.projects.detach', [$client, $project]));
 
     $response->assertSessionHasNoErrors()
-    ->assertRedirect(route('projects.show', $project));
+    ->assertRedirect();
 
     //* se comprueba que no exista el registro en la tabla pivote
     $this->assertDatabaseMissing('client_project', [
