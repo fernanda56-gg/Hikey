@@ -144,11 +144,16 @@ docker compose exec php php artisan key:generate
 docker compose exec php php artisan migrate --seed
 ```
 
-7. Instala las dependencias de Node y compila los assets:
+7. Instala las dependencias de Node:
 
 ```bash
-npm install
-npm run dev
+docker compose run --rm npm install
+```
+8. Reinicia los contenedores:
+
+```bash
+docker compose down
+docker compose up -d
 ```
 
 ## Pruebas
