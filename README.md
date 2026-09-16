@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="docs/images/logo-project.png" alt="Vista de titulo de proyecto" width="700">
+  <img src="images/docs-img/logo-project.png" alt="Vista de titulo de proyecto" width="700">
 </p>
 
 ---
@@ -94,15 +94,15 @@ Desarrollar una plataforma web que permita a equipos pequeños, emprendimientos 
 
 ## Imágenes
 <p align="center">
-  <img src="docs/images/project-dashboard.png" alt="Vista de dashboard de proyectos" width="250">
-  <img src="docs/images/company-members.png" alt="Vista de tabla de miembros de empresa" width="250">
-  <img src="docs/images/project-info.png" alt="Vista de información de proyecto" width="250">
-  <img src="docs/images/members-available.png" alt="Vista de miembros disponibles" width="250">
+  <img src="images/docs-img/project-dashboard.png" alt="Vista de dashboard de proyectos" width="250">
+  <img src="images/docs-img/company-members.png" alt="Vista de tabla de miembros de empresa" width="250">
+  <img src="images/docs-img/project-info.png" alt="Vista de información de proyecto" width="250">
+  <img src="images/docs-img/members-available.png" alt="Vista de miembros disponibles" width="250">
 </p>
 
 ## Modelo de datos
 <p align="center">
-  <img src="docs/images/model-er.png" alt="Vista de modelo de datos del proyecto" width="700">
+  <img src="images/docs-img/model-er.png" alt="Vista de modelo de datos del proyecto" width="700">
 </p>
 
 ## Instrucciones de instalación
