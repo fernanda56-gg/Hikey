@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="public/images/docs-img/logo-project.png" alt="Vista de titulo de proyecto" width="700">
+  <img src="public/images/docs-img/logo-project.png" alt="Vista de titulo de proyecto" width="450">
 </p>
 
 ---
@@ -94,10 +94,10 @@ Desarrollar una plataforma web que permita a equipos pequeños, emprendimientos 
 
 ## Imágenes
 <p align="center">
-  <img src="public/images/docs-img/project-dashboard.png" alt="Vista de dashboard de proyectos" width="250">
-  <img src="public/images/docs-img/company-members.png" alt="Vista de tabla de miembros de empresa" width="250">
-  <img src="public/images/docs-img/project-info.png" alt="Vista de información de proyecto" width="250">
-  <img src="public/images/docs-img/members-available.png" alt="Vista de miembros disponibles" width="250">
+  <img src="public/images/docs-img/project-dashboard.png" alt="Vista de dashboard de proyectos" width="392">
+  <img src="public/images/docs-img/company-members.png" alt="Vista de tabla de miembros de empresa" width="392">
+  <img src="public/images/docs-img/project-info.png" alt="Vista de información de proyecto" width="392">
+  <img src="public/images/docs-img/members-available.png" alt="Vista de miembros disponibles" width="392">
 </p>
 
 ## Modelo de datos
