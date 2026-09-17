@@ -7,6 +7,7 @@ use App\Models\User;
 
 class ClientPolicy
 {
+    //TODO revisa todos los policy y corrige los necesarios y actualiza los gates tambien en donde se ocupe
     /**
      * Determine whether the user can view any models.
      */

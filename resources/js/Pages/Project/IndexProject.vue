@@ -27,7 +27,7 @@
             </div>
 
             <!-- Filtro -->
-            <FilterProject v-if="can?.view" :filters="filters" :areas="areas" />
+            <FilterProject v-if="can?.view" :filters="filters" :areas="areas" :can="can" />
 
             <!--Contenedor de info de proyectos-->
             <div v-if="can?.view" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 m-8">

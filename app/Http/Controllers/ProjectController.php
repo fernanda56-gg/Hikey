@@ -22,17 +22,24 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
+
+        if(Gate::denies('viewAny', Project::class))
+        {
+            return redirect()->route('inicio')->with('error', 'Debes unirte a una empresa para ver este apartado.');
+        }
 
         $query = Project::with('area')->mostRecent(); //Utiliza el scope de Proyectos para ordenarlos por fecha de creación
 
         if($user->hasRole('admin')){ //El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
-            $projects = $query;
-        }elseif($user->companies()->exists()){ //Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
+            //query tiene toda la info sobre los proyectos
+        }// ! Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
+        elseif($user->companies()->exists()){
             $company = $user->companies()->pluck('companies.id');
             $projects = $query->whereIn('company_id', $company);
-        }else{//Si el usuario no pertenece a ninguna empresa no podrá ver ningún proyecto
-            $projects = collect();
+        } //Si el usuario no pertenece a ninguna empresa no podrá ver ningún proyecto trae nada
+        else{
+            $query->whereRaw('1 = 0');
         }
 
         /* Para acceder a los campos del filtro */
@@ -57,6 +64,7 @@ class ProjectController extends Controller
                 'can' => [
                 'create' => $user->can('create', Project::class),
                 'view' => $user->can('viewAny', Project::class),
+                'trash' => $user->can('trash', Project::class),
             ]
             ]);
     }
@@ -108,8 +116,16 @@ class ProjectController extends Controller
                 $data['company_id'] = $company?->id;
             }
 
-            /* notificación */
+            /* en caso de que el usuario no pertenezca a la empresa */
+            if (! $user->hasRole('admin') && ! $user->companies()->where('companies.id', $data['company_id'])->exists())
+            {
+                abort(403, 'No tienes los permisos necesarios para crear proyectos en esta empresa.');
+            }
+
+            /* se almacena el proyecto */
             $project = $user->projects()->create($data);
+
+            /* notificación */
             $project->project_owner->notify(
                 new ProjectCreated($project)
             );
@@ -250,7 +266,7 @@ class ProjectController extends Controller
 
     public function trash()
     {
-        if(Gate::denies('viewAny', Project::class))
+        if(Gate::denies('trash', Project::class))
         {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Company;
 use App\Models\Project;
 use App\Models\User;
 
@@ -14,9 +15,9 @@ class ProjectPolicy
     {
         if($user->hasRole('admin')){
             return true;
-        }
-        $member = Project::whereIn('company_id', $user->companies()->pluck('companies.id'))->exists();
-        return $member;
+        }elseif($user->companies()->exists()){
+            return true;
+        }return false;
     }
 
     /**
@@ -36,7 +37,11 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        if($user->hasRole('manager')){
+            return $user->companies()->exists();
+        } elseif ($user->hasRole('admin')){
+            return true;
+        }return false;
     }
 
     /**
@@ -44,11 +49,17 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        if($user->hasAnyRole(['admin', 'manager', 'team-leader'])){
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')) {
             return true;
-        }elseif($project->by_user_id === $user->id){
+        } // ? Comprueba que el usuario sea dueño del proyecto
+        elseif ($project->by_user_id === $user->id) {
             return true;
+        } // ? Comprueba que los usuarios pertenezcan a la empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])) {
+            return $project->company->member()->where('user_id', $user->id)->exists();
         }
+
         return false;
     }
 
@@ -67,12 +78,27 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        if($user->hasAnyRole(['admin', 'manager'])){
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')) {
             return true;
-        }elseif($project->by_user_id === $user->id){
+        } // ? Comprueba que el usuario sea dueño del proyecto
+        elseif ($project->by_user_id === $user->id) {
             return true;
+        } // ? Comprueba que los usuarios pertenezcan a la empresa
+        elseif ($user->hasRole('manager')) {
+            return $project->company->member()->where('user_id', $user->id)->exists();
         }
+
         return false;
+    }
+
+    public function trash(User $user): bool
+    {
+        if($user->hasRole('admin')){
+            return true;
+        } elseif ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()){
+            return true;
+        }return false;
     }
 
     /**
