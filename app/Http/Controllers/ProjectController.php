@@ -155,6 +155,7 @@ class ProjectController extends Controller
         $project->load('area', 'company', 'clients', 'users');
 
         $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador
+            $client->client_view = $user->can('view', $client);
             $client->client_update = $user->can('update', $client);
             $client->client_delete = $user->can('delete', $client);
             $client->client_unlink = $user->can('assign', $client);

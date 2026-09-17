@@ -46,10 +46,11 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 
 | Permisos | Admin | Gerente | Líder de equipo | Usuario |
 | : | : | : | : | : |
-| Visualizar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
-| Crear clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
-| Editar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
-| Eliminar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Visualizar lista de clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Visualizar clientes en proyecto | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/> |
+| Crear clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Editar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Eliminar clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Vincular clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Desvincular clientes | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 

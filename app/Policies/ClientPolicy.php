@@ -8,28 +8,65 @@ use App\Models\User;
 class ClientPolicy
 {
     //TODO revisa todos los policy y corrige los necesarios y actualiza los gates tambien en donde se ocupe
+    //TODO actualiza la documentación de team-leader por lo de que ahora puede agregar y editar info de clientes
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        /* Comprueba que sea admin o que sea el manager de la empresa donde pertenece el cliente */
+        if ($user->hasRole('admin')){
+            return true;
+        } elseif ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function view(User $user): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que los otros roles puedan acceder siempre y cuando pertenezca a la empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader', 'user'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user): bool
+    public function viewClientProjects(User $user): bool
     {
-
-        return $user->hasAnyRole(['admin', 'manager']);
+        /* Comprueba que sea admin o que sea el manager de la empresa donde pertenece el cliente */
+        if ($user->hasRole('admin')){
+            return true;
+        } elseif ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
+            return true;
+        }
+        return false;
     }
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager', 'team-leader']);
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba, que el los usuarios puedan crear clientes dentro de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     /**
@@ -37,7 +74,17 @@ class ClientPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba, que el los usuarios puedan editar clientes dentro de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     /**
@@ -45,7 +92,17 @@ class ClientPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager', 'team-leader']);
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba, que el los usuarios puedan eliminar clientes dentro de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     /**
@@ -66,6 +123,16 @@ class ClientPolicy
 
     public function assign(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager', 'team-leader']);
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba, que el los usuarios puedan asignar clientes dentro de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 }

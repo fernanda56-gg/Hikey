@@ -52,6 +52,7 @@ class ClientController extends Controller
     public function create(Project $project) // De esta manera trae el ID del proyecto al que se vinculara el registro
     {
         $user = Auth::user();
+
         if(Gate::denies('create', Client::class))
             {
                 return back()->with('error', 'No tienes los permisos necesarios para realizar esta acción.');
@@ -109,7 +110,7 @@ class ClientController extends Controller
     public function clientProjects(Client $client)
     {
         $user = Auth::user();
-        if(Gate::denies('view', $client))
+        if(Gate::denies('viewClientProjects', $client))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }

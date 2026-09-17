@@ -5,54 +5,56 @@
 
     <!-- Contenedor de info de clientes (cuando ya se asigno a uno) -->
     <div v-if="projects.clients.length" class=" flex items-center justify-start md:mt-3 mt-1.5 pb-6 md:pb-0 mb-4 p-4">
-        <div v-for="client in projects.clients" :key="client.id" class="flex flex-row items-center gap-2">
-            <span class="font-semibold text-sm mr-3">{{ client.name }}</span>
+        <div v-for="client in projects.clients" :key="client.id">
+            <div v-if="client.client_view" class="flex flex-row items-center gap-2">
+                <span class="font-semibold text-sm mr-3">{{ client.name }}</span>
 
-            <!-- Btn copiar correo -->
-            <button
-                    class="btn btn-square btn-sm btn-ghost text-neutral"
-                    :data-tip="copyText">
-                <PhAt @click="copy(client.email)" class="size-4" weight="bold"/>
-            </button>
+                <!-- Btn copiar correo -->
+                <button
+                        class="btn btn-square btn-sm btn-ghost text-neutral"
+                        :data-tip="copyText">
+                    <PhAt @click="copy(client.email)" class="size-4" weight="bold"/>
+                </button>
 
-            <!-- Btn copiar teléfono -->
-            <button
-                    class="btn btn-square btn-sm btn-ghost text-neutral"
-                    :data-tip="copyText">
-                <PhPhone @click="copy(client.phone)" class="size-4" weight="bold"/>
-            </button>
+                <!-- Btn copiar teléfono -->
+                <button
+                        class="btn btn-square btn-sm btn-ghost text-neutral"
+                        :data-tip="copyText">
+                    <PhPhone @click="copy(client.phone)" class="size-4" weight="bold"/>
+                </button>
 
-            <!-- Btn editar -->
-            <div class="flex items-center">
-                    <Link
-                            class="btn btn-square btn-sm btn-soft btn-warning"
-                            v-if="client.client_update"
-                            type="button"
-                            :href="route('clients.edit', {client: client.id})">
-                        <PhPencilSimple class="size-4" weight="fill"/>
-                    </Link>
-                </div>
-
-                <!-- Btn eliminar -->
-            <div class="flex flex-row gap-2">
+                <!-- Btn editar -->
                 <div class="flex items-center">
-                    <Link
-                            class="btn btn-square btn-sm btn-soft btn-error"
-                            v-if="client.client_delete"
-                            :href="route('clients.destroy', {client: client.id})" method="delete" as="button">
-                        <PhTrash class="size-4" weight="fill"/>
-                    </Link>
-                </div>
+                        <Link
+                                class="btn btn-square btn-sm btn-soft btn-warning"
+                                v-if="client.client_update"
+                                type="button"
+                                :href="route('clients.edit', {client: client.id})">
+                            <PhPencilSimple class="size-4" weight="fill"/>
+                        </Link>
+                    </div>
 
-                <!-- Btn desvincular cliente -->
-                <div class="flex items-center">
-                    <Link
-                            v-if="client.client_unlink"
-                            class="btn btn-square btn-sm btn-soft btn-info"
-                            type="button"
-                            :href="route('clients.projects.detach', {project: projects.id, client: client.id})" method="delete" as="button">
-                        <PhLinkBreak class="size-4" weight="bold"/>
-                    </Link>
+                    <!-- Btn eliminar -->
+                <div class="flex flex-row gap-2">
+                    <div class="flex items-center">
+                        <Link
+                                class="btn btn-square btn-sm btn-soft btn-error"
+                                v-if="client.client_delete"
+                                :href="route('clients.destroy', {client: client.id})" method="delete" as="button">
+                            <PhTrash class="size-4" weight="fill"/>
+                        </Link>
+                    </div>
+
+                    <!-- Btn desvincular cliente -->
+                    <div class="flex items-center">
+                        <Link
+                                v-if="client.client_unlink"
+                                class="btn btn-square btn-sm btn-soft btn-info"
+                                type="button"
+                                :href="route('clients.projects.detach', {project: projects.id, client: client.id})" method="delete" as="button">
+                            <PhLinkBreak class="size-4" weight="bold"/>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
