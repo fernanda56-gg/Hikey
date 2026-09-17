@@ -14,8 +14,10 @@
     - [Editar proyecto](/{{route}}/{{version}}/projects/edit-project)
 
 - ## Clientes
+    - [Crear cliente](/{{route}}/{{version}}/clients/create-client)
     - [Visualizar clientes](/{{route}}/{{version}}/clients/show-client)
     - [Vincular cliente](/{{route}}/{{version}}/clients/attach-client)
+    - [Editar cliente](/{{route}}/{{version}}/clients/update-client)
     - [Eliminar cliente](/{{route}}/{{version}}/clients/delete-client)
 
 - ## Equipos

@@ -13,9 +13,10 @@ Una vez que el cliente haya sido registrado, te llevara de regreso a la pagina d
 <li><img src="/images/all/at.png" width="20" height="20"/>: Al hacer click copias el correo del cliente</li>
 <li><img src="/images/all/phone.png" width="20" height="20"/>: Al hacer click copias el numero de teléfono del cliente</li>
 <li><img src="/images/all/trash.png" width="20" height="20"/>: Eliminas al cliente</li>
+<li><img src="/images/all/pencil.png" width="20" height="20"/>: Editas la información del cliente</li>
 <li><img src="/images/all/link-break.png" width="20" height="20"/>: Desvinculas al cliente del proyecto</li>
 </ul>
 
 <br/>   
 
-<img src="/images/leader-img/client-info.png" width="40%" height="40%"/>
+<img src="/images/admin-img/client-info.png" width="40%" height="40%"/>

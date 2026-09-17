@@ -7,8 +7,6 @@ use App\Models\User;
 
 class ClientPolicy
 {
-    //TODO revisa todos los policy y corrige los necesarios y actualiza los gates tambien en donde se ocupe
-    //TODO actualiza la documentación de team-leader por lo de que ahora puede agregar y editar info de clientes
     /**
      * Determine whether the user can view any models.
      */
