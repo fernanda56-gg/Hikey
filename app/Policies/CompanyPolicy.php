@@ -26,20 +26,32 @@ class CompanyPolicy
      */
     public function view(User $user, Company $company): bool
     {
-        return $company->member->contains($user->id) || $user->hasRole('admin');
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que el usuario solo pueda ver info de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader', 'user'])){
+            return $company->member()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     public function viewList(User $user, Company $company): bool
     {
-        if($user->hasRole('admin')){
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
             return true;
         }
 
-        if($company->owner_id === $user->id){
-            return true;
+        // ? Comprueba que el usuario solo pueda ver info de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader', 'user'])){
+            return $company->member()->where('user_id', $user->id)->exists();
         }
 
-        return $company->member()->where('user_id', $user->id)->exists();
+        return false;
     }
 
     /**
@@ -47,11 +59,17 @@ class CompanyPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->isAdmin()) {
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')) {
             return true;
         }
 
-        return !$user->companies()->exists();
+        // ? Comprueba que solo usuarios sin empresa puedan crear una
+        elseif ($user->hasRole('user') && ! $user->companies()->exists()){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -59,7 +77,17 @@ class CompanyPolicy
      */
     public function update(User $user, Company $company): bool
     {
-        return $user->isOwner($company)  || $user->hasRole('admin');
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que solo el dueño de la empresa pueda editar la info de la empresa
+        elseif ($user->hasRole('manager')){
+            return $user->isOwner($company);
+        }
+
+        return false;
     }
 
     /**
@@ -67,28 +95,62 @@ class CompanyPolicy
      */
     public function delete(User $user, Company $company): bool
     {
-        return $user->isOwner($company) || $user->hasRole('admin');
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que solo el dueño de la empresa pueda eliminar la info de la empresa
+        elseif ($user->hasRole('manager')){
+            return $user->isOwner($company);
+        }
+
+        return false;
     }
 
     public function leaveCompany(User $user): bool
     {
-        return $user->hasRole('manager') || $user->hasRole('admin');
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que solo el dueño de la empresa pueda sacar a algún usuario
+        elseif ($user->hasRole('manager')){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     public function joinCompany(User $user): bool
     {
-        if($user->hasRole('admin')){
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
             return true;
-        }if($user->hasRole('user') && !$user->companies()->where('user_id', $user->id)->exists()){
+        }
+
+        // ? Comprueba que solo los usuarios que no se han unido a una empresa puedan unirse a una
+        elseif ($user->hasRole('user') && ! $user->companies()->where('user_id', $user->id)->exists()){
             return true;
-        }elseif($user->hasRole('manager')){
-            return false;
-        }return false;
+        }
+
+        return false;
     }
 
     public function viewMembers(User $user): bool
     {
-        return $user->companies()->exists();
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que el usuario solo pueda ver info de su empresa
+        elseif ($user->hasAnyRole(['manager', 'team-leader', 'user'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     /**
@@ -114,19 +176,36 @@ class CompanyPolicy
 
     public function sendInvitation(User $user, Company $company): bool
     {
-        if($user->hasRole('admin')){
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
             return true;
-        } elseif($user->isOwner($company)){
-            return true;
-        } elseif($user->hasRole('team-leader') && $user->companies()->where('user_id', $user->id)->exists()){
-            return true;
-        }return false;
+        }
+
+        // ? Comprueba que solo estos usuarios puedan hacer invitaciones
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $company->member()->where('user_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     public function showCode(User $user, Company $company): bool
     {
-        if($user->hasRole('user')){
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Comprueba que solo estos usuarios puedan ver el código de invitación
+        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $user->companies()->where('user_id', $user->id)->exists();
+        }
+
+        // ? El usuario no puede ver el código de invitación
+        elseif ($user->hasRole('user') && $user->companies()->where('user_id', $user->id)->exists()){
             return false;
-        }return true;
+        }
+
+        return false;
     }
 }

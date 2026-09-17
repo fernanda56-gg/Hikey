@@ -269,7 +269,7 @@ class CompanyController extends Controller
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para ver esta empresa.');
             }
 
-        /* $query = $company->member()->mostRecent(); */
+        
         $query = $company->member()
         ->with(['project_team' => function ($q) use ($company) {
             $q->where('projects.company_id', $company->id)
