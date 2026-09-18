@@ -29,15 +29,19 @@ class ProjectController extends Controller
             return redirect()->route('inicio')->with('error', 'Debes unirte a una empresa para ver este apartado.');
         }
 
-        $query = Project::with('area')->mostRecent(); //Utiliza el scope de Proyectos para ordenarlos por fecha de creación
+        $query = Project::with('area')->mostRecent(); // ? Utiliza el scope de Proyectos para ordenarlos por fecha de creación
 
-        if($user->hasRole('admin')){ //El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
+        if($user->hasRole('admin')){ // ! El usuario ADMIN puede ver todos los proyectos independientemente de la empresa
             //query tiene toda la info sobre los proyectos
-        }// ! Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
+        }
+
+        // ! Cualquier otro usuario sea miembro o propietario puede ver los proyectos de su empresa
         elseif($user->companies()->exists()){
-            $company = $user->companies()->pluck('companies.id');
-            $projects = $query->whereIn('company_id', $company);
-        } //Si el usuario no pertenece a ninguna empresa no podrá ver ningún proyecto trae nada
+            $companyIds = $user->companies()->pluck('companies.id');
+            $query->whereIn('company_id', $companyIds);
+        }
+
+        // ! Si el usuario no pertenece a ninguna empresa no podrá ver ningún proyecto trae nada
         else{
             $query->whereRaw('1 = 0');
         }
@@ -154,11 +158,11 @@ class ProjectController extends Controller
         $user = Auth::user();
         $project->load('area', 'company', 'clients', 'users');
 
-        $project->clients->each(function ($client) use ($user) { //Permisos para poder editar y eliminar clientes desde este controlador
+        $project->clients->each(function ($client) use ($user, $project) { //Permisos para poder editar y eliminar clientes desde este controlador
             $client->client_view = $user->can('view', $client);
             $client->client_update = $user->can('update', $client);
             $client->client_delete = $user->can('delete', $client);
-            $client->client_unlink = $user->can('assign', $client);
+            $client->client_unlink = $user->can('detachToProject', [$client, $project]);
         });
 
         return inertia('Project/ShowProject', [
@@ -303,3 +307,6 @@ class ProjectController extends Controller
         return redirect()->route('projects.show', $project->id)->with('success', 'Proyecto recuperado con éxito.');
     }
 }
+
+
+

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Client;
+use App\Models\Project;
 use App\Models\User;
 
 class ClientPolicy
@@ -15,7 +16,9 @@ class ClientPolicy
         /* Comprueba que sea admin o que sea el manager de la empresa donde pertenece el cliente */
         if ($user->hasRole('admin')){
             return true;
-        } elseif ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
+        }
+
+        if ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
             return true;
         }
         return false;
@@ -29,7 +32,7 @@ class ClientPolicy
         }
 
         // ? Comprueba que los otros roles puedan acceder siempre y cuando pertenezca a la empresa
-        elseif ($user->hasAnyRole(['manager', 'team-leader', 'user'])){
+        if ($user->hasAnyRole(['manager', 'team-leader', 'user'])){
             return $user->companies()->where('user_id', $user->id)->exists();
         }
 
@@ -44,7 +47,9 @@ class ClientPolicy
         /* Comprueba que sea admin o que sea el manager de la empresa donde pertenece el cliente */
         if ($user->hasRole('admin')){
             return true;
-        } elseif ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
+        }
+
+        if ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
             return true;
         }
         return false;
@@ -60,7 +65,7 @@ class ClientPolicy
         }
 
         // ? Comprueba, que el los usuarios puedan crear clientes dentro de su empresa
-        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+        if ($user->hasAnyRole(['manager', 'team-leader'])){
             return $user->companies()->where('user_id', $user->id)->exists();
         }
 
@@ -78,7 +83,8 @@ class ClientPolicy
         }
 
         // ? Comprueba, que el los usuarios puedan editar clientes dentro de su empresa
-        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+
+        if ($user->hasAnyRole(['manager', 'team-leader'])){
             return $user->companies()->where('user_id', $user->id)->exists();
         }
 
@@ -96,7 +102,8 @@ class ClientPolicy
         }
 
         // ? Comprueba, que el los usuarios puedan eliminar clientes dentro de su empresa
-        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
+
+        if ($user->hasAnyRole(['manager', 'team-leader'])){
             return $user->companies()->where('user_id', $user->id)->exists();
         }
 
@@ -119,16 +126,41 @@ class ClientPolicy
         return false;
     }
 
-    public function assign(User $user): bool
+    public function assignToProject(User $user, Client $client, Project $project): bool
     {
         // ! Admin siempre puede, sin importar la empresa
         if ($user->hasRole('admin')){
             return true;
         }
 
+        // ? Comprueba que la empresa en donde haya sido registrado el proyecto sea la misma que la del proyecto
+        if ($client->company_id !== $project->company_id) {
+            return false;
+        }
+
         // ? Comprueba, que el los usuarios puedan asignar clientes dentro de su empresa
-        elseif ($user->hasAnyRole(['manager', 'team-leader'])){
-            return $user->companies()->where('user_id', $user->id)->exists();
+        if ($user->hasAnyRole(['manager', 'team-leader'])){
+            return $user->companies()->where('companies.id', $project->company_id)->exists();
+        }
+
+        return false;
+    }
+
+    public function detachToProject(User $user, Client $client, Project $project): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        // ? Comprueba que la empresa en donde haya sido registrado el proyecto sea la misma que la del proyecto
+        if ($client->company_id !== $project->company_id) {
+            return false;
+        }
+
+        // ? Comprueba, que el los usuarios puedan asignar clientes dentro de su empresa
+        if ($user->hasAnyRole(['manager', 'team-leader'])) {
+            return $user->companies()->where('companies.id', $project->company_id)->exists();
         }
 
         return false;

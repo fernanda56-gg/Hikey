@@ -77,6 +77,13 @@ class ClientController extends Controller
     ]);
 
         $project = Project::findOrFail($validated['project_id']); //encuentra el ID del proyecto
+        $user = $request->user();
+
+        // ! Comprueba que el usuario si pertenece a la empresa
+        if (! $user->hasRole('admin') && ! $user->companies()->where('companies.id', $project->company_id)->exists()) {
+            abort(403, 'No perteneces a la empresa de este proyecto.');
+        }
+
         $data = collect($validated)->except('project_id')->merge(['company_id' => $project->company_id])->toArray(); //recolecta la información con excepción del project_id
         $client = Client::create($data); //crea el registro
         $client->projects()->attach($project->id); //añade el id del proyecto para la tabla pivote
@@ -145,11 +152,7 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         //
-        $user = Auth::user();
-        if(Gate::denies('delete', $client))
-            {
-                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
-            }
+        $user = $request->user();
 
         try{
             $validated = $request->validate([
@@ -157,6 +160,12 @@ class ClientController extends Controller
                         'email' => 'required|string|email',
                         'phone' => 'required|string|max:20',
                     ]);
+
+            // ! Comprueba que el usuario si pertenece a la empresa
+            if (! $user->hasRole('admin') && ! $user->companies()->where('companies.id', $client->company_id)->exists()) {
+                abort(403, 'No perteneces a la empresa de este proyecto.');
+            }
+
             $client->update($validated);
             $projects = $client->projects()->get();
 
@@ -170,14 +179,20 @@ class ClientController extends Controller
                 }
             }
 
-            //los datos se guardan en BD
-            return redirect()->route('projects.show', $project)->with('success', 'Cliente actualizado.');
+            // ! Redirige a la primera página de proyecto en la que este asignado el cliente, si no tiene proyectos lo redirige a la lista de proyectos
+            $redirectProject = $projects->first();
+
+            if ($redirectProject) {
+                return redirect()->route('projects.show', $redirectProject)->with('success', 'Cliente actualizado.');
+            }
+
+            return redirect()->route('projects.index')->with('success', 'Cliente actualizado.');
+
         }catch(ValidationException $e){
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            dd($e);
-            return redirect()->back()->with('error', 'Error al actualizar empresa.')->withInput();//withInput mantiene los datos del form
+            return redirect()->back()->with('error', 'Error al actualizar cliente.')->withInput();//withInput mantiene los datos del form
         }
     }
 
@@ -250,7 +265,7 @@ class ClientController extends Controller
 
     public function clientList(Project $project)
     {
-        if(Gate::denies('assign', Client::class))
+        if(Gate::denies('viewClientProjects', Client::class))
             {
                 return back()->with('error', 'No tienes los permisos necesarios para realizar esta acción.');
             }
@@ -268,11 +283,6 @@ class ClientController extends Controller
 
     public function attach(Request $request, Project $project)
     {
-        if(Gate::denies('create', Client::class))
-            {
-                abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
-            }
-
         $validated = $request->validate([
             'client_id' => 'required|exists:clients,id'
         ]);
@@ -280,6 +290,11 @@ class ClientController extends Controller
         /* notificación */
         $project->load('project_owner');
         $client = Client::find($validated['client_id']);
+
+        // ! verificación que el cliente este registrado dentro de la empresa
+        if (Gate::denies('assignToProject', [$client, $project])) {
+            abort(403, 'No tienes permisos para vincular este cliente a este proyecto.');
+        }
 
         if($project->project_owner){
             $project->project_owner->notify(
@@ -294,7 +309,7 @@ class ClientController extends Controller
 
     public function detach(Client $client, Project $project)
     {
-        if(Gate::denies('assign', $client))
+        if(Gate::denies('detachToProject', [$client, $project]))
             {
                 abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
             }
