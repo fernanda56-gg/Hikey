@@ -104,7 +104,6 @@ class CompanyController extends Controller
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            /* dd($e); */
             return redirect()->back()->with('error', 'Error al generar empresa.')->withInput();//withInput mantiene los datos del form
         }
 }
@@ -191,7 +190,6 @@ class CompanyController extends Controller
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            dd($e);
             return redirect()->back()->with('error', 'Error al actualizar empresa.')->withInput();//withInput mantiene los datos del form
         }
     }
@@ -243,7 +241,6 @@ class CompanyController extends Controller
             throw $e;
         }catch(\Exception $e){
             //si los datos no se guardan, se muestra mensaje de error
-            dd($e);
             return redirect()->back();
         }
     }
@@ -269,7 +266,7 @@ class CompanyController extends Controller
                 return redirect()->route('companies.show', $company->id)->with('error', 'No tienes permiso para ver esta empresa.');
             }
 
-        
+
         $query = $company->member()
         ->with(['project_team' => function ($q) use ($company) {
             $q->where('projects.company_id', $company->id)

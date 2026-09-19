@@ -9,21 +9,23 @@ use App\Models\User;
 class ClientPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Determina quien puede ver el client.index
      */
     public function viewAny(User $user): bool
     {
-        /* Comprueba que sea admin o que sea el manager de la empresa donde pertenece el cliente */
+        // ! Admin siempre puede, sin importar la empresa
         if ($user->hasRole('admin')){
             return true;
         }
 
+        // ? Comprueba que el manager pueda acceder a los clientes de su empresa
         if ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
             return true;
         }
         return false;
     }
 
+    /* Permite que los usuarios puedan ver al cliente en projects.show  */
     public function view(User $user): bool
     {
         // ! Admin siempre puede, sin importar la empresa
@@ -40,22 +42,23 @@ class ClientPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Permite que los usuarios puedan ver al cliente en projects.show
      */
     public function viewClientProjects(User $user): bool
     {
-        /* Comprueba que sea admin o que sea el manager de la empresa donde pertenece el cliente */
+        // ! Admin siempre puede, sin importar la empresa
         if ($user->hasRole('admin')){
             return true;
         }
 
+        // ? Comprueba que los otros roles puedan acceder siempre y cuando pertenezca a la empresa
         if ($user->hasRole('manager') && $user->companyOwner()->where('owner_id', $user->id)->exists()) {
             return true;
         }
         return false;
     }
     /**
-     * Determine whether the user can create models.
+     * Determina quien puede generar clientes de una empresa
      */
     public function create(User $user): bool
     {
@@ -73,7 +76,7 @@ class ClientPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determina quien puede actualizar la info de un cliente
      */
     public function update(User $user): bool
     {
@@ -92,7 +95,7 @@ class ClientPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determina quien puede eliminar a un cliente
      */
     public function delete(User $user): bool
     {
@@ -102,7 +105,6 @@ class ClientPolicy
         }
 
         // ? Comprueba, que el los usuarios puedan eliminar clientes dentro de su empresa
-
         if ($user->hasAnyRole(['manager', 'team-leader'])){
             return $user->companies()->where('user_id', $user->id)->exists();
         }
@@ -126,6 +128,7 @@ class ClientPolicy
         return false;
     }
 
+    /* Determina quien puede asignar a un cliente a proyecto */
     public function assignToProject(User $user, Client $client, Project $project): bool
     {
         // ! Admin siempre puede, sin importar la empresa
@@ -146,6 +149,7 @@ class ClientPolicy
         return false;
     }
 
+    /* Permite desvincular a un cliente de un proyecto */
     public function detachToProject(User $user, Client $client, Project $project): bool
     {
         // ! Admin siempre puede, sin importar la empresa

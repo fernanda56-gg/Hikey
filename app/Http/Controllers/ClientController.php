@@ -101,7 +101,6 @@ class ClientController extends Controller
                 throw $e;
             }catch(\Exception $e){
                 //si los datos no se guardan, se muestra mensaje de error
-                /* dd($e->getMessage()); */
                 return redirect()->back()->with('error', 'Error al generar cliente.')->withInput();//withInput mantiene los datos del form
             }
     }

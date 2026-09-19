@@ -139,7 +139,6 @@ class ProjectController extends Controller
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
-            /* dd($e->getMessage()); */
             return redirect()->back()->with('error', 'Error al generar proyecto.')->withInput();//withInput mantiene los datos del form
         }
     }
@@ -307,6 +306,4 @@ class ProjectController extends Controller
         return redirect()->route('projects.show', $project->id)->with('success', 'Proyecto recuperado con éxito.');
     }
 }
-
-
 
