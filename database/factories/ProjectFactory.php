@@ -21,8 +21,8 @@ class ProjectFactory extends Factory
             //
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'image_path' => $this->faker->url(),
-            'link' => $this->faker->imageUrl(640, 480, 'prueba', true),
+            'link' => $this->faker->url(),
+            'link_2' => $this->faker->url(), //image_path
             'status' => 'Pendiente',
             'start_date' => null,
             'end_date' => null,

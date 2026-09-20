@@ -54,12 +54,12 @@
                         </div>
 
                         <div class="flex flex-col space-y-2 mt-4">
-                            <label class="font-bold text-neutral">Link de img</label>
-                            <input v-model="form.image_path" type="text" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" placeholder="Url de img"/>
+                            <label class="font-bold text-neutral">Link opcional</label>
+                            <input v-model="form.link_2" type="text" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" placeholder="Url de recursos (opcional)"/>
                             <!--Contenedor de error en input-->
-                            <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.image_path">
+                            <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.link_2">
                                 <PhWarningCircle class="mx-1 size-4" weight="bold"/>
-                                {{ form.errors.image_path }}
+                                {{ form.errors.link_2 }}
                             </div>
                         </div>
 
@@ -136,7 +136,7 @@ const form = useForm(
         name: null,
         description: null,
         link: null,
-        image_path: null,
+        link_2: null, //image_path
         start_date:null,
         end_date: null,
         status: 'planned',

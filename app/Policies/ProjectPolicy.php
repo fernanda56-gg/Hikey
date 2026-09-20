@@ -90,8 +90,12 @@ class ProjectPolicy
         }
 
         // ? Comprueba que solo esos roles de la empresa puedan actualizar las fechas del proyecto
-        if($user->hasRole('manager')){
-            return $project->by_user_id === $user->id;
+        if ($project->by_user_id === $user->id) {
+            return true;
+        }
+
+        if ($user->hasRole('manager')) {
+            return $user->companies()->where('companies.id', $project->company_id)->exists();
         }
 
         return false;

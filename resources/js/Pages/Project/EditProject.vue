@@ -54,12 +54,12 @@
                         </div>
 
                         <div class="flex flex-col space-y-2 mt-4">
-                            <label class="font-bold text-neutral">Link de img</label>
-                            <input v-model="form.image_path" type="text" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"/>
+                            <label class="font-bold text-neutral">Link opcional</label>
+                            <input v-model="form.link_2" type="text" class="bg-base-100 rounded-lg p-2 text-neutral focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"/>
                             <!--Contenedor de error en input-->
-                            <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.image_path">
+                            <div class="flex items-center justify-start text-xs text-error" v-if="form.errors.link_2">
                                 <PhWarningCircle class="mx-1 size-4" weight="bold"/>
-                                {{ form.errors.image_path }}
+                                {{ form.errors.link_2 }}
                             </div>
                         </div>
 
@@ -106,7 +106,7 @@ const form = useForm(
         name: props.project.name,
         description: props.project.description,
         link: props.project.link,
-        image_path: props.project.image_path,
+        link_2: props.project.link_2, //image_path
         status: props.project.status,
         area_id: props.project.area_id,
     })

@@ -99,7 +99,7 @@ class ProjectController extends Controller
                 'name' => 'required|string|min:3|max:50',
                 'description' => 'required|string|max:255',
                 'link' => 'required|url',
-                'image_path' => 'required|url',
+                'link_2' => 'required|url',
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date',
                 'area_id' => 'required|exists:areas,id',
@@ -204,7 +204,7 @@ class ProjectController extends Controller
                     'name' => 'required|string|min:3|max:50',
                     'description' => 'required|string|max:255',
                     'link' => 'required|url',
-                    'image_path' => 'required|url',
+                    'link_2' => 'required|url',
                     'area_id' => 'required|integer|exists:areas,id',
         ]);
         $project->update($validated);
@@ -224,6 +224,34 @@ class ProjectController extends Controller
         }
     }
 
+    /* Actualiza el estatus del proyecto */
+    public function updateStatus(Request $request, Project $project)
+    {
+        if(Gate::denies('update', $project))
+        {
+            return redirect()->back()->with('error', 'No tienes permisos necesarios para modificar esta acción');
+        }
+
+        $validate = $request->validate([
+            'status' => 'required|in:Pendiente,En progreso,Completado'
+        ]);
+
+        match($validate['status']) {
+            'Pendiente' => $project->markPending(),
+            'En progreso' => $project->markInProgress(),
+            'Completado' => $project->markCompletedAt(),
+        };
+
+        // TODO: generar la noti a base de esto
+        /* $project->load('project_owner');
+        if ($project->project_owner) {
+            $project->project_owner->notify(new ProjectStatusChanged($project)); // si querés notificar, o reusar otra
+        } */
+
+        return back()->with('success', 'Estatus de proyecto actualizado');
+    }
+
+    // TODO: ajustar nueva documentación para team-leader
     public function updateDate(Request $request, Project $project)
     {
 
@@ -238,12 +266,13 @@ class ProjectController extends Controller
         ]);
 
         $project->update($validates);
+        $project->load('project_owner');
 
         /* Generar notificación para dueño del proyecto */
         $project->project_owner->notify(
             new ProjectChangeDates($project)
         );
-        return back();
+        return back()->with('success', 'Fechas actualizadas correctamente.');
     }
 
     /**

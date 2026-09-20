@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('link')->nullable();
-            $table->string('image_path')->nullable();
+            $table->string('link_2')->nullable(); //image_path
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->enum('status', ['Pendiente', 'En progreso', 'Completado'])->default('Pendiente');

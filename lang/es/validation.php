@@ -160,9 +160,11 @@ return [
     'attributes' => [
     'name' => 'nombre',
     'description' => 'descripción',
-    'image_path' => 'link img',
+    'link' => 'link',
+    'link_2' => 'link opcional', //image_path
     'start_date' => 'fecha de inicio',
     'end_date' => 'fecha de finalización',
+    'completed_at' => 'fecha de finalización del proyecto',
     'last_name' => 'apellidos',
     'password' => 'contraseña',
     'phone' => 'teléfono',

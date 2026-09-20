@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\ProjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Override;
 
 #[ObservedBy([ProjectObserver::class])]
 class Project extends Model
@@ -20,9 +21,10 @@ class Project extends Model
         'name',
         'description',
         'link',
-        'image_path',
+        'link_2', //image_path
         'start_date',
         'end_date',
+        'completed_at',
         'status',
         'by_user_id',
         'area_id',
@@ -68,7 +70,8 @@ class Project extends Model
                     ->withTimestamps();
     }
 
-    protected static function booted() //Registra las fechas del proyecto y actualiza los estados antes de que lleguen a la BD
+    //Registra las fechas del proyecto y actualiza los estados antes de que lleguen a la BD
+    /* protected static function booted()
     {
         static::saving(function ($project) {
             if($project->end_date){
@@ -79,11 +82,49 @@ class Project extends Model
                 $project->status = 'Pendiente';
             }
         });
+    } */
+    // ! Si el proyecto aún no esta registrado en la BD al crearse tendrá el estatus de pendiente
+    #[Override]
+    protected static function booted()
+    {
+        static::saving(function ($project) {
+            if (! $project->exists){
+                $project->status = 'Pendiente';
+            }
+        });
+    }
+
+    // ! Actualiza el estatus del proyecto a En progreso
+    public function markInProgress(): void
+    {
+        $this->update(['status' => 'En progreso']);
+    }
+
+    /* // ! Actualiza el estatus de proyecto a Completado,
+    * llena el campo completed_at con la fecha actual al cierre del proyecto
+    * distinto a la fecha planeada en el cierre del proyecto
+    */
+    public function markCompletedAt(): void
+    {
+        $this->update([
+            'status' => 'Completado',
+            'completed_at' => now(),
+        ]);
+    }
+
+    /* // ! Actualiza el estatus del proyecto a Pendiente
+    * esto es en caso de que el usuario quiera hacer realizar cambios al proyecto cuando ya se haya puesto en estatus completado
+    */
+    public function markPending(): void
+    {
+        $this->update([
+            'status' => 'Pendiente',
+            'completed_at' => null, // ? el campo regresa a null
+        ]);
     }
 
     public function clients() //Relación entre el cliente y el proyecto
     {
-        /* return $this->belongsToMany(Client::class); */
         return $this->belongsToMany(Client::class, 'client_project')
                     ->withTimestamps();
     }
@@ -113,3 +154,9 @@ class Project extends Model
 
 
 }
+// TODO: arreglar todo lo de las fechas y estatus de proyectos ademas de modificar los campos de la migración de proyectos
+/* //? los campos a arreglar es el image_path, start_date, end_date, status
+* añadir el nuevo campo de completed_at que definirá en que fecha se concluyo el proyecto que estará ligado a una nueva función
+* también se debe de arreglar el UI con los nombres de los campos y agregar el nuevo botón con el que se da el proyecto por concluido y
+* agregar policy para que solo el manager y talvéz el lider de equipo puedan dar por terminado un proyecto.
+*/

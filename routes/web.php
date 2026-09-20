@@ -60,6 +60,7 @@ Route::delete('/manage-account/{user}', [UserAccountController::class, 'destroy'
 
 //Proyectos
 Route::put('projects/{project}/update-date', [ProjectController::class, 'updateDate'])->name('projects.update-date')->middleware(['auth', 'verified']);
+Route::put('projects/{project}/update-status', [ProjectController::class, 'updateStatus'])->name('projects.update-status')->middleware(['auth', 'verified']);
 Route::get('projects/trash', [ProjectController::class, 'trash'])->name('projects.trash')->middleware(['auth', 'verified']);
 Route::get('/projects/{project}/recover', [ProjectController::class, 'recover'])->middleware(['auth', 'verified'])->withTrashed()->name('projects.recover');
 Route::resource('projects', ProjectController::class)->only(['create', 'store'])->middleware(['auth', 'verified']);

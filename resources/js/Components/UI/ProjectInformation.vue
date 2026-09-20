@@ -16,7 +16,7 @@
             </div>
 
             <div class="flex flex-col">
-                <h1 class="uppercase font-bold md:text-lg text-base">link de img</h1>
+                <h1 class="uppercase font-bold md:text-lg text-base">link de recursos</h1>
                 <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
                     <span class="md:text-lg text-sm">Link</span>
                     <PhLink :size="20" weight="bold"/>
@@ -65,6 +65,13 @@
                     ]"></span>
                     <span>{{ projects.status }}</span>
                 </div>
+            </div>
+
+            <div class="flex flex-col">
+                <h1 class="uppercase font-bold md:text-lg text-base mt-4">fecha de terminación</h1>
+                <p class="flex items-center mt-2 space-x-2 text-neutral font-bold md:text-lg text-sm" v-if="projects.status === 'Completado' && projects.completed_at">
+                    {{ new Date(projects.completed_at).toLocaleDateString() }}
+                </p>
             </div>
 
             <div v-if="hasRole('admin')" class="flex flex-col">

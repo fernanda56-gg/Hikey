@@ -12,11 +12,28 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
 test('El usuario puede visualizar la vista de proyectos', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
-    actingAs($user);
 
-    $response = get(route('projects.index'));
+    /* se crea una compañía, asignamos que el dueño de la empresa es el usuario creado */
+    $company = Company::factory()->create([
+        'owner_id' => $user->id,
+    ]);
+    $user->companies()->attach($company->id); // vinculamos al usuario con la empresa
+
+    /* agregamos el seeder de area y sacamos el id del primer registro del seed */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* llenamos los campos del form de proyectos */
+    $response = actingAs($user)
+    ->get(route('projects.index'));
+
     $response->assertStatus(200);
 });
 
@@ -60,7 +77,7 @@ test('El usuario puede crear proyectos', function () {
         'name' => 'Empresa X',
         'description' => 'Empresa de mercadotecnia',
         'link' => 'https://example.com/proyecto-x',
-        'image_path' => 'https://example.com/proyecto-img',
+        'link_2' => 'https://example.com/proyecto-img',
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date' => now()->addDays(14)->toDateString(),
         'by_user_id' => $user->id,
@@ -172,7 +189,7 @@ test('El usuario puede editar proyectos', function () {
         'name' => 'Titulo nuevo',
         'description' => 'Sinopsis nueva',
         'link' => $project->link,
-        'image_path' => $project->image_path,
+        'link_2' => $project->link_2,
         'start_date' => $project->start_date,
         'end_date' => $project->end_date,
         'by_user_id' => $user->id,
@@ -347,15 +364,12 @@ test('El usuario puede filtrar los proyectos por area', function () {
 });
 
 test('El usuario puede filtrar los proyectos por su estatus', function () {
-    /* se crean los roles para usuario */
     Role::create(['name' => 'user']);
     Role::create(['name' => 'manager']);
 
-    /* el usuario se genera */
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
-    /* se crea la empresa, el usuario creado es el dueño de la empresa */
     $company = Company::factory()->create([
         'owner_id' => $user->id,
     ]);
@@ -364,33 +378,33 @@ test('El usuario puede filtrar los proyectos por su estatus', function () {
     seed(AreaSeeder::class);
     $area = Area::limit(1)->first();
 
-    //* se crean dos registros para ejecutar el filtro
+    //* se crean tres registros para ejecutar el filtro
     $option_a = Project::factory()->create([
-    'start_date' => null,
-    'end_date'   => null,
-    'status'     => 'Pendiente',
-    'by_user_id' => $user->id,
-    'area_id'    => $area->id,
-    'company_id' => $company->id,
+        'start_date' => null,
+        'end_date'   => null,
+        'by_user_id' => $user->id,
+        'area_id'    => $area->id,
+        'company_id' => $company->id,
     ]);
+    // $option_a queda 'Pendiente' por defecto
 
     $option_b = Project::factory()->create([
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => null,
-        'status'     => 'En progreso',
         'by_user_id' => $user->id,
         'area_id'    => $area->id,
         'company_id' => $company->id,
     ]);
+    $option_b->markInProgress();
 
     $option_c = Project::factory()->create([
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => now()->addDays(14)->toDateString(),
-        'status'     => 'Completado',
         'by_user_id' => $user->id,
         'area_id'    => $area->id,
         'company_id' => $company->id,
     ]);
+    $option_c->markCompletedAt();
 
     //* se filtra la info por status
     $filter = Project::filter(['status' => 'Pendiente'])->get();
@@ -424,31 +438,31 @@ test('El usuario no coloca nada en los filtros y retorna todos los registros', f
     'name' => 'Facturas fiscales',
     'start_date' => null,
     'end_date'   => null,
-    'status'     => 'Pendiente',
     'by_user_id' => $user->id,
     'area_id'    => $area_y->id,
     'company_id' => $company->id,
     ]);
+    // $option_a queda 'Pendiente' por defecto
 
     $option_b = Project::factory()->create([
         'name' => 'Presentación del proyecto',
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => null,
-        'status'     => 'En progreso',
         'by_user_id' => $user->id,
         'area_id'    => $area_x->id,
         'company_id' => $company->id,
     ]);
+    $option_b->markInProgress();
 
     $option_c = Project::factory()->create([
         'name' => 'Campaña de publicidad',
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => now()->addDays(14)->toDateString(),
-        'status'     => 'Completado',
         'by_user_id' => $user->id,
         'area_id'    => $area_x->id,
         'company_id' => $company->id,
     ]);
+    $option_c->markCompletedAt();
 
     //? no se coloca nada en los filtros
     $filter = Project::filter([
@@ -485,31 +499,31 @@ test('El usuario utiliza los 3 filtros y da un registro en especifico', function
     'name' => 'Facturas fiscales',
     'start_date' => null,
     'end_date'   => null,
-    'status'     => 'Pendiente',
     'by_user_id' => $user->id,
     'area_id'    => $area_y->id,
     'company_id' => $company->id,
     ]);
+    // $option_a queda 'Pendiente' por defecto
 
     $option_b = Project::factory()->create([
         'name' => 'Presentación del proyecto',
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => null,
-        'status'     => 'En progreso',
         'by_user_id' => $user->id,
         'area_id'    => $area_x->id,
         'company_id' => $company->id,
     ]);
+    $option_b->markInProgress();
 
     $option_c = Project::factory()->create([
         'name' => 'Campaña de publicidad',
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => now()->addDays(14)->toDateString(),
-        'status'     => 'Completado',
         'by_user_id' => $user->id,
         'area_id'    => $area_x->id,
         'company_id' => $company->id,
     ]);
+    $option_c->markCompletedAt();
 
     // ! se colocan los datos de un proyecto en especifico
     $filter = Project::filter([
@@ -547,21 +561,21 @@ test('El filtro no retorna nada si no hay coincidencias con la información', fu
     'name' => 'Facturas fiscales',
     'start_date' => null,
     'end_date'   => null,
-    'status'     => 'Pendiente',
     'by_user_id' => $user->id,
     'area_id'    => $area_y->id,
     'company_id' => $company->id,
     ]);
+    // $option_a queda 'Pendiente' por defecto
 
     $option_b = Project::factory()->create([
         'name' => 'Presentación del proyecto',
         'start_date' => now()->addDays(7)->toDateString(),
         'end_date'   => null,
-        'status'     => 'En progreso',
         'by_user_id' => $user->id,
         'area_id'    => $area_x->id,
         'company_id' => $company->id,
     ]);
+    $option_b->markInProgress();
 
     // ! se introduce un valor al filtro que no coincide con los registros
     $filter = Project::filter([
