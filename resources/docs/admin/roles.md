@@ -40,6 +40,7 @@ Cada rol tiene asignados ciertos permisos que delimitan las acciones que pueden 
 | Editar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Eliminar proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 | Actualizar fechas | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
+| Actualizar estatus de proyectos | <img src="/images/check-bold.png" width="25" height="25"/> | <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/check-bold.png" width="25" height="25"/>| <img src="/images/x-bold.png" width="25" height="25"/> |
 
 
 ### Clientes

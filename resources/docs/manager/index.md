@@ -17,6 +17,7 @@
     - [Lista de proyectos](/{{route}}/{{version}}/projects/show-project)
     - [Editar proyecto](/{{route}}/{{version}}/projects/edit-project)
     - [Eliminar proyecto](/{{route}}/{{version}}/projects/delete-project)
+        - [Actualizar estatus de proyecto](/{{route}}/{{version}}/projects/update-status-project)
 
 - ## Clientes
     - [Crear cliente](/{{route}}/{{version}}/clients/create-client)

@@ -251,7 +251,6 @@ class ProjectController extends Controller
         return back()->with('success', 'Estatus de proyecto actualizado');
     }
 
-    // TODO: ajustar nueva documentación para team-leader y ajustar imagenes
     public function updateDate(Request $request, Project $project)
     {
 
