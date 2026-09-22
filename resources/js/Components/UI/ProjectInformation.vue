@@ -67,18 +67,18 @@
                 </div>
             </div>
 
-            <div class="flex flex-col">
-                <h1 class="uppercase font-bold md:text-lg text-base mt-4">fecha de terminación</h1>
-                <p class="flex items-center mt-2 space-x-2 text-neutral font-bold md:text-lg text-sm" v-if="projects.status === 'Completado' && projects.completed_at">
-                    {{ new Date(projects.completed_at).toLocaleDateString() }}
-                </p>
-            </div>
-
             <div v-if="hasRole('admin')" class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-base mt-4">Empresa propietaria</h1>
                 <span class="mt-2 font-stretch-expanded md:text-lg text-sm">
                     {{ projects.company.name }}
                 </span>
+            </div>
+
+            <div class="flex flex-col">
+                <h1 class="uppercase font-bold md:text-lg text-base mt-4">fecha de terminación</h1>
+                <p class="flex items-center mt-2 space-x-2 text-neutral font-bold md:text-lg text-sm" v-if="projects.status === 'Completado' && projects.completed_at">
+                    {{ new Date(projects.completed_at).toLocaleDateString() }}
+                </p>
             </div>
         </div>
     </div>

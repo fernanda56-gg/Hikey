@@ -12,7 +12,6 @@
             </Link>
 
             <!-- Botón para actualizar estatus de proyecto -->
-            <!-- //TODO: añadir el policy para esto del btn -->
             <button
                 v-if="can?.update && project.status === 'Pendiente'"
                 @click="changeStatus('En progreso')"

@@ -55,6 +55,17 @@
                                 </Link>
                             </div>
 
+                            <!-- Notificación de cambio de estatus de proyecto -->
+                            <div v-if="notification.type === 'App\\Notifications\\UpdateProjectStatus'" class="font-semibold">
+                                Se ha completado el proyecto
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                entra para ver los detalles
+                                <Link :href="route('projects.show', { project: notification.data.project_id })" class="hover:text-blue-500 duration-200 hover:duration-200 inline-flex items-center gap-1">
+                                    {{ notification.data.project_name }}
+                                    <PhCards class="md:size-5 size-4" />
+                                </Link>
+                            </div>
+
                             <!-- Notificación de eliminación de proyecto -->
                             <div v-if="notification.type === 'App\\Notifications\\ProjectDeleted'" class="font-semibold">
                                 Se ha eliminado

@@ -10,6 +10,7 @@ use App\Notifications\ProjectChangeDates;
 use App\Notifications\ProjectCreated;
 use App\Notifications\ProjectDeleted;
 use App\Notifications\ProjectEdited;
+use App\Notifications\UpdateProjectStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -242,16 +243,15 @@ class ProjectController extends Controller
             'Completado' => $project->markCompletedAt(),
         };
 
-        // TODO: generar la noti a base de esto
-        /* $project->load('project_owner');
+        $project->load('project_owner');
         if ($project->project_owner) {
-            $project->project_owner->notify(new ProjectStatusChanged($project)); // si querés notificar, o reusar otra
-        } */
+            $project->project_owner->notify(new UpdateProjectStatus($project));
+        }
 
         return back()->with('success', 'Estatus de proyecto actualizado');
     }
 
-    // TODO: ajustar nueva documentación para team-leader
+    // TODO: ajustar nueva documentación para team-leader y ajustar imagenes
     public function updateDate(Request $request, Project $project)
     {
 
