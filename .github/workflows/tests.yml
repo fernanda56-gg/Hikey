@@ -24,6 +24,11 @@ jobs:
           extensions: mbstring, pdo, pdo_sqlite, bcmath
           coverage: none
 
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Copiar archivo de entorno
         run: cp .env.example .env
 
@@ -32,6 +37,12 @@ jobs:
 
       - name: Generar clave de aplicación
         run: php artisan key:generate
+
+      - name: Instalar dependencias de Node
+        run: npm install
+
+      - name: Compilar assets del frontend
+        run: npm run build
 
       - name: Ejecutar pruebas con Pest
         run: ./vendor/bin/pest
