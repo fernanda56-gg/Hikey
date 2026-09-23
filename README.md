@@ -169,7 +169,6 @@ Luego, ejecuta las pruebas dentro del contenedor de PHP:
 docker compose exec php ./vendor/bin/pest
 ```
 
-## Tests
 
 También puedes ver el estado de las pruebas en tiempo real a través del badge de GitHub Actions:
 ![Tests](https://github.com/fernanda56-gg/Hikey/actions/workflows/tests.yml/badge.svg)
