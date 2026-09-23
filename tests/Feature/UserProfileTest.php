@@ -4,8 +4,11 @@ use function Pest\Laravel\{actingAs, get};
 
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Spatie\Permission\Models\Role;
 
 test('Se muestra la vista de perfil de usuario', function () {
+    Role::create(['name' => 'user']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
     actingAs($user);
@@ -15,6 +18,8 @@ test('Se muestra la vista de perfil de usuario', function () {
 });
 
 test('El usuario puede actualizar su información de usuario', function () {
+    Role::create(['name' => 'user']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -39,6 +44,8 @@ test('El usuario puede actualizar su información de usuario', function () {
 });
 
 test('El usuario actualiza su información pero el estatus de verificación de correo no cambia', function () {
+    Role::create(['name' => 'user']);
+
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
@@ -61,6 +68,8 @@ test('El usuario actualiza su información pero el estatus de verificación de c
 });
 
 test('El usuario puede actualizar su foto de perfil', function () {
+    Role::create(['name' => 'user']);
+
     /* se genera el usuario y el espacio en donde simulara almacenar la img */
     Storage::fake('public');
 
@@ -85,6 +94,8 @@ test('El usuario puede actualizar su foto de perfil', function () {
 });
 
 test('El usuario no puede cambiar su foto de perfil si no cumple con los requerimientos', function () {
+    Role::create(['name' => 'user']);
+
     Storage::fake('public');
 
     /** @var \App\Models\User $user */
@@ -100,6 +111,8 @@ test('El usuario no puede cambiar su foto de perfil si no cumple con los requeri
 });
 
 test('El usuario puede eliminar su cuenta', function () {
+    Role::create(['name' => 'user']);
+
     $password = 'Zbz9vvMKO0Ph{';
 
     /** @var \App\Models\User $user */
@@ -118,6 +131,8 @@ test('El usuario puede eliminar su cuenta', function () {
 
 
 test('El usuario puede actualizar su contraseña', function () {
+    Role::create(['name' => 'user']);
+    
     $password = 'Zbz9vvMKO0Ph{';
     $new_password = 'fXQu$erBxoE5';
 
