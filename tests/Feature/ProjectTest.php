@@ -585,3 +585,109 @@ test('El filtro no retorna nada si no hay coincidencias con la información', fu
     //* se espera que no retorne nada al no tener coincidencias
     expect($filter)->toBeEmpty();
 });
+
+test('El usuario manager de Empresa A intenta editar Proyecto de Empresa B', function () {
+    /* se generan los roles */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    // ! se crea usuario de empresa A y B
+    /** @var \App\Models\User $manager_a */
+    $manager_a = User::factory()->create();
+
+    /** @var \App\Models\User $manager_b */
+    $manager_b = User::factory()->create();
+
+    // ! se crea las empresas A y B
+    $company_a = Company::factory()->create([
+        'owner_id' => $manager_a->id,
+    ]);
+    $manager_a->companies()->attach($company_a->id);
+
+    $company_b = Company::factory()->create([
+        'owner_id' => $manager_b->id,
+    ]);
+    $manager_b->companies()->attach($company_b->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    // ! se crean los proyectos para empresas A y B
+    $project_a = Project::factory()->create([
+        'by_user_id' => $manager_a->id,
+        'area_id' => $area,
+        'company_id' => $company_a->id,
+    ]);
+
+    $project_b = Project::factory()->create([
+        'by_user_id' => $manager_b->id,
+        'area_id' => $area,
+        'company_id' => $company_b->id,
+    ]);
+
+    // * se realiza la prueba
+    $response = actingAs($manager_a)->
+    get(route('projects.edit', $project_b));
+
+    $response->assertForbidden(); // ! se espera que de el error 403 al no ser dueño del proyecto
+});
+
+test('El usuario manager de Empresa A intenta eliminar Proyecto de Empresa', function () {
+    /* se generan los roles */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    // ! se crea usuario de empresa A y B
+    /** @var \App\Models\User $manager_a */
+    $manager_a = User::factory()->create();
+
+    /** @var \App\Models\User $manager_b */
+    $manager_b = User::factory()->create();
+
+    // ! se crea las empresas A y B
+    $company_a = Company::factory()->create([
+        'owner_id' => $manager_a->id,
+    ]);
+    $manager_a->companies()->attach($company_a->id);
+
+    $company_b = Company::factory()->create([
+        'owner_id' => $manager_b->id,
+    ]);
+    $manager_b->companies()->attach($company_b->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    // ! se crean los proyectos para empresas A y B
+    $project_a = Project::factory()->create([
+        'by_user_id' => $manager_a->id,
+        'area_id' => $area,
+        'company_id' => $company_a->id,
+    ]);
+
+    $project_b = Project::factory()->create([
+        'by_user_id' => $manager_b->id,
+        'area_id' => $area,
+        'company_id' => $company_b->id,
+    ]);
+
+    // * se realiza la prueba
+    $response = actingAs($manager_a)->delete(route('projects.destroy', $project_b));
+
+    $response->assertForbidden(); // ! se espera que de el error 403
+});
+
+test('Usuario sin empresa intenta listar proyectos', function () {
+    Role::create(['name' => 'user']);
+
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $response = actingAs($user)
+    ->get(route('projects.index'));
+
+    $response->assertRedirect(route('inicio'));
+    $response->assertSessionHas('error', 'Debes unirte a una empresa para ver este apartado.');
+});

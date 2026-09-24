@@ -720,3 +720,61 @@ test('El lider de equipo puede sacar a un miembro del equipo', function () {
     expect($project->fresh()->users->contains($removeMember))->toBeFalse();
     expect($company->fresh()->member->contains($removeMember))->toBeTrue();
 });
+
+test('El usuario team leader de Proyecto A intenta modificar Proyecto B', function () {
+    /* se generan los roles */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    // ! se genera manager de empresa A y B
+    /** @var \App\Models\User $manager_a */
+    $manager_a = User::factory()->create();
+
+    /** @var \App\Models\User $manager_b */
+    $manager_b = User::factory()->create();
+
+    // ! se crea las empresas A y B
+    $company_a = Company::factory()->create([
+        'owner_id' => $manager_a->id,
+    ]);
+    $manager_a->companies()->attach($company_a->id);
+
+    $company_b = Company::factory()->create([
+        'owner_id' => $manager_b->id,
+    ]);
+    $manager_b->companies()->attach($company_b->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    // ! se crean los proyectos para empresas A y B
+    $project_a = Project::factory()->create([
+        'by_user_id' => $manager_a->id,
+        'area_id' => $area,
+        'company_id' => $company_a->id,
+    ]);
+
+    $project_b = Project::factory()->create([
+        'by_user_id' => $manager_b->id,
+        'area_id' => $area,
+        'company_id' => $company_b->id,
+    ]);
+
+    // ! se genera líder de equipo
+    $team_leader_a = User::factory()->create();
+    $company_a->member()->attach($team_leader_a);
+    $project_a->users()->attach($team_leader_a, ['role' => 'Miembro']);
+    app(ProjectTeamService::class)->changeRole($project_a, $team_leader_a, 'Lider');
+
+    // ? comprobación de que se haya hecho el cambio
+    expect($project_a->fresh()->leader->contains($team_leader_a))->toBeTrue();
+    expect($team_leader_a->fresh()->hasRole('team-leader'))->toBeTrue();
+
+    // * se realiza la prueba
+    $response = actingAs($team_leader_a)->
+    get(route('projects.edit', $project_b));
+
+    $response->assertForbidden();
+});

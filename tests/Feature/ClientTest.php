@@ -1308,3 +1308,51 @@ test('El filtro no retorna nada si no hay coincidencias', function () {
     //* se espera que no retorne nada al no tener coincidencias
     expect($filter)->toBeEmpty();
 });
+
+test('El usuario manager intenta vincular un Cliente de otra empresa', function () {
+    /* se generan los roles */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+
+    // ! se crea usuario de empresa A y B
+    /** @var \App\Models\User $manager_a */
+    $manager_a = User::factory()->create();
+
+    /** @var \App\Models\User $manager_b */
+    $manager_b = User::factory()->create();
+
+    // ! se crea las empresas A y B
+    $company_a = Company::factory()->create([
+        'owner_id' => $manager_a->id,
+    ]);
+    $manager_a->companies()->attach($company_a->id);
+
+    $company_b = Company::factory()->create([
+        'owner_id' => $manager_b->id,
+    ]);
+    $manager_b->companies()->attach($company_b->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    // ! se crea el proyecto de la empresa B
+    $project_b = Project::factory()->create([
+        'by_user_id' => $manager_b->id,
+        'area_id' => $area,
+        'company_id' => $company_b->id,
+    ]);
+
+    // ! se genera el cliente de la empresa A
+    $client_a = Client::factory()->create([
+        'company_id' => $company_a->id,
+    ]);
+
+    // * se realiza la prueba
+    $response = actingAs($manager_a)->
+    post(route('clients.projects.attach', $project_b), [
+        'client_id' => $client_a->id,
+    ]);
+
+    $response->assertForbidden(); // ! se espera que de el error 403 
+});
