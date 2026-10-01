@@ -36,14 +36,18 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
 RUN docker-php-ext-install pdo pdo_mysql
 
 # instalación de dependencias para correr gd y zip
-RUN apk add libpng-dev \
-    && apk add freetype-dev \
-    && apk add jpeg-dev \
-    && apk add libzip-dev \
-    && apk add oniguruma-dev \
-    && apk add libxml2-dev \
-    && apk add linux-headers \
-    && apk add nodejs npm
+RUN apk add --no-cache \
+    libpng-dev \
+    freetype-dev \
+    jpeg-dev \
+    libjpeg-turbo-dev \
+    libzip-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    linux-headers \
+    gnu-libiconv \
+    nodejs npm
+
 
 # instalación de extensiones de php
 RUN docker-php-ext-install mbstring \

@@ -24050,6 +24050,299 @@ namespace Barryvdh\Debugbar\Facades {
             }
     }
 
+namespace Maatwebsite\Excel\Facades {
+    /**
+     */
+    class Excel {
+        /**
+         * @param array<string, string> $headers
+         * @param array<string, string> $headers
+         * @throws Exception
+         * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+         * @static
+         */
+        public static function download($export, $fileName, $writerType = null, $headers = [])
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->download($export, $fileName, $writerType, $headers);
+        }
+
+        /**
+         * @param string|null $disk Fallback for usage with named properties
+         * @throws Exception
+         * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+         * @static
+         */
+        public static function store($export, $filePath, $diskName = null, $writerType = null, $diskOptions = [], $disk = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->store($export, $filePath, $diskName, $writerType, $diskOptions, $disk);
+        }
+
+        /**
+         * @static
+         */
+        public static function queue($export, $filePath, $disk = null, $writerType = null, $diskOptions = [])
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->queue($export, $filePath, $disk, $writerType, $diskOptions);
+        }
+
+        /**
+         * @static
+         */
+        public static function raw($export, $writerType)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->raw($export, $writerType);
+        }
+
+        /**
+         * @throws ValidationException
+         * @static
+         */
+        public static function import($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->import($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * @return array<array-key, array<int, array<array-key, mixed>>>
+         * @static
+         */
+        public static function toArray($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->toArray($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
+         * @static
+         */
+        public static function toCollection($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->toCollection($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * @static
+         */
+        public static function queueImport($import, $filePath, $disk = null, $readerType = null)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->queueImport($import, $filePath, $disk, $readerType);
+        }
+
+        /**
+         * Register a custom export source handler.
+         * 
+         * The handler may implement SheetSourceHandler (sync), QueuedSheetSourceHandler
+         * (queued), or both. Pass a class name to have it resolved lazily from the
+         * service container, or pass an instance directly.
+         *
+         * @param \Maatwebsite\Excel\Contracts\SheetSourceHandler|\Maatwebsite\Excel\Contracts\QueuedSheetSourceHandler|class-string $handlers
+         * @static
+         */
+        public static function registerSourceHandler(...$handlers)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->registerSourceHandler(...$handlers);
+        }
+
+        /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @param-closure-this static  $macro
+         * @return void
+         * @static
+         */
+        public static function macro($name, $macro)
+        {
+            \Maatwebsite\Excel\Excel::macro($name, $macro);
+        }
+
+        /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void
+         * @throws \ReflectionException
+         * @static
+         */
+        public static function mixin($mixin, $replace = true)
+        {
+            \Maatwebsite\Excel\Excel::mixin($mixin, $replace);
+        }
+
+        /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool
+         * @static
+         */
+        public static function hasMacro($name)
+        {
+            return \Maatwebsite\Excel\Excel::hasMacro($name);
+        }
+
+        /**
+         * Flush the existing macros.
+         *
+         * @return void
+         * @static
+         */
+        public static function flushMacros()
+        {
+            \Maatwebsite\Excel\Excel::flushMacros();
+        }
+
+        /**
+         * @static
+         */
+        public static function extend($concern, $handler, $event = 'Maatwebsite\\Excel\\Events\\BeforeWriting')
+        {
+            return \Maatwebsite\Excel\Excel::extend($concern, $handler, $event);
+        }
+
+        /**
+         * Register local event listeners.
+         *
+         * @param array<string, callable> $listeners
+         * @static
+         */
+        public static function registerListeners($listeners)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->registerListeners($listeners);
+        }
+
+        /**
+         * @static
+         */
+        public static function clearListeners()
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->clearListeners();
+        }
+
+        /**
+         * Register a global event listener.
+         *
+         * @static
+         */
+        public static function listen($event, $listener)
+        {
+            return \Maatwebsite\Excel\Excel::listen($event, $listener);
+        }
+
+        /**
+         * @static
+         */
+        public static function raise($event)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->raise($event);
+        }
+
+        /**
+         * @return callable[]
+         * @static
+         */
+        public static function listeners($event)
+        {
+            /** @var \Maatwebsite\Excel\Excel $instance */
+            return $instance->listeners($event);
+        }
+
+        /**
+         * When asserting downloaded, stored, queued or imported, use regular expression
+         * to look for a matching file path.
+         *
+         * @static
+         */
+        public static function matchByRegex()
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->matchByRegex();
+        }
+
+        /**
+         * When asserting downloaded, stored, queued or imported, use regular string
+         * comparison for matching file path.
+         *
+         * @static
+         */
+        public static function doNotMatchByRegex()
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->doNotMatchByRegex();
+        }
+
+        /**
+         * @static
+         */
+        public static function assertDownloaded($fileName, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertDownloaded($fileName, $callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function assertStored($filePath, $disk = null, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertStored($filePath, $disk, $callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function assertQueued($filePath, $disk = null, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertQueued($filePath, $disk, $callback);
+        }
+
+        /**
+         * @param array<int, object> $chain
+         * @static
+         */
+        public static function assertQueuedWithChain($chain)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertQueuedWithChain($chain);
+        }
+
+        /**
+         * @static
+         */
+        public static function assertExportedInRaw($classname, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertExportedInRaw($classname, $callback);
+        }
+
+        /**
+         * @static
+         */
+        public static function assertImported($filePath, $disk = null, $callback = null)
+        {
+            /** @var \Maatwebsite\Excel\Fakes\ExcelFake $instance */
+            return $instance->assertImported($filePath, $disk, $callback);
+        }
+
+            }
+    }
+
 namespace Illuminate\Support {
     /**
      * @template TKey of array-key
@@ -24065,6 +24358,34 @@ namespace Illuminate\Support {
         public static function debug()
         {
             return \Illuminate\Support\Collection::debug();
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\DownloadCollectionMixin::downloadExcel()
+         * @param string $fileName
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @param array $responseHeaders
+         * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+         * @static
+         */
+        public static function downloadExcel($fileName, $writerType = null, $withHeadings = false, $responseHeaders = [])
+        {
+            return \Illuminate\Support\Collection::downloadExcel($fileName, $writerType, $withHeadings, $responseHeaders);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\StoreCollectionMixin::storeExcel()
+         * @param string $filePath
+         * @param string|null $disk
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @return \Illuminate\Foundation\Bus\PendingDispatch|bool
+         * @static
+         */
+        public static function storeExcel($filePath, $disk = null, $writerType = null, $withHeadings = false)
+        {
+            return \Illuminate\Support\Collection::storeExcel($filePath, $disk, $writerType, $withHeadings);
         }
 
             }
@@ -26241,6 +26562,60 @@ namespace  {
         {
             /** @var \Illuminate\Database\Eloquent\Builder $instance */
             return $instance->mergeConstraintsFrom($from);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\DownloadQueryMacro::__invoke()
+         * @param string $fileName
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+         * @static
+         */
+        public static function downloadExcel($fileName, $writerType = null, $withHeadings = false)
+        {
+            return \Illuminate\Database\Eloquent\Builder::downloadExcel($fileName, $writerType, $withHeadings);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\StoreQueryMacro::__invoke()
+         * @param string $filePath
+         * @param string|null $disk
+         * @param string|null $writerType
+         * @param mixed $withHeadings
+         * @return \Illuminate\Foundation\Bus\PendingDispatch|bool
+         * @static
+         */
+        public static function storeExcel($filePath, $disk = null, $writerType = null, $withHeadings = false)
+        {
+            return \Illuminate\Database\Eloquent\Builder::storeExcel($filePath, $disk, $writerType, $withHeadings);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\ImportMacro::__invoke()
+         * @param string $filename
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @return \Maatwebsite\Excel\Importer|\Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Bus\PendingBatch
+         * @static
+         */
+        public static function import($filename, $disk = null, $readerType = null)
+        {
+            return \Illuminate\Database\Eloquent\Builder::import($filename, $disk, $readerType);
+        }
+
+        /**
+         * @see \Maatwebsite\Excel\Mixins\ImportAsMacro::__invoke()
+         * @param string $filename
+         * @param callable $mapping
+         * @param string|null $disk
+         * @param string|null $readerType
+         * @return \Maatwebsite\Excel\Importer|\Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Bus\PendingBatch
+         * @static
+         */
+        public static function importAs($filename, $mapping, $disk = null, $readerType = null)
+        {
+            return \Illuminate\Database\Eloquent\Builder::importAs($filename, $mapping, $disk, $readerType);
         }
 
         /**
@@ -29297,6 +29672,7 @@ namespace  {
     class Vite extends \Illuminate\Support\Facades\Vite {}
     class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
     class LaRecipe extends \BinaryTorch\LaRecipe\LaRecipe {}
+    class Excel extends \Maatwebsite\Excel\Facades\Excel {}
 }
 
 

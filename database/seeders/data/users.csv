@@ -1,0 +1,127 @@
+name,last_name,email,email_verified_at,password,spatie_rol,attach_project,project_rol,created_at
+Allen,Trillo Figueroa,allen.trillo@gmail.com,null,password,admin,0,— (without projects),2023-01-14
+Angie,Milcheva,angie.milcheva@fastmail.com,null,password,manager,6,"5 Lider, 1 Miembro",2023-03-27
+Simon,Bullo,simon.bullo@gmx.com,null,password,user,1,"0 Lider, 1 Miembro",2023-05-09
+Yarabi,Garcia De Los Rios,yarabi.garcia@icloud.com,null,password,user,2,"0 Lider, 2 Miembro",2023-07-22
+Domenika,Muñoz Cruzado,domenika.munoz@hotmail.com,null,password,user,0,— (without projects),2023-09-18
+Camil,Abdoulaye,camil.abdoulaye@fastmail.mx,null,password,user,5,"0 Lider, 5 Miembro",2023-11-06
+Aylyn,Vicente Ruiz,aylyn.vicente@fastmail.com.au,null,password,user,2,"0 Lider, 2 Miembro",2024-02-11
+Jason,Mariezkurrena,jason.mariezkurrena@gmx.de,null,password,team-leader,4,"2 Lider, 2 Miembro",2024-04-23
+Hilario,Garcia Pascual,hilario.garcia@fastmail.co.uk,null,password,user,4,"0 Lider, 4 Miembro",2024-06-15
+Homero,Diaz De Espada,homero.diaz@fastmail.es,null,password,user,7,"0 Lider, 7 Miembro",2024-08-29
+Ibai,Vinyoles,ibai.vinyoles@fastmail.fr,null,password,user,3,"0 Lider, 3 Miembro",2024-10-07
+Kyllian,Gasparyan,kyllian.gasparyan@gmx.net,null,password,user,1,"0 Lider, 1 Miembro",2024-12-19
+Lars,Perez Higueras,lars.perez@fastmail.us,null,password,user,0,— (without projects),2025-01-25
+Mahonri,Diaz Jimenez,mahonri.diaz@gmail.com,null,password,user,0,— (without projects),2025-03-12
+Odell,Santa Catalina,odell.santacatalina@icloud.com,null,password,user,1,"0 Lider, 1 Miembro",2025-04-30
+Maxime,Motas,maxime.motas@fastmail.de,null,password,team-leader,2,"1 Lider, 1 Miembro",2025-06-21
+Nissim,Aleksanyan,nissim.aleksanyan@gmx.com,null,password,team-leader,5,"2 Lider, 3 Miembro",2025-07-16
+Ruy,Gregoris,ruy.gregoris@fastmail.org,null,password,manager,7,"3 Lider, 4 Miembro",2025-09-03
+Sebastian,Damboriena,sebastian.damboriena@hotmail.com,null,password,manager,8,"4 Lider, 4 Miembro",2025-10-28
+Theo,Aranjuelo,theo.aranjuelo@fastmail.nl,null,password,user,4,"0 Lider, 4 Miembro",2025-12-14
+Tarek,Perez Sevilla,tarek.perez@fastmail.mx,null,password,user,5,"0 Lider, 5 Miembro",2023-02-08
+Viktor,Chiscano,viktor.chiscano@gmx.us,null,password,user,6,"0 Lider, 6 Miembro",2023-04-19
+Xabier,Perez Sevilla,xabier.perez@fastmail.com,null,password,team-leader,8,"2 Lider, 6 Miembro",2023-06-30
+Wilson,Urango,wilson.urango@fastmail.net,null,password,user,2,"0 Lider, 2 Miembro",2023-08-11
+Xander,Buenrostro,xander.buenrostro@googlemail.com,null,password,user,1,"0 Lider, 1 Miembro",2023-10-25
+Xocoyotzin,Corralero,xocoyotzin.corralero@fastmail.fm,null,password,user,3,"0 Lider, 3 Miembro",2024-01-17
+Uzziel,Garcia De La Peña,uzziel.garcia@fastmail.in,null,password,manager,9,"3 Lider, 6 Miembro",2024-03-05
+Amayrani,Mariotti,amayrani.mariotti@icloud.com,null,password,user,4,"0 Lider, 4 Miembro",2024-05-28
+Azura,Gavrilova,azura.gavrilova@gmx.de,null,password,user,3,"0 Lider, 3 Miembro",2024-07-13
+Edrielle,Martinez De Eulate,edrielle.martinez@fastmail.jp,null,password,user,3,"0 Lider, 3 Miembro",2024-09-21
+Dulce,Sanchez Manzanero,dulce.sanchez@hotmail.es,null,password,user,1,"0 Lider, 1 Miembro",2024-11-11
+Eirene,Pinochet,eirene.pinochet@fastmail.fr,null,password,user,2,"0 Lider, 2 Miembro",2025-02-04
+Gabriela,Lacañina,gabriela.lacanina@gmail.com,null,password,user,0,— (without projects),2025-05-17
+Fridha,Manzanillas,fridha.manzanillas@fastmail.com,null,password,team-leader,8,"6 Lider, 2 Miembro",2025-08-02
+Hiromi,De Temple,hiromi.detemple@gmx.net,null,password,user,9,"0 Lider, 9 Miembro",2025-11-23
+Holly,Hollingsworth,holly.hollingsworth@fastmail.us,null,password,user,7,"0 Lider, 7 Miembro",2026-01-09
+Inna,Macgregor,inna.macgregor@icloud.com,null,password,user,0,— (without projects),2026-02-18
+Krishna,Hetherington,krishna.hetherington@fastmail.co.uk,null,password,user,0,— (without projects),2026-03-26
+Lluvia,Virban,lluvia.virban@free.fr,null,password,user,0,— (without projects),2026-04-14
+Maheli,Sanchez Puerta,maheli.sanchez@fastmail.mx,null,password,user,1,"0 Lider, 1 Miembro",2026-05-07
+Rolando,Escarraza,rolando.escarraza@gmx.com,null,password,manager,10,"3 Lider, 7 Miembro",2026-06-19
+Sadoc,Svetlinov,sadoc.svetlinov@fastmail.org,null,password,user,0,— (without projects),2026-07-03
+Zianya,Branzuela,zianya.branzuela@fastmail.com,null,password,user,1,"0 Lider, 1 Miembro",2026-07-27
+Yutzin,Diez De La Torre,yutzin.diez@fastmail.de,null,password,user,2,"0 Lider, 2 Miembro",2026-08-05
+Aldebaran,Apilluelo,aldebaran.apilluelo@fastmail.es,null,password,user,6,"0 Lider, 6 Miembro",2026-08-12
+Imanol,Garcia Villoslada,imanol.garcia@googlemail.com,null,password,user,2,"0 Lider, 2 Miembro",2026-08-18
+Maximillian,Bosso,maximillian.bosso@fastmail.com.au,null,password,user,3,"0 Lider, 3 Miembro",2026-08-24
+Adnachiel,Martin De Bustamante,adnachiel.martin@fastmail.tw,null,password,user,0,— (without projects),2026-08-27
+Bartolome,Leszczynska,bartolome.leszczynska@gmx.net,null,password,user,0,— (without projects),2026-08-30
+Oswaldo,Lovatt,oswaldo.lovatt@fastmail.us,null,password,team-leader,8,"1 Lider, 7 Miembro",2026-08-31
+Noor,García,noor.garcia@irelandmail.com,null,password,user,2,"0 Lider, 2 Miembro",2025-07-18
+Maneh,Tanaka,maneh.tanaka@israelmail.com,null,password,user,5,"0 Lider, 5 Miembro",2023-03-27
+Hovhannes,Schmidt,hovhannes.schmidt@italymail.com,null,password,user,0,— (without projects),2026-02-11
+Lilit,Okafor,lilit.okafor@jetemail.net,null,password,user,0,— (without projects),2024-09-05
+Eva,Papadopoulos,eva.papadopoulos@job4u.com,null,password,team-leader,1,"1 Lider, 0 Miembro",2025-11-23
+Angelina,Haddad,angelina.haddad@journalist.com,null,password,team-leader,3,"2 Lider, 1 Miembro",2023-08-14
+Mateo,Ndlovu,mateo.ndlovu@juno.com,null,password,user,3,"0 Lider, 3 Miembro",2024-01-19
+Alexander,Dubois,alexander.dubois@justemail.net,null,password,user,5,"0 Lider, 5 Miembro",2026-07-22
+Felix,Kowalski,felix.kowalski@keemail.me,null,password,user,8,"0 Lider, 8 Miembro",2023-12-03
+Charlotte,Singh,charlotte.singh@keromail.com,null,password,user,0,— (without projects),2025-04-09
+David,Petrov,david.petrov@kissfans.com,null,password,user,4,"0 Lider, 4 Miembro",2024-06-28
+Adin,Silva,adin.silva@kittymail.com,null,password,user,7,"0 Lider, 7 Miembro",2026-03-17
+Hasan,Nguyen,hasan.nguyen@koreamail.com,null,password,user,0,— (without projects),2023-05-21
+Olivia,Müller,olivia.muller@laposte.net,null,password,team-leader,2,"2 Lider, 0 Miembro",2025-09-12
+Sheikh,Rossi,sheikh.rossi@legislator.com,null,password,user,1,"0 Lider, 1 Miembro",2024-11-07
+Mila,Yamamoto,mila.yamamoto@letterboxes.org,null,password,user,0,— (without projects),2023-10-16
+Alice,Hernández,alice.hernandez@libero.it,null,password,user,0,— (without projects),2026-05-30
+Victor Hugo,Andersson,victorhugo.andersson@linuxmail.org,null,password,user,3,"0 Lider, 3 Miembro",2025-02-26
+Miguel Ángel,Al-Hassan,miguelangel.alhassan@list.ru,null,password,team-leader,2,"1 Lider, 1 Miembro",2024-03-11
+Rosmery,O'Connor,rosmery.oconnor@live.ca,null,password,user,5,"0 Lider, 5 Miembro",2023-07-02
+Francisca,Santos,francisca.santos@live.co.uk,null,password,team-leader,9,"4 Lider, 5 Miembro",2025-12-08
+Marco Antonio,Kim,marcoantonio.kim@live.com,null,password,user,2,"0 Lider, 2 Miembro",2026-01-25
+Isabella,Ivanov,isabella.ivanov@live.com.au,null,password,user,0,— (without projects),2024-08-17
+Benjamin,Bergström,benjamin.bergstrom@live.fr,null,password,user,2,"0 Lider, 2 Miembro",2023-02-19
+Jakub,Mbatha,jakub.mbatha@live.it,null,password,user,1,"0 Lider, 1 Miembro",2025-06-04
+Adéla,Fernandes,adela.fernandes@live.nl,null,password,user,0,— (without projects),2026-08-13
+Abdelkader,Moreau,abdelkader.moreau@lobbyist.com,null,password,user,1,"0 Lider, 1 Miembro",2024-12-21
+Djamel,Kumar,djamel.kumar@lovecat.com,null,password,user,0,— (without projects),2023-09-08
+Brahim,Sato,brahim.sato@lycos.com,null,password,team-leader,4,"1 Lider, 2 Miembro",2025-03-15
+Lyna,Johansson,lyna.johansson@mac.com,null,password,user,2,"0 Lider, 2 Miembro",2024-05-03
+Aitana,González,aitana.gonzalez@madonnafan.com,null,password,user,0,— (without projects),2026-06-09
+Rasmus,Mensah,rasmus.mensah@mail-central.com,null,password,team-leader,3,"2 Lider, 3 Miembro",2023-11-27
+Abdel Rahman,Kovačević,abdelrahman.kovacevic@mail-me.com,null,password,user,3,"0 Lider, 3 Miembro",2025-10-31
+Oihan,Bianchi,oihan.bianchi@mail-page.com,null,password,user,3,"0 Lider, 3 Miembro",2024-02-14
+Eevi,Hussein,eevi.hussein@mail.com,null,password,user,0,— (without projects),2026-04-18
+Fiadh,Mendoza,fiadh.mendoza@mail.ru,null,password,team-leader,6,"2 Lider, 4 Miembro",2023-04-06
+Grace,Lindqvist,grace.lindqvist@mailandftp.com,null,password,user,4,"0 Lider, 4 Miembro",2025-01-17
+Paninnguaq,Adeyemi,paninnguaq.adeyemi@mailas.com,null,password,user,0,— (without projects),2024-07-25
+Inunnguag,Fischer,inunnguag.fischer@irelandmail.com,null,password,user,1,"0 Lider, 1 Miembro",2026-02-28
+María del Carmen,Chakraborty,mariadelcarmen.chakraborty@israelmail.com,null,password,team-leader,5,"1 Lider, 4 Miembro",2023-06-13
+Jakov,Martínez,jakov.martinez@italymail.com,null,password,user,3,"0 Lider, 3 Miembro",2025-08-06
+Myrlande,Wilson,myrlande.wilson@jetemail.net,null,password,user,3,"0 Lider, 3 Miembro",2024-10-22
+Widelene,Zhang,widelene.zhang@job4u.com,null,password,user,3,"0 Lider, 3 Miembro",2026-07-04
+Rose Merline,Jørgensen,rosemerline.jorgensen@journalist.com,null,password,team-leader,2,"1 Lider, 1 Miembro",2023-01-29
+Samuel,Diop,samuel.diop@juno.com,null,password,user,0,— (without projects),2025-05-27
+Boglárka,Nakamura,boglarka.nakamura@justemail.net,null,password,user,5,"0 Lider, 5 Miembro",2024-04-16
+Dominik,Pereira,dominik.pereira@keemail.me,null,password,user,7,"0 Lider, 7 Miembro",2026-03-06
+Zalán,Schneider,zalan.schneider@keromail.com,null,password,team-leader,5,"1 Lider, 4 Miembro",2023-12-19
+Sophie,Abdullah,sophie.abdullah@kissfans.com,null,password,team-leader,6,"2 Lider, 4 Miembro",2025-11-05
+Oisín,Moreno,oisin.moreno@kittymail.com,null,password,user,1,"0 Lider, 1 Miembro",2024-09-28
+Ibrahim,Petrović,ibrahim.petrovic@koreamail.com,null,password,user,0,— (without projects),2026-08-27
+Yehuda,Williams,yehuda.williams@laposte.net,null,password,user,4,"0 Lider, 4 Miembro",2023-08-31
+Aadhya,Haddadi,aadhya.haddadi@legislator.com,null,password,user,9,"0 Lider, 9 Miembro",2025-02-08
+Hoda,López,hoda.lopez@letterboxes.org,null,password,user,9,"0 Lider, 9 Miembro",2024-01-31
+Assia,Adebayo,assia.adebayo@libero.it,null,password,user,8,"0 Lider, 8 Miembro",2026-05-14
+Zoran,Bakker,zoran.bakker@linuxmail.org,null,password,user,5,"0 Lider, 5 Miembro",2023-10-03
+Aleksandar,Kuznetsov,aleksandar.kuznetsov@list.ru,null,password,user,3,"0 Lider, 3 Miembro",2025-07-29
+George,Costa,george.costa@live.ca,null,password,user,2,"0 Lider, 2 Miembro",2024-06-11
+Harper,Lee,harper.lee@live.co.uk,null,password,user,0,— (without projects),2026-01-09
+Eithan,Thompson,eithan.thompson@live.com,null,password,user,2,"0 Lider, 2 Miembro",2023-03-18
+Valentina,Ribeiro,valentina.ribeiro@live.fr,null,password,user,0,— (without projects),2024-11-19
+Zoe,Khalil,zoe.khalil@live.it,null,password,team-leader,1,"1 Lider, 0 Miembro",2026-04-02
+Luciana,Mbeki,luciana.mbeki@live.nl,null,password,user,1,"0 Lider, 1 Miembro",2023-05-09
+Alessia,Dubravsky,alessia.dubravsky@lobbyist.com,null,password,user,1,"0 Lider, 1 Miembro",2025-12-17
+Mia,Watanabe,mia.watanabe@lovecat.com,null,password,user,0,— (without projects),2024-03-29
+Chloe,Campbell,chloe.campbell@lycos.com,null,password,team-leader,5,"3 Lider, 2 Miembro",2026-06-26
+Jacob,Dlamini,jacob.dlamini@mac.com,null,password,user,2,"0 Lider, 2 Miembro",2023-07-24
+Matthew,Vargas,matthew.vargas@madonnafan.com,null,password,user,3,"0 Lider, 3 Miembro",2025-04-22
+Zion,Nowak,zion.nowak@mail-central.com,null,password,user,0,— (without projects),2024-08-09
+Bismah,Olsen,bismah.olsen@mail-me.com,null,password,user,4,"0 Lider, 4 Miembro",2026-02-03
+Ayesha,Rahman,ayesha.rahman@mail-page.com,null,password,team-leader,3,"1 Lider, 2 Miembro",2023-11-11
+Cesar,Castillo,cesar.castillo@mail.com,null,password,user,0,— (without projects),2025-06-19
+Patricia,Mori,patricia.mori@mail.ru,null,password,user,2,"0 Lider, 2 Miembro",2024-05-26
+Javiera,Paz,javiera.paz@mailandftp.com,null,password,user,2,"0 Lider, 2 Miembro",2026-08-01
+Hudson,Parks,hudson.parks@mailas.com,null,password,team-leader,3,"3 Lider, 0 Miembro",2025-05-24
+Pedro,Meza,pat.meza@live.fr,null,password,user,0,— (without projects),2025-09-27

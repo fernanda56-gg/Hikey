@@ -97,7 +97,10 @@ class Project extends Model
     // ! Actualiza el estatus del proyecto a En progreso
     public function markInProgress(): void
     {
-        $this->update(['status' => 'En progreso']);
+        $this->update([
+            'status' => 'En progreso',
+            'start_date' => now(),
+        ]);
     }
 
     /* // ! Actualiza el estatus de proyecto a Completado,
