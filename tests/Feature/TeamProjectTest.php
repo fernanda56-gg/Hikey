@@ -115,7 +115,7 @@ test('El usuario manager puede ver la lista de miembros disponibles', function (
 
     foreach($members as $user)
     {
-        $response->assertSee($user->name);
+        $response->assertSee($user->name, false);
     }
 });
 
