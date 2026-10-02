@@ -28,7 +28,6 @@ class ProjectImport implements ToModel, WithHeadingRow, WithValidation
                 return null;
             }
         };
-        //TODO: falta clientes y equipos
 
         $created_at = !empty($row['created_at'])
         ? Carbon::parse($row['created_at'])->format('Y-m-d H:i:s')

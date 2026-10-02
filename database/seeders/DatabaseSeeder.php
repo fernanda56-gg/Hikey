@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             DatasetCompanySeeder::class,
             DatasetProjectSeeder::class,
             DatasetClientSeeder::class,
+            DatasetTeamSeeder::class
             /* AreaSeeder::class,
             UserSeeder::class, */
         ]);

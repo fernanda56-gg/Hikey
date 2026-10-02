@@ -11,6 +11,8 @@ class Team extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'project_team';
+    
     protected $fillable = [
         'project_id',
         'user_id',
