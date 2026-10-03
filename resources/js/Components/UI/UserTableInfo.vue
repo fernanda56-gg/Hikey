@@ -70,6 +70,10 @@
     <div v-if="userAccounts.data.length" class="w-full flex justify-center">
         <PaginationComponent :links="userAccounts.links" />
     </div>
+
+    <div v-else class="flex items-center text-neutral border-2 border-base-300 bg-base-200 rounded-lg p-4">
+        <span>Sin coincidencias.</span>
+    </div>
 </template>
 
 <script setup>

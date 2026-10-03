@@ -34,7 +34,7 @@
                         <td class="w-100">{{ company.email }}</td>
                         <td class="w-100">{{ company.city }}</td>
                         <td class="w-100">{{ company.country }}</td>
-                        <td class="w-100">{{ company.owner.name }}</td>
+                        <td class="w-100">{{ company.owner.name }} {{ company.owner.last_name}}</td>
                         <td class="font-black w-100">
                             <div class="flex items-center gap-2">
                                 {{ company.company_code }}
@@ -60,6 +60,10 @@
     <!-- Contenedor de paginado -->
     <div v-if="companies.data.length" class="w-full flex justify-center">
         <PaginationComponent :links="companies.links" />
+    </div>
+
+    <div v-else class="flex items-center text-neutral border-2 border-base-300 bg-base-200 rounded-lg p-4">
+        <span>Sin coincidencias.</span>
     </div>
 </template>
 

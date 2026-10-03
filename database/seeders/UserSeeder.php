@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // * USUARIOS
+        /* // * USUARIOS
         $userAdmin = User::factory()->create([
             'email' => 'test@example.com',
         ])->syncRoles(['admin']);
@@ -67,6 +67,6 @@ class UserSeeder extends Seeder
                     'role' => 'miembro',
                     'joined_at' => now(),
                 ]);
-            });
+            }); */
     }
 }

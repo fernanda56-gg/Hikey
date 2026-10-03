@@ -104,7 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail
     #[Scope]
     public function MostRecent($query)
     {
-        return $query->orderBy('created_at', 'asc');
+        return $query->orderBy('id', 'asc');
     }
 
     #[Scope]
