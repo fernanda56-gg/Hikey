@@ -14,7 +14,7 @@ class AreaSeeder extends Seeder
     public function run(): void
     {
         //
-        /* $areas = [
+        $areas = [
             'Marketing',
             'Desarrollo',
             'Recursos Humanos',
@@ -25,6 +25,6 @@ class AreaSeeder extends Seeder
 
         foreach($areas as $name){
             Area::create(['name' => $name]);
-        } */
+        }
     }
 }
