@@ -6,22 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Activity extends Model
+class ActivityItem extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'activities';
+    protected $table = 'activity_items';
 
     protected $fillable = [
-        'name',
+        'activity_id',
         'description',
-        'priority',
-        'status',
-        'link',
-        'due_date',
-        'start_date',
-        'completed_at',
-        'project_id',
-        'by_user_id'
+        'is_completed',
+        'order',
     ];
 }
