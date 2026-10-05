@@ -17,4 +17,14 @@ class ActivityComments extends Model
         'user_id',
         'content'
     ];
+
+    public function activity() // Relación entre Activities y Activity_comments
+    {
+        return $this->belongsTo(Activity::class);
+    }
+
+    public function author() // Relación entre users y comentarios de actividades
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -101,6 +101,16 @@ class User extends Authenticatable implements MustVerifyEmail
             : null;
     }
 
+    public function activity() // Relación entre la actividad y quien la realizo
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    public function comment() // Relación entre usuarios y comentarios
+    {
+        return $this->hasMany(ActivityComments::class);
+    }
+
     #[Scope]
     public function MostRecent($query)
     {

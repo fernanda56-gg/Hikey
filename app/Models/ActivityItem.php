@@ -18,4 +18,13 @@ class ActivityItem extends Model
         'is_completed',
         'order',
     ];
+
+    protected $casts = [
+        'is_completed' => 'boolean'
+    ];
+
+    public function activity() // Relación entre Activities y Activity_items
+    {
+        return $this->belongsTo(Activity::class);
+    }
 }

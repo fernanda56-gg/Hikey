@@ -70,19 +70,6 @@ class Project extends Model
                     ->withTimestamps();
     }
 
-    //Registra las fechas del proyecto y actualiza los estados antes de que lleguen a la BD
-    /* protected static function booted()
-    {
-        static::saving(function ($project) {
-            if($project->end_date){
-                $project->status = 'Completado';
-            } elseif($project->start_date){
-                $project->status = 'En progreso';
-            } else{
-                $project->status = 'Pendiente';
-            }
-        });
-    } */
     // ! Si el proyecto aún no esta registrado en la BD al crearse tendrá el estatus de pendiente
     #[Override]
     protected static function booted()
@@ -130,6 +117,11 @@ class Project extends Model
     {
         return $this->belongsToMany(Client::class, 'client_project')
                     ->withTimestamps();
+    }
+
+    public function activity() // Relación entre el proyecto y las actividades
+    {
+        return $this->hasMany(Activity::class);
     }
 
     #[Scope]
