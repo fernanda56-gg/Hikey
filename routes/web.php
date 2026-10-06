@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileImgController;
+use App\Models\Activity;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -117,3 +119,6 @@ Route::post('projects/{project}/team', [ProjectTeamController::class, 'store'])-
 Route::patch('projects/{project}/team/{user}/update-role', [ProjectTeamController::class, 'update'])->name('project-team.update-role')->middleware(['auth', 'verified']);
 Route::put('projects/{project}/team/{user}/remove-leader', [ProjectTeamController::class, 'removeLeader'])->name('project-team.remove-leader')->middleware(['auth', 'verified']);
 Route::delete('projects/{project}/team/{user}', [ProjectTeamController::class, 'destroy'])->name('project-team.destroy')->middleware(['auth', 'verified']);
+
+// Actividades
+Route::get('projects/{project}/activities', [ActivityController::class, 'show'])->name('activities-board.show')->middleware(['auth', 'verified']);

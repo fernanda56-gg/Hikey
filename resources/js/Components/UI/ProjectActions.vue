@@ -11,6 +11,12 @@
                 Eliminar
             </Link>
 
+            <!-- TODO: AÑADIR EN V-IF PARA LOS PERMISOS DEL BTN -->
+            <Link :href="route('activities-board.show', {project: project.id})" class="flex items-center gap-2 font-bold link link-hover hover:text-info hover:duration-200">
+                <PhFolder class="md:size-6 size-5" />
+                Actividades
+            </Link>
+
             <!-- Botón para actualizar estatus de proyecto -->
             <button
                 v-if="can?.update && project.status === 'Pendiente'"
@@ -46,7 +52,7 @@
     import { Link } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
     import { router } from '@inertiajs/vue3';
-    import { PhPencilSimple, PhTrash, PhChartDonut, PhDotsThreeOutline, PhCheckFat } from '@phosphor-icons/vue';
+    import { PhPencilSimple, PhTrash, PhChartDonut, PhDotsThreeOutline, PhCheckFat, PhFolder } from '@phosphor-icons/vue';
 
 const props =  defineProps({
     project: Object,
