@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
@@ -37,7 +38,11 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity)
     {
-        // TODO: AÑADIR POLICY
+        if(Gate::denies('view', $activity))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
         $user = Auth::user();
         return inertia('Activities/ActivityBoardPage');
     }

@@ -1,0 +1,95 @@
+<template>
+    <div class="overflow-x-auto text-neutral">
+        <div class="flex min-w-max gap-4 p-4">
+
+            <!-- Columna de DISPONIBLES -->
+            <div class="flex w-80 shrink-0 flex-col gap-3 rounded-lg p-3">
+
+                <!-- Titulo de columna -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        <PhCircle class="size-4 text-info" weight="fill" />
+                        <h2 class="uppercase font-black md:text-lg">Disponibles</h2>
+                    </div>
+
+                    <!-- Contador de actividades -->
+                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                        4
+                    </span>
+                </div>
+
+                <!-- Cards -->
+                <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm">
+                    Actividad 1
+                </div>
+
+                <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm">
+                    Actividad 2
+                </div>
+
+            </div>
+
+            <!-- Columna de EN PROGRESO -->
+            <div class="flex w-80 shrink-0 flex-col gap-3 rounded-lg p-3">
+
+                <!-- Titulo de columna -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        <PhCircle class="size-4 text-warning" weight="fill" />
+                        <h2 class="uppercase font-black md:text-lg">En progreso</h2>
+                    </div>
+
+                    <!-- Contador de actividades -->
+                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                        4
+                    </span>
+                </div>
+
+                <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm">
+                    Actividad 3
+                </div>
+            </div>
+
+            <!-- Columna de EN REVISIÓN -->
+            <div class="flex w-80 shrink-0 flex-col gap-3 rounded-lg p-3">
+
+                <!-- Titulo de columna -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        <PhCircle class="size-4 text-indigo-600" weight="fill" />
+                        <h2 class="uppercase font-black md:text-lg">En revisión</h2>
+                    </div>
+
+                    <!-- Contador de actividades -->
+                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                        4
+                    </span>
+                </div>
+            </div>
+
+            <!-- Columna de COMPLETADAS -->
+            <div class="flex w-80 shrink-0 flex-col gap-3 rounded-lg p-3">
+
+                <!-- Titulo de columna -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        <PhCircle class="size-4 text-success" weight="fill" />
+                        <h2 class="uppercase font-black md:text-lg">Completadas</h2>
+                    </div>
+
+                    <!-- Contador de actividades -->
+                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                        4
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</template>
+
+<script setup>
+import { PhCircle } from '@phosphor-icons/vue';
+</script>

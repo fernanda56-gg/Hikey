@@ -41,6 +41,19 @@ class ProjectPolicy
     }
 
     /**
+     * Determina quien puede ver el tablero de actividades de un proyecto en especifico
+     */
+    public function viewActivities(User $user, Project $project): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        return $user->companies()->where('companies.id', $project->company_id)->exists();
+    }
+
+    /**
      * Determina quien puede crear proyectos
      */
     public function create(User $user): bool

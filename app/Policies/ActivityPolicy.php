@@ -120,16 +120,7 @@ class ActivityPolicy
      */
     public function forceDelete(User $user, Activity $activity): bool
     {
-        // ! Admin siempre puede, sin importar la empresa
-        if($user->hasRole('admin')){
-            return true;
-        }
-
-        // ? Solo el manager de la empresa puede eliminar/restaurar una actividad
-        if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $activity->project_activity->company_id)->exists();
-        }
-
-        return false;
+        // ! La misma regla que la función restore
+        return $this->forceDelete($user, $activity);
     }
 }

@@ -170,6 +170,7 @@ class ProjectController extends Controller
             'can' => [
                 'update' => $user->can('update', $project),
                 'delete' => $user->can('delete', $project),
+                'viewActivities' => $user->can('viewActivities', $project)
             ],
             'canManageTeam' =>  $user->can('manageTeam', $project),
             'canManageLeader' => $user->can('manageLeaders', $project),

@@ -11,8 +11,7 @@
                 Eliminar
             </Link>
 
-            <!-- TODO: AÑADIR EN V-IF PARA LOS PERMISOS DEL BTN -->
-            <Link :href="route('activities-board.show', {project: project.id})" class="flex items-center gap-2 font-bold link link-hover hover:text-info hover:duration-200">
+            <Link v-if="can?.viewActivities" :href="route('activities-board.show', {project: project.id})" class="flex items-center gap-2 font-bold link link-hover hover:text-info hover:duration-200">
                 <PhFolder class="md:size-6 size-5" />
                 Actividades
             </Link>
@@ -56,7 +55,7 @@
 
 const props =  defineProps({
     project: Object,
-    can: Object
+    can: Object,
 })
 
 // ? Ruta para función de actualizar estatus
