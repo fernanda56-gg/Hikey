@@ -13,20 +13,22 @@
                     </div>
 
                     <!-- Contador de actividades -->
-                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                    <span class="bg-slate-200/50 rounded-md text-neutral font-bold px-2 py-1 text-xs">
                         4
                     </span>
                 </div>
 
                 <!-- Cards -->
-                <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm">
-                    Actividad 1
+                <div class="card w-75 bg-base-200 card-sm shadow-md">
+                    <div class="card-body">
+                        <h2 class="card-title">Small Card</h2>
+                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
+                        </p>
+                        <div class="justify-end card-actions">
+                            <button class="btn btn-primary text-black">Buy Now</button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm">
-                    Actividad 2
-                </div>
-
             </div>
 
             <!-- Columna de EN PROGRESO -->
@@ -40,13 +42,21 @@
                     </div>
 
                     <!-- Contador de actividades -->
-                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                    <span class="bg-slate-200/50 rounded-md text-neutral font-bold px-2 py-1 text-xs">
                         4
                     </span>
                 </div>
 
-                <div class="rounded-md border border-gray-200 bg-white p-4 shadow-sm">
-                    Actividad 3
+                <!-- Cards -->
+                <div class="card w-75 bg-base-200 card-sm shadow-md">
+                    <div class="card-body">
+                        <h2 class="card-title">Small Card</h2>
+                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
+                        </p>
+                        <div class="justify-end card-actions">
+                            <button class="btn btn-primary text-black">Buy Now</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -61,9 +71,21 @@
                     </div>
 
                     <!-- Contador de actividades -->
-                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                    <span class="bg-slate-200/50 rounded-md text-neutral font-bold px-2 py-1 text-xs">
                         4
                     </span>
+                </div>
+
+                <!-- Cards -->
+                <div class="card w-75 bg-base-200 card-sm shadow-md">
+                    <div class="card-body">
+                        <h2 class="card-title">Small Card</h2>
+                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
+                        </p>
+                        <div class="justify-end card-actions">
+                            <button class="btn btn-primary text-black">Buy Now</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -78,9 +100,21 @@
                     </div>
 
                     <!-- Contador de actividades -->
-                    <span class="bg-slate-200/50 rounded-md text-black font-semibold px-2 py-1 text-xs">
+                    <span class="bg-slate-200/50 rounded-md text-neutral font-bold px-2 py-1 text-xs">
                         4
                     </span>
+                </div>
+
+                <!-- Cards -->
+                <div class="card w-75 bg-base-200 card-sm shadow-md">
+                    <div class="card-body">
+                        <h2 class="card-title">Small Card</h2>
+                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
+                        </p>
+                        <div class="justify-end card-actions">
+                            <button class="btn btn-primary text-black">Buy Now</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
