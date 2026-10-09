@@ -45,43 +45,73 @@
                     <h3 class="text-lg font-bold">Nueva actividad</h3>
 
                     <!-- ? Form de actividades -->
-                    <form class="flex items-center justify-between w-full" @submit.prevent="store">
+                    <form class="flex flex-col w-full" @submit.prevent="store">
                         <fieldset class="fieldset w-full p-4">
+                            <!-- * NOMBRE DE ACTIVIDAD -->
                             <label class="label text-neutral font-semibold">Nombre</label>
-                            <input type="text" class="input input-sm w-full outline-none" placeholder="Título de la actividad" />
+                            <input v-model="form.name" type="text" class="input input-sm w-full outline-none" placeholder="Título de la actividad" />
 
+                            <!-- Contenedor de error -->
+                            <div v-if="form.errors.name" class="flex items-center justify-start text-error text-xs">
+                                <PhWarningCircle class="mx-1 size-4" weight="bold" />
+                                {{ form.errors.name }}
+                            </div>
+
+                            <!-- * DESCRIPCIÓN DE LA ACTIVIDAD -->
                             <label class="label text-neutral font-semibold">Descripción</label>
-                            <textarea class="textarea textarea-sm w-full outline-none" placeholder="Descripción de la actividad"></textarea>
+                            <textarea v-model="form.description" class="textarea textarea-sm w-full outline-none" placeholder="Descripción de la actividad"></textarea>
 
+                            <!-- Contenedor de error -->
+                            <div v-if="form.errors.description" class="flex items-center justify-start text-error text-xs">
+                                <PhWarningCircle class="mx-1 size-4" weight="bold" />
+                                {{ form.errors.description }}
+                            </div>
+
+                            <!-- * LINK -->
                             <label class="label text-neutral font-semibold">Link</label>
-                            <input type="text" class="input input-sm w-full outline-none" placeholder="Link de recursos" />
+                            <input v-model="form.link" type="text" class="input input-sm w-full outline-none" placeholder="Link de recursos" />
 
+                            <!-- * PRIORIDAD Y FECHA DE ENTREGA DE ACTIVIDAD -->
                             <div class="flex items-center justify-between w-full mt-0.5 gap-3">
                                 <div class="w-1/2">
-                                    <label class="label text-neutral font-semibold">Prioridad</label>
-                                    <input type="text" class="input input-sm w-full outline-none" placeholder="Título de la actividad" />
+                                    <label class="label text-neutral font-semibold mb-1">Prioridad</label>
+                                    <select v-model="form.priority" class="select select-sm outline-none">
+                                        <option disabled selected>Prioridad de actividad</option>
+                                        <option>Baja</option>
+                                        <option>Media</option>
+                                        <option>Alta</option>
+                                        <option>Urgente</option>
+                                    </select>
+                                    <!-- Contenedor de error -->
+                                    <div v-if="form.errors.priority" class="flex items-center justify-start text-error text-xs">
+                                        <PhWarningCircle class="mx-1 size-4" weight="bold" />
+                                        {{ form.errors.priority }}
+                                    </div>
                                 </div>
+
+
                                 <div class="w-1/2">
-                                    <label class="label text-neutral font-semibold">Fecha de entrega</label>
-                                    <input type="text" class="input input-sm w-full outline-none" placeholder="Título de la actividad" />
+                                    <label class="label text-neutral font-semibold mb-1">Fecha de entrega</label>
+                                    <input v-model="form.due_date" type="date" class="input input-sm w-full outline-none" />
                                 </div>
                             </div>
                         </fieldset>
+
+                        <!-- ? Acciones del modal -->
+                        <div class="modal-action">
+                            <button class="btn btn-sm btn-primary text-black" type="submit">Añadir</button>
+                            <form method="dialog">
+                                <!-- if there is a button in form, it will close the modal -->
+                                <button class="btn btn-sm btn-error text-white"
+                                    @click="form.reset(); dialogRef.value?.close()">Cancelar</button>
+                            </form>
+                        </div>
                     </form>
-
-
-                    <!-- ? Acciones del modal -->
-                    <div class="modal-action">
-                        <form method="dialog">
-                            <!-- if there is a button in form, it will close the modal -->
-                            <button class="btn btn-sm btn-error text-white">Cancelar</button>
-                        </form>
-                    </div>
                 </div>
             </dialog>
 
             <!-- ! Tablón de actividades -->
-            <ActivityTable />
+            <ActivityTable :activities="activities" :project="project" />
         </div>
     </AppLayout>
 </template>
@@ -90,14 +120,14 @@
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { PhHouseLine, PhPlus, PhTrash, PhFunnel } from '@phosphor-icons/vue';
+import { PhHouseLine, PhPlus, PhTrash, PhFunnel, PhWarningCircle } from '@phosphor-icons/vue';
 import ActivityTable from '../../Components/UI/ActivityTable.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps ({
     project: Object,
-    activity: Object
+    activities: Object
 })
 
 const dialogRef = ref(null)

@@ -32,7 +32,7 @@ class ActivityController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        if(Gate::denies('view', [Activity::class, $project]))
+        if(Gate::denies('viewActivities', $project))
         {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
@@ -49,7 +49,7 @@ class ActivityController extends Controller
 
         try {
             $project->activity()->create([
-                $validated,
+                ...$validated,
                 'by_user_id' => $request->user()->id,
             ]);
 
@@ -57,6 +57,7 @@ class ActivityController extends Controller
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Error al generar actividad.')->withInput();//withInput mantiene los datos del form
         }
     }

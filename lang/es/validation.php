@@ -176,6 +176,7 @@ return [
     'area_id' => 'área',
     'current_password' => 'contraseña actual',
     'password_confirmation' => 'confirmación de contraseña',
+    'priority' => 'prioridad',
 ],
 
 ];

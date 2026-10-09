@@ -14,14 +14,14 @@
 
                     <!-- Contador de actividades -->
                     <span class="bg-slate-200/50 rounded-md text-neutral font-bold px-2 py-1 text-xs">
-                        4
+                        {{ disponibles.length }}
                     </span>
                 </div>
 
                 <!-- Cards -->
-                <div class="card w-75 bg-base-200 card-sm shadow-md">
+                <div v-for="activity in disponibles" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
-                        <h2 class="card-title">Small Card</h2>
+                        <h2 class="card-title">{{ activity.name }}</h2>
                         <p>A card component has a figure, a body part, and inside body there are title and actions parts
                         </p>
                         <div class="justify-end card-actions">
@@ -126,4 +126,16 @@
 
 <script setup>
 import { PhCircle } from '@phosphor-icons/vue';
+import { computed } from 'vue';
+
+const props = defineProps ({
+    project: Object,
+    activities: Array
+})
+
+// ! Obtienen la actividad dependiendo del estado
+const disponibles = computed(() => props.activities.filter(a => a.status === 'Disponible'))
+const enProgreso = computed(() => props.activities.filter(a => a.status === 'En progreso'))
+const enRevision = computed(() => props.activities.filter(a => a.status === 'Revisión'))
+const completadas = computed(() => props.activities.filter(a => a.status === 'Completada'))
 </script>
