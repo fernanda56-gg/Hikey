@@ -29,17 +29,20 @@
                 <!-- CUANDO HAY ACTIVIDADES REGISTRADAS -->
                 <div v-for="activity in disponibles" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
+                        <div class="flex items-center">
+                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
                         <span :class="getBadgeClass(activity.due_date)" >
                             <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
                             {{ getDaysText(activity.due_date) }}
                         </span>
+                        </div>
                         <h2 class="card-title">{{ activity.name }}</h2>
                         <p> {{ activity.description }}</p>
 
 
                         <div class="justify-end card-actions">
                             <div class="flex items-start justify-start gap-1 mr-auto my-auto">
-                                <PhFlagCheckered :class="[
+                                <PhFlagBannerFold :class="[
                                     activity.priority === 'Baja' ? 'text-[#0496ff]' :
                                     activity.priority === 'Media' ? 'text-[#ffc700]' :
                                     activity.priority === 'Alta'? 'text-[#ff4800]' :
@@ -52,7 +55,9 @@
                                     'text-error'
                                 ]" class="font-black uppercase">{{ activity.priority }}</span>
                             </div>
-                            <button class="btn btn-sm btn-primary text-black">Mostrar más</button>
+                            <!-- BTN para mostrar modal de información de actividad -->
+                            <button class="btn btn-sm btn-primary text-black" @click="openModal">Mostrar más</button>
+                            <!-- <button class="btn btn-sm btn-primary text-black">Mostrar más</button> -->
                         </div>
                     </div>
                 </div>
@@ -159,6 +164,11 @@
                 </div>
             </div>
 
+            <!-- MODAL DE INFORMACIÓN DE ACTIVIDAD -->
+            <dialog ref="dialogRef" class="modal">
+                aqui va la info de actividad
+                <!-- TODO:COMPLETAR QUE SE VEA BIEN LO DE LA INFORMACION ESPECIFICA DE CADA ACTIVIDAD -->
+            </dialog>
         </div>
     </div>
 
@@ -166,7 +176,7 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhFlagCheckered, PhX, PhWarning, PhCalendarDots } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhWarning, PhCalendarDots } from '@phosphor-icons/vue';
 import { computed } from 'vue';
 
 const props = defineProps ({
@@ -192,6 +202,7 @@ function calculateDays(dueDate) {
     return Math.ceil(daysDifference);
 }
 
+// * Muestra cuando días faltan para que se venzca el plazo de la actividad con texto, badge e icono
 function getDaysText(dueDate) {
     let days = calculateDays(dueDate);
     if (days < 0) return `Venció hace ${Math.abs(days)} días`;
@@ -202,7 +213,7 @@ function getDaysText(dueDate) {
 
 function getBadgeClass(dueDate) {
     let days = calculateDays(dueDate);
-    if (days < 0) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-error items-end ml-auto text-black'; // Ya venció
+    if (days < 0) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-error items-end ml-auto text-white'; // Ya venció
     if (days <= 2) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-warning items-end ml-auto text-black'; // Proximo a vencer
     return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold items-end ml-auto text-black bg-slate-300/50'; // A tiempo
 }
@@ -213,4 +224,6 @@ function getIcon(dueDate) {
     if (days <= 2) return PhWarning; // Proximo a vencer
     return PhCalendarDots; // A tiempo
 }
+
+// ! Modal de información y edición de información de actividad
 </script>

@@ -94,7 +94,7 @@ class ActivityController extends Controller
      */
     public function update(Request $request, Activity $activity)
     {
-        //
+        dd('funciona');
     }
 
     /**
