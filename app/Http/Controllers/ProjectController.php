@@ -100,7 +100,7 @@ class ProjectController extends Controller
                 'name' => 'required|string|min:3|max:50',
                 'description' => 'required|string|max:255',
                 'link' => 'required|url',
-                'link_2' => 'required|url',
+                'link_2' => 'url',
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date',
                 'area_id' => 'required|exists:areas,id',
@@ -206,7 +206,7 @@ class ProjectController extends Controller
                     'name' => 'required|string|min:3|max:50',
                     'description' => 'required|string|max:255',
                     'link' => 'required|url',
-                    'link_2' => 'required|url',
+                    'link_2' => 'url',
                     'area_id' => 'required|integer|exists:areas,id',
         ]);
         $project->update($validated);

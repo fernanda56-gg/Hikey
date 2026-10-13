@@ -263,6 +263,7 @@
                         <!-- ? ACCIONES -->
                         <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start">
                             content
+                            <!-- TODO: AGREGAR LO DE ELIMINAR ACTIVIDADES Y TRATAR DE VER LO DE ASIGNACIÓN DE USUARIO A ACTIVIDAD -->
                         </div>
                     </div>
                 </div>
@@ -335,11 +336,6 @@ const isEditing = ref(false)
 
 const selectedActivity = computed (() => props.activities.find(act => act.id === selectedActivityId.value) ?? null)
 
-/* function openActivityModal (activity) {
-    selectedActivityId.value = activity.id
-    dialogRef.value?.showModal()
-} */
-
 const editForm = useForm({
     name: '',
     description: '',
@@ -368,8 +364,7 @@ function saveActivity() {
     editForm.put(route('activities.update', selectedActivityId.value), {
         preserveScroll: true,
         onSuccess: () => {
-            isEditing.value = false // <--- Volvemos a modo lectura al guardar con éxito
-            // dialogRef.value?.close() // Descomenta si quieres que se cierre al guardar
+            isEditing.value = false
         }
     })
 }

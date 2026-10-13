@@ -44,12 +44,14 @@
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
                 <h1 class="uppercase font-bold md:text-lg text-sm">fecha de inicio</h1>
-                <input class="focus:outline-none" type="date" v-model="form.start_date" @change="updateDate" @input="form.start_date = $event.target.value || null" :disabled="form.end_date">
+                <p class="flex items-center space-x-2 text-neutral md:text-base text-sm">
+                    {{ new Date(projects.start_date).toLocaleDateString('es-MX', { timeZone: 'UTC' }) }}
+                </p>
             </div>
 
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-sm">fecha de finalización</h1>
-                <input class="focus:outline-none" type="date" v-model="form.end_date" @change="updateDate" @input="form.end_date = $event.target.value || null" :disabled="!form.start_date">
+                <input class="focus:outline-none" type="date" v-model="form.end_date" @change="updateDate" @input="form.end_date = $event.target.value || null" :disabled="form.completed_at = true">
             </div>
         </div>
 
@@ -77,7 +79,7 @@
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-base mt-4">fecha de terminación</h1>
                 <p class="flex items-center mt-2 space-x-2 text-neutral font-bold md:text-lg text-sm" v-if="projects.status === 'Completado' && projects.completed_at">
-                    {{ new Date(projects.completed_at).toLocaleDateString() }}
+                    {{ new Date(projects.completed_at).toLocaleDateString('es-MX', { timeZone: 'UTC' }) }}
                 </p>
             </div>
         </div>
