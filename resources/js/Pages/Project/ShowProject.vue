@@ -47,13 +47,11 @@
     import { PhHouseLine } from '@phosphor-icons/vue';
     import { Link } from '@inertiajs/vue3';
     import { route } from 'ziggy-js';
-    const props = defineProps({
+    defineProps({
         'project': Object,
         'can': Object,
         'canManageTeam': Boolean,
         'canManageLeader': Boolean,
         })
-
-        console.log('canViewActivities:', props.canViewActivities)
 </script>
 

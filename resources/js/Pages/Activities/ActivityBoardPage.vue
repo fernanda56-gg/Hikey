@@ -71,6 +71,12 @@
                             <label class="label text-neutral font-semibold">Link</label>
                             <input v-model="form.link" type="text" class="input input-sm w-full outline-none" placeholder="Link de recursos" />
 
+                            <!-- Contenedor de error -->
+                            <div v-if="form.errors.link" class="flex items-center justify-start text-error text-xs">
+                                <PhWarningCircle class="mx-1 size-4" weight="bold" />
+                                {{ form.errors.link }}
+                            </div>
+
                             <!-- * PRIORIDAD Y FECHA DE ENTREGA DE ACTIVIDAD -->
                             <div class="flex items-center justify-between w-full mt-0.5 gap-3">
                                 <div class="w-1/2">
