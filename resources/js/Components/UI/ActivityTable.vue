@@ -165,10 +165,10 @@
             </div>
 
             <!-- ! MODAL DE INFORMACIÓN DE ACTIVIDAD -->
-            <dialog ref="dialogRef" class="modal" @close="selectedActivityId = null">
+            <dialog id="my_modal_1" ref="dialogRef" class="modal" @close="onModalClose">
                 <div v-if="selectedActivity" class="modal-box w-11/12 max-w-2xl">
                     <form method="dialog">
-                        <button class="btn btn-sm btn-square btn-ghost absolute right-2 top-2">
+                        <button @click="closeActivity" type="button" class="btn btn-sm btn-square btn-ghost absolute right-2 top-2">
                             <PhX class="size-4 text-neutral" weight="bold" />
                         </button>
                     </form>
@@ -261,13 +261,25 @@
                         <div class="divider divider-horizontal"></div>
 
                         <!-- ? ACCIONES -->
-                        <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start">
-                            content
-                            <!-- TODO: AGREGAR LO DE ELIMINAR ACTIVIDADES Y TRATAR DE VER LO DE ASIGNACIÓN DE USUARIO A ACTIVIDAD -->
+                        <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start pt-3">
+
+                            <!-- * BTN DE ELIMINADOS -->
+                            <div @click="deleteActivity" class="flex items-center justify-start gap-2">
+                                <PhTrash class="size-4 text-error" weight="fill" />
+                                <span class=" link link-hover text-sm text-error font-black duration-200 hover:duration-200">Eliminar</span>
+                            </div>
+
+                            <!-- * BADGE DE FECHA LIMITE DE PROYECTO -->
+                            <div class="flex items-center justify-start mt-3">
+                                <span :class="getLinkClass(editForm.due_date)">
+                                    <component :is="getIcon(editForm.due_date)" class="size-4" weight="bold" />
+                                    {{ getDaysText(editForm.due_date) }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div v-else>
+                <div v-else class="modal-box w-auto">
                     <p class="text-neutral items-center">Información de actividad no disponible</p>
                 </div>
             </dialog>
@@ -278,10 +290,11 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhWarning, PhCalendarDots, PhPencilSimple } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond  } from '@phosphor-icons/vue';
 import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps ({
     project: Object,
@@ -322,10 +335,17 @@ function getBadgeClass(dueDate) {
     return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold items-end ml-auto text-black bg-slate-300/50'; // A tiempo
 }
 
+function getLinkClass(dueDate) {
+    let days = calculateDays(dueDate);
+    if (days < 0) return 'flex items-center justify-start gap-1 text-error font-semibold text-sm cursor-default'; // Ya venció
+    if (days <= 2) return 'flex items-center justify-start gap-1 text-warning font-semibold text-sm cursor-default'; // Proximo a vencer
+    return 'flex items-center justify-start gap-1 text-neutral font-semibold text-sm cursor-default'; // A tiempo
+}
+
 function getIcon(dueDate) {
     let days = calculateDays(dueDate);
     if (days < 0) return PhX; // Ya venció
-    if (days <= 2) return PhWarning; // Proximo a vencer
+    if (days <= 2) return PhWarningDiamond; // Proximo a vencer
     return PhCalendarDots; // A tiempo
 }
 
@@ -358,12 +378,33 @@ function openActivity(activity) {
     dialogRef.value?.showModal()
 }
 
+function closeActivity () {
+    document.getElementById("my_modal_1").close()
+}
+
+function onModalClose () {
+    isEditing.value = false
+    editForm.reset()
+    selectedActivityId.value = null
+}
+
 function saveActivity() {
     if (!selectedActivityId.value) return
 
     editForm.put(route('activities.update', selectedActivityId.value), {
         preserveScroll: true,
         onSuccess: () => {
+            isEditing.value = false
+        }
+    })
+}
+
+function deleteActivity() {
+    document.getElementById("my_modal_1").close()
+
+    router.delete(route('activities.destroy', selectedActivityId.value), {
+        onSuccess: () => {
+            selectedActivityId.value = null
             isEditing.value = false
         }
     })

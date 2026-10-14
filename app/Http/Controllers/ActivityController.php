@@ -12,22 +12,6 @@ use Illuminate\Support\Facades\Auth;
 class ActivityController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Almacenar nueva actividad en la BD
      */
     public function store(Request $request, Project $project)
@@ -85,15 +69,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Activity $activity)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Actualiza la info de actividades
      */
     public function update(Request $request, Activity $activity)
     {
@@ -122,10 +98,18 @@ class ActivityController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina una actividad (deleted_at)
      */
     public function destroy(Activity $activity)
     {
-        //
+        if (Gate::denies('delete', $activity))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $projectId = $activity->project_id;
+        $activity->delete();
+
+        return redirect()->route('activities-board.show', $projectId)->with('success', 'Actividad eliminada.');
     }
 }

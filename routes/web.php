@@ -124,3 +124,4 @@ Route::delete('projects/{project}/team/{user}', [ProjectTeamController::class, '
 Route::get('projects/{project}/activities', [ActivityController::class, 'show'])->name('activities-board.show')->middleware(['auth', 'verified']);
 Route::post('projects/{project}/activities', [ActivityController::class, 'store'])->name('activities.store')->middleware(['auth', 'verified']);
 Route::put('activities/{activity}', [ActivityController::class, 'update'])->name('activities.update')->middleware(['auth', 'verified']);
+Route::delete('activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy')->middleware(['auth', 'verified']);
