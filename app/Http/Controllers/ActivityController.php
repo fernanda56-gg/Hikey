@@ -112,4 +112,64 @@ class ActivityController extends Controller
 
         return redirect()->route('activities-board.show', $projectId)->with('success', 'Actividad eliminada.');
     }
+
+    /**
+     * Lleva al usuario a la vista TRASH de actividades
+     */
+    public function trash(Project $project)
+    {
+        if (Gate::denies('viewTrash', [Activity::class, $project]))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $user = Auth::user();
+        $activities = $project->activity()
+                ->onlyTrashed()
+                ->with('responsable')
+                ->latest('deleted_at')
+                ->get();
+
+        $activities->each(function ($activity) use ($user) {
+            $activity->restore_a = $user->can('restore', $activity);
+            $activity->forceDelete_a = $user->can('forceDelete', $activity);
+        });
+
+        return inertia('Activities/ActivityTrashPage', [
+            'project' => $project,
+            'activities' => $activities
+        ]);
+    }
+
+    /**
+     * Restaura cualquier actividad que se encuentre en TRASH
+     */
+    public function restore(Activity $activity)
+    {
+        if(Gate::denies('restore', $activity))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $projectId = $activity->project_id;
+        $activity->restore();
+
+        return redirect()->route('activities-board.show', $projectId)->with('success', 'Actividad restaurada exitosamente.');
+    }
+
+    /**
+     * Elimina cualquier actividad definitivamente de la BD
+     */
+    public function forceDelete(Activity $activity)
+    {
+        if(Gate::denies('forceDelete', $activity))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        $projectId = $activity->project_id;
+        $activity->forceDelete();
+
+        return redirect()->route('activities-board.show', $projectId)->with('success', 'Actividad eliminada del sistema.');
+    }
 }

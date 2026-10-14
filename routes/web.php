@@ -121,7 +121,10 @@ Route::put('projects/{project}/team/{user}/remove-leader', [ProjectTeamControlle
 Route::delete('projects/{project}/team/{user}', [ProjectTeamController::class, 'destroy'])->name('project-team.destroy')->middleware(['auth', 'verified']);
 
 // Actividades
-Route::get('projects/{project}/activities', [ActivityController::class, 'show'])->name('activities-board.show')->middleware(['auth', 'verified']);
-Route::post('projects/{project}/activities', [ActivityController::class, 'store'])->name('activities.store')->middleware(['auth', 'verified']);
+Route::post('projects/{project}/activities/store', [ActivityController::class, 'store'])->name('activities.store')->middleware(['auth', 'verified']);
 Route::put('activities/{activity}', [ActivityController::class, 'update'])->name('activities.update')->middleware(['auth', 'verified']);
 Route::delete('activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy')->middleware(['auth', 'verified']);
+Route::get('projects/{project}/activities/show', [ActivityController::class, 'show'])->name('activities-board.show')->middleware(['auth', 'verified']);
+Route::get('projects/{project}/activities/trash', [ActivityController::class, 'trash'])->name('activities.trash')->middleware(['auth', 'verified']);
+Route::put('activities/{activity}/restore', [ActivityController::class, 'restore'])->withTrashed()->name('activities.restore')->middleware(['auth', 'verified']);
+Route::delete('activities/{activity}/forceDelete', [ActivityController::class, 'forceDelete'])->withTrashed()->name('activities.force-delete')->middleware(['auth', 'verified']);

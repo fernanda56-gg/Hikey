@@ -18,7 +18,7 @@
             <!-- ! Apartado de btn de soft delete, filtro y crear actividad -->
             <div class="flex items-center justify-end w-full gap-3">
                 <div class="btn btn-sm text-white bg-error md:font-bold border-0 hover:bg-red-600 hover:duration-200 duration-200">
-                    <Link :href="route('projects.create')" class="flex items-center space-x-1">
+                    <Link :href="route('activities.trash', {project: project.id})" class="flex items-center space-x-1">
                         <PhTrash class="size-4" weight="bold" />
                     </Link>
                 </div>

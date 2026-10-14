@@ -149,9 +149,3 @@ class Project extends Model
 
 
 }
-// TODO: arreglar todo lo de las fechas y estatus de proyectos ademas de modificar los campos de la migración de proyectos
-/* //? los campos a arreglar es el image_path, start_date, end_date, status
-* añadir el nuevo campo de completed_at que definirá en que fecha se concluyo el proyecto que estará ligado a una nueva función
-* también se debe de arreglar el UI con los nombres de los campos y agregar el nuevo botón con el que se da el proyecto por concluido y
-* agregar policy para que solo el manager y talvéz el lider de equipo puedan dar por terminado un proyecto.
-*/

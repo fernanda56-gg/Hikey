@@ -309,14 +309,23 @@ const completadas = computed(() => props.activities.filter(a => a.status === 'Co
 
 // * Calcula cuantos días faltan para que la actividad se vence a partir de la fecha actual
 function calculateDays(dueDate) {
-    let start = new Date(); // ! Fecha y hora actual
-    let end = new Date(dueDate); // ! Fecha límite de la actividad
+    if (! dueDate) return 0
 
-    let timeDifference = end - start;
+    // ! Fecha actual a partir de las 00:00:00 del día que se registra la actividades
+    let start = new Date()
+    start.setHours(0,0,0,0)
+
+    // ! Se obtiene el dia, mes y año de la fecha del due date
+    let [year, month, day] = dueDate.split('-').map(Number)
+    let end = new Date(year, month -1, day)
+    end.setHours(0,0,0,0)
+
+    // ! Se obtiene la diferencia de días
+    let timeDifference = end - start
     let daysDifference = timeDifference / (1000 * 3600 * 24);
 
-    // ? Math.ceil redondea hacia arriba para mostrar días completos restantes
-    return Math.ceil(daysDifference);
+    // ? Math.round para evitar decimales por los cambios de horario
+    return Math.round(daysDifference); 
 }
 
 // * Muestra cuando días faltan para que se venzca el plazo de la actividad con texto, badge e icono

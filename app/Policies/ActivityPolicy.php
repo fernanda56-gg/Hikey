@@ -121,6 +121,24 @@ class ActivityPolicy
     public function forceDelete(User $user, Activity $activity): bool
     {
         // ! La misma regla que la función restore
-        return $this->forceDelete($user, $activity);
+        return $this->restore($user, $activity);
+    }
+
+    /**
+     * Determina quien puede acceder a la vista de trash
+     */
+    public function viewTrash(User $user, Project $project): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? Solo el manager de la empresa puede ver la vista trash de actividad
+        if ($user->hasRole('manager')) {
+            return $user->companies->where('companies.id', $project->company->id);
+        }
+
+        return false;
     }
 }
