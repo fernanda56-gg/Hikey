@@ -13,7 +13,6 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserAccountController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileImgController;
-use App\Models\Activity;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -128,3 +127,6 @@ Route::get('projects/{project}/activities/show', [ActivityController::class, 'sh
 Route::get('projects/{project}/activities/trash', [ActivityController::class, 'trash'])->name('activities.trash')->middleware(['auth', 'verified']);
 Route::put('activities/{activity}/restore', [ActivityController::class, 'restore'])->withTrashed()->name('activities.restore')->middleware(['auth', 'verified']);
 Route::delete('activities/{activity}/forceDelete', [ActivityController::class, 'forceDelete'])->withTrashed()->name('activities.force-delete')->middleware(['auth', 'verified']);
+Route::patch('activities/{activity}/update-status', [ActivityController::class, 'updateStatus'])->name('activities.update-status')->middleware(['auth', 'verified']);
+Route::patch('activities/{activity}/return-activity', [ActivityController::class, 'returnActivity'])->name('activities.return')->middleware(['auth', 'verified']);
+Route::patch('activities/{activity}/mark-complete', [ActivityController::class, 'markComplete'])->name('activities.mark-complete')->middleware(['auth', 'verified']);

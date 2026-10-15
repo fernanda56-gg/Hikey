@@ -141,4 +141,50 @@ class ActivityPolicy
 
         return false;
     }
+
+    /**
+     * Determina quien puede modificar el estatus de una actividad
+     */
+    public function updateStatus(User $user, Activity $activity): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? El manager de la empresa puede cambiar el estatus de las actividades
+        if ($user->hasRole('manager')) {
+            return $user->companies->where('companies.id', $activity->project_activity->company_id);
+        }
+
+        // ? Solo los integrantes de equipo asignados al proyecto pueden modificar el estatus (Líder y miembro)
+        if ($user->hasAnyRole(['team-leader', 'user'])) {
+            return $activity->project_activity->users()->where('users.id', $user->id)->exists();
+        }
+
+        return false;
+    }
+
+    /**
+     * Determina quien puede evaluar una actividad
+     */
+    public function review(User $user, Activity $activity): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? El manager de la empresa puede evaluar las actividades realizadas
+        if ($user->hasRole('manager')) {
+            return $user->companies->where('companies.id', $activity->project_activity->company_id);
+        }
+
+        // ? El líder de equipo del proyecto puede evaluar las actividades realizadas
+        if ($user->hasRole('team-leader')) {
+            return $activity->project_activity->leader()->where('users.id', $user->id)->exists();
+        }
+
+        return false;
+    }
 }

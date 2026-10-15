@@ -20,13 +20,13 @@
 
                 <!-- Cards -->
 
-                <!-- EN CASO DE QUE NO HAYA NINGUNA ACTIVIDAD -->
+                <!-- ! EN CASO DE QUE NO HAYA NINGUNA ACTIVIDAD -->
                 <div class="flex items-center justify-start gap-2 h-full bg-base-200 rounded-lg shadow-md p-4" v-if="disponibles.length === 0">
                     <PhXCircle class="size-5" />
                     <p class="text-neutral text-start text-sm font-semibold">No hay actividades disponibles</p>
                 </div>
 
-                <!-- CUANDO HAY ACTIVIDADES REGISTRADAS -->
+                <!-- ! CUANDO HAY ACTIVIDADES REGISTRADAS -->
                 <div v-for="activity in disponibles" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
                         <div class="flex items-center">
@@ -81,18 +81,44 @@
 
                 <!-- Cards -->
 
-                <!--  -->
+                <!-- ! EN CASO DE QUE NO HAYA NINGUNA ACTIVIDAD -->
                 <div class="flex items-center justify-start gap-2 h-full bg-base-200 rounded-lg shadow-md p-4" v-if="enProgreso.length === 0">
                     <PhXCircle class="size-5" />
                     <p class="text-neutral text-start text-sm font-semibold">No hay actividades en progreso</p>
                 </div>
-                <div v-for="activity in progreso" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
+
+                <!-- ! CUANDO HAY ACTIVIDADES REGISTRADAS -->
+                <div v-for="activity in enProgreso" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
-                        <h2 class="card-title">Small Card</h2>
-                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
-                        </p>
+                        <div class="flex items-center">
+                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
+                        <span :class="getBadgeClass(activity.due_date)" >
+                            <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
+                            {{ getDaysText(activity.due_date) }}
+                        </span>
+                        </div>
+                        <h2 class="card-title">{{ activity.name }}</h2>
+                        <p> {{ activity.description }}</p>
+
+
                         <div class="justify-end card-actions">
-                            <button class="btn btn-primary text-black">Buy Now</button>
+                            <div class="flex items-start justify-start gap-1 mr-auto my-auto">
+                                <PhFlagBannerFold :class="[
+                                    activity.priority === 'Baja' ? 'text-[#0496ff]' :
+                                    activity.priority === 'Media' ? 'text-[#ffc700]' :
+                                    activity.priority === 'Alta'? 'text-[#ff4800]' :
+                                    'text-error'
+                                ]" class="size-5" weight="fill" />
+                                <span :class="[
+                                    activity.priority === 'Baja' ? 'text-[#0496ff]' :
+                                    activity.priority === 'Media' ? 'text-[#ffc700]' :
+                                    activity.priority === 'Alta'? 'text-[#ff4800]' :
+                                    'text-error'
+                                ]" class="font-black uppercase">{{ activity.priority }}</span>
+                            </div>
+                            <!-- BTN para mostrar modal de información de actividad -->
+                            <button class="btn btn-sm btn-primary text-black" @click="openActivity(activity)">Mostrar más</button>
+                            <!-- <button class="btn btn-sm btn-primary text-black">Mostrar más</button> -->
                         </div>
                     </div>
                 </div>
@@ -115,17 +141,45 @@
                 </div>
 
                 <!-- Cards -->
+
+                <!-- ! EN CASO DE QUE NO HAYA NINGUNA ACTIVIDAD -->
                 <div class="flex items-center justify-start gap-2 h-full bg-base-200 rounded-lg shadow-md p-4" v-if="enRevision.length === 0">
                     <PhXCircle class="size-5" />
                     <p class="text-neutral text-start text-sm font-semibold">No hay actividades en revisión</p>
                 </div>
-                <div v-for="activity in revision" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
+
+                <!-- ! CUANDO HAY ACTIVIDADES REGISTRADAS -->
+                <div v-for="activity in enRevision" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
-                        <h2 class="card-title">Small Card</h2>
-                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
-                        </p>
+                        <div class="flex items-center">
+                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
+                        <span :class="getBadgeClass(activity.due_date)" >
+                            <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
+                            {{ getDaysText(activity.due_date) }}
+                        </span>
+                        </div>
+                        <h2 class="card-title">{{ activity.name }}</h2>
+                        <p> {{ activity.description }}</p>
+
+
                         <div class="justify-end card-actions">
-                            <button class="btn btn-primary text-black">Buy Now</button>
+                            <div class="flex items-start justify-start gap-1 mr-auto my-auto">
+                                <PhFlagBannerFold :class="[
+                                    activity.priority === 'Baja' ? 'text-[#0496ff]' :
+                                    activity.priority === 'Media' ? 'text-[#ffc700]' :
+                                    activity.priority === 'Alta'? 'text-[#ff4800]' :
+                                    'text-error'
+                                ]" class="size-5" weight="fill" />
+                                <span :class="[
+                                    activity.priority === 'Baja' ? 'text-[#0496ff]' :
+                                    activity.priority === 'Media' ? 'text-[#ffc700]' :
+                                    activity.priority === 'Alta'? 'text-[#ff4800]' :
+                                    'text-error'
+                                ]" class="font-black uppercase">{{ activity.priority }}</span>
+                            </div>
+                            <!-- BTN para mostrar modal de información de actividad -->
+                            <button class="btn btn-sm btn-primary text-black" @click="openActivity(activity)">Mostrar más</button>
+                            <!-- <button class="btn btn-sm btn-primary text-black">Mostrar más</button> -->
                         </div>
                     </div>
                 </div>
@@ -148,17 +202,45 @@
                 </div>
 
                 <!-- Cards -->
+
+                <!-- ! EN CASO DE QUE NO HAYA NINGUNA ACTIVIDAD -->
                 <div class="flex items-center justify-start gap-2 h-full bg-base-200 rounded-lg shadow-md p-4" v-if="completadas.length === 0">
                     <PhXCircle class="size-5" />
                     <p class="text-neutral text-start text-sm font-semibold">No hay actividades completadas</p>
                 </div>
+
+                <!-- ! CUANDO HAY ACTIVIDADES REGISTRADAS -->
                 <div v-for="activity in completadas" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
-                        <h2 class="card-title">Small Card</h2>
-                        <p>A card component has a figure, a body part, and inside body there are title and actions parts
-                        </p>
+                        <div class="flex items-center">
+                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
+                        <span :class="getBadgeClass(activity.due_date)" >
+                            <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
+                            {{ getDaysText(activity.due_date) }}
+                        </span>
+                        </div>
+                        <h2 class="card-title">{{ activity.name }}</h2>
+                        <p> {{ activity.description }}</p>
+
+
                         <div class="justify-end card-actions">
-                            <button class="btn btn-primary text-black">Buy Now</button>
+                            <div class="flex items-start justify-start gap-1 mr-auto my-auto">
+                                <PhFlagBannerFold :class="[
+                                    activity.priority === 'Baja' ? 'text-[#0496ff]' :
+                                    activity.priority === 'Media' ? 'text-[#ffc700]' :
+                                    activity.priority === 'Alta'? 'text-[#ff4800]' :
+                                    'text-error'
+                                ]" class="size-5" weight="fill" />
+                                <span :class="[
+                                    activity.priority === 'Baja' ? 'text-[#0496ff]' :
+                                    activity.priority === 'Media' ? 'text-[#ffc700]' :
+                                    activity.priority === 'Alta'? 'text-[#ff4800]' :
+                                    'text-error'
+                                ]" class="font-black uppercase">{{ activity.priority }}</span>
+                            </div>
+                            <!-- BTN para mostrar modal de información de actividad -->
+                            <button class="btn btn-sm btn-primary text-black" @click="openActivity(activity)">Mostrar más</button>
+                            <!-- <button class="btn btn-sm btn-primary text-black">Mostrar más</button> -->
                         </div>
                     </div>
                 </div>
@@ -276,6 +358,44 @@
                                     {{ getDaysText(editForm.due_date) }}
                                 </span>
                             </div>
+
+                            <!-- * BTN DE ACTUALIZAR ESTATUS DE ACTIVIDAD -->
+
+                            <!-- btn para marcar en progreso o a revisión -->
+                            <button v-if="selectedActivity.changeStatus_p && selectedActivity.status === 'Disponible'"
+                                @click="router.patch(route('activities.update-status', selectedActivity.id), { status: 'En progreso' })"
+                                class="flex items-center justify-start gap-2 mt-3 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                <PhPlay class="size-4" weight="bold" />
+                                Iniciar actividad</button>
+
+                            <button v-if="selectedActivity.changeStatus_p && selectedActivity.status === 'En progreso'"
+                                @click="router.patch(route('activities.update-status', selectedActivity.id), { status: 'Revision' })"
+                                class="flex items-center justify-start gap-2 mt-3 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                <PhTestTube class="size-4" weight="bold" />
+                                Mandar a revisión</button>
+
+                            <div v-if="selectedActivity.review_p && selectedActivity.status === 'Revision'" class="flex flex-col gap-2 mt-3">
+                                <button @click="router.patch(route('activities.return', selectedActivity.id))"
+                                    class="flex items-center justify-start gap-2 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                    <PhArrowsClockwise class="size-4" weight="bold" />
+                                    Regresar actividad
+                                </button>
+                                <button @click="router.patch(route('activities.mark-complete', selectedActivity.id))"
+                                    class="flex items-center justify-start gap-2 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                    <PhChecks class="size-4" weight="bold" />
+                                    Marcar completado
+                                </button>
+                            </div>
+
+                            <div v-if="hasRole('admin') && selectedActivity.status === 'Revision'"
+                                class="flex items-center justify-start gap-2 mt-3 text-sm text-slate-400/50 font-black cursor-not-allowed">
+                                <PhTestTube class="size-4" weight="bold" />
+                                Actividad en revisión</div>
+
+                            <div v-if="selectedActivity.status === 'Completado'"
+                                class="flex items-center justify-start gap-2 mt-3 text-sm text-slate-400/50 font-black cursor-not-allowed">
+                                <PhChecks class="size-4" weight="bold" />
+                                Actividad completada</div>
                         </div>
                     </div>
                 </div>
@@ -290,11 +410,15 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond  } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks } from '@phosphor-icons/vue';
 import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { router } from '@inertiajs/vue3';
+import { usePermission } from '../../composables/usePermission';
+
+//Comprobar permisos de usuario
+const {hasRole} = usePermission();
 
 const props = defineProps ({
     project: Object,
@@ -304,8 +428,8 @@ const props = defineProps ({
 // ! Obtienen la actividad dependiendo del estado
 const disponibles = computed(() => props.activities.filter(a => a.status === 'Disponible'))
 const enProgreso = computed(() => props.activities.filter(a => a.status === 'En progreso'))
-const enRevision = computed(() => props.activities.filter(a => a.status === 'Revisión'))
-const completadas = computed(() => props.activities.filter(a => a.status === 'Completada'))
+const enRevision = computed(() => props.activities.filter(a => a.status === 'Revision'))
+const completadas = computed(() => props.activities.filter(a => a.status === 'Completado'))
 
 // * Calcula cuantos días faltan para que la actividad se vence a partir de la fecha actual
 function calculateDays(dueDate) {
@@ -325,7 +449,7 @@ function calculateDays(dueDate) {
     let daysDifference = timeDifference / (1000 * 3600 * 24);
 
     // ? Math.round para evitar decimales por los cambios de horario
-    return Math.round(daysDifference); 
+    return Math.round(daysDifference);
 }
 
 // * Muestra cuando días faltan para que se venzca el plazo de la actividad con texto, badge e icono

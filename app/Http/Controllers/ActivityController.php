@@ -60,6 +60,8 @@ class ActivityController extends Controller
 
         $activities->each(function ($activity) use ($user) {
             $activity->update_p = $user->can('update', $activity);
+            $activity->changeStatus_p = $user->can('updateStatus', $activity);
+            $activity->review_p = $user->can('review', $activity);
         });
 
         return inertia('Activities/ActivityBoardPage', [
@@ -171,5 +173,78 @@ class ActivityController extends Controller
         $activity->forceDelete();
 
         return redirect()->route('activities-board.show', $projectId)->with('success', 'Actividad eliminada del sistema.');
+    }
+
+    /**
+     * Permite realizar cambios en el estatus de la actividad
+     */
+    public function updateStatus(Request $request, Activity $activity)
+    {
+        if (Gate::denies('updateStatus', $activity))
+        {
+            return back()->with('error', 'No tienes permisos para actualizar estatus.');
+        }
+
+        $validate = $request->validate([
+            'status' => 'required|in:En progreso,Revision'
+        ]);
+
+        $allowed = [
+            'Disponible' => 'En progreso',
+            'En progreso' => 'Revision', // Asegúrate de que en la BD el valor sea exactamente este
+        ];
+
+        // ESTO TE DIRÁ EXACTAMENTE QUÉ ESTÁ FALLANDO:
+    if (($allowed[$activity->status] ?? null) !== $validate['status']) {
+        dd([
+            'estado_actual_bd' => $activity->status,
+            'estado_permitido_segun_array' => $allowed[$activity->status] ?? 'No existe la clave',
+            'estado_enviado_frontend' => $validate['status']
+        ]);
+    }
+
+        if (($allowed[$activity->status] ?? null) !== $validate['status']) {
+            return back()->with('error', 'Error al actualizar estatus.');
+        }
+
+        match ($validate['status']) {
+            'En progreso' => $activity->markInProgress(),
+            'Revision' => $activity->sendToReview()
+        };
+
+        return back()->with('success', 'Estatus actualizado.');
+    }
+
+    /**
+     * Permite que el usuario pueda regresar una actividad o marcarla como completado
+     */
+    public function returnActivity(Request $request, Activity $activity)
+    {
+        if (Gate::denies('review', $activity))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        if ($activity->status !== 'Revision') {
+            return back()->with('error', 'La actividad aún no esta en revisión.');
+        }
+
+        $activity->returnActivity();
+        return back()->with('success', 'Actividad devuelta.');
+    }
+
+    public function markComplete(Request $request, Activity $activity)
+    {
+        if (Gate::denies('review', $activity))
+        {
+            abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
+        }
+
+        if ($activity->status !== 'Revision') {
+            return back()->with('error', 'La actividad aún no esta en revisión.');
+        }
+
+        $activity->markCompletedAt();
+        return back()->with('success', 'Actividad marcada como completada');
     }
 }
