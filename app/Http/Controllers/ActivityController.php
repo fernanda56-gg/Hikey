@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Gate;
@@ -62,11 +63,15 @@ class ActivityController extends Controller
             $activity->update_p = $user->can('update', $activity);
             $activity->changeStatus_p = $user->can('updateStatus', $activity);
             $activity->review_p = $user->can('review', $activity);
+
+            $activity->formatted_completed_at = $activity->completed_at
+            ? Carbon::parse($activity->completed_at)->format('d/m/Y')
+            : null;
         });
 
         return inertia('Activities/ActivityBoardPage', [
             'project' => $project,
-            'activities' => $activities
+            'activities' => $activities,
         ]);
     }
 

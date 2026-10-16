@@ -214,9 +214,9 @@
                     <div class="card-body">
                         <div class="flex items-center">
                         <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
-                        <span :class="getBadgeClass(activity.due_date)" >
-                            <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
-                            {{ getDaysText(activity.due_date) }}
+                        <span :class="getBadgeClass(activity.due_date, activity.completed_at)" >
+                            <component :is="getIcon(activity.due_date, activity.completed_at)" class="size-4" weight="bold" />
+                            {{ getDaysText(activity.due_date, activity.completed_at) }}
                         </span>
                         </div>
                         <h2 class="card-title">{{ activity.name }}</h2>
@@ -382,13 +382,13 @@
                             <!-- ! CONTENEDOR DE FECHA DE INICIO -->
                             <div class="flex items-center justify-start mt-3 gap-2">
                                 <span class="text-sm text-neutral font-black">Fecha de inicio:</span>
-                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.start_date }}</span>
+                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.start_date ?? 'Pendiente' }}</span>
                             </div>
 
                             <!-- ! CONTENEDOR DE FECHA FINALIZACIÓN -->
                             <div class="flex items-center justify-start mt-3 gap-2">
                                 <span class="text-sm text-neutral font-black">Fecha de finalización:</span>
-                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.completed_at }}</span>
+                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.formatted_completed_at ?? 'Pendiente' }}</span>
                             </div>
 
                             <!-- ! CONTENEDOR PARA LINK DE RECURSOS DE ACTIVIDAD -->
@@ -499,23 +499,27 @@ function calculateDays(dueDate) {
 }
 
 // * Muestra cuando días faltan para que se venzca el plazo de la actividad con texto, badge e icono
-function getDaysText(dueDate) {
+function getDaysText(dueDate, completedAt) {
     let days = calculateDays(dueDate);
+
+    if (completedAt) return 'Completada';
     if (days < 0) return `Venció hace ${Math.abs(days)} días`;
     if (days === 0) return 'Vence hoy';
     if (days === 1) return 'Vence mañana';
     return `Faltan ${days} días`;
 }
 
-function getBadgeClass(dueDate) {
+function getBadgeClass(dueDate, completedAt) {
     let days = calculateDays(dueDate);
+    if (completedAt) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-success items-end ml-auto text-white';
     if (days < 0) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-error items-end ml-auto text-white'; // Ya venció
     if (days <= 2) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-warning items-end ml-auto text-black'; // Proximo a vencer
     return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold items-end ml-auto text-black bg-slate-300/50'; // A tiempo
 }
 
-function getIcon(dueDate) {
+function getIcon(dueDate, completedAt) {
     let days = calculateDays(dueDate);
+    if (completedAt) return PhChecks;
     if (days < 0) return PhX; // Ya venció
     if (days <= 2) return PhWarningDiamond; // Proximo a vencer
     return PhCalendarDots; // A tiempo
