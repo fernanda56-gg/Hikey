@@ -248,7 +248,7 @@
 
             <!-- ! MODAL DE INFORMACIÓN DE ACTIVIDAD -->
             <dialog id="my_modal_1" ref="dialogRef" class="modal" @close="onModalClose">
-                <div v-if="selectedActivity" class="modal-box w-11/12 max-w-2xl">
+                <div v-if="selectedActivity" class="modal-box w-11/12 max-w-3xl">
                     <form method="dialog">
                         <button @click="closeActivity" type="button" class="btn btn-sm btn-square btn-ghost absolute right-2 top-2">
                             <PhX class="size-4 text-neutral" weight="bold" />
@@ -260,7 +260,7 @@
                     <div class="flex flex-col lg:flex-row md:p-4 text-neutral">
 
                         <!-- ? INFO DE ACTIVIDAD -->
-                        <div class="card h-auto min-w-2/3 grow place-items-start p-4">
+                        <div class="card h-auto min-w-3/5 grow place-items-start p-4">
                             <form class="flex flex-col w-full" @submit.prevent="saveActivity">
 
                                 <!-- * Btn para habilitar edición -->
@@ -343,45 +343,91 @@
                         <div class="divider divider-horizontal"></div>
 
                         <!-- ? ACCIONES -->
-                        <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start pt-3">
+                        <div class="card bg-transparent rounded-box lg:h-32 h-20 w-full grow place-items-center lg:place-items-start">
+
+                            <!-- ! CONTENEDOR DE USUARIO ASIGNADO -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Responsable:</span>
+                                <span class="text-xs text-slate-400/50 font-semibold">Asignar a responsable...</span>
+                            </div>
+
+                            <!-- ! CONTENEDOR DE STATUS DE PROYECTO -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Estatus:</span>
+                                <span :class="[
+                                    selectedActivity.status === 'Disponible' ? 'badge badge-sm badge-soft badge-info text-xs font-semibold' :
+                                    selectedActivity.status === 'En progreso' ? 'badge badge-sm badge-soft badge-warning text-xs font-semibold' :
+                                    selectedActivity.status === 'Revision' ? 'badge badge-sm badge-soft badge-accent text-xs font-semibold' :
+                                    'badge badge-sm badge-soft badge-success text-xs font-semibold'
+                                ]">{{ selectedActivity.status }}</span>
+                            </div>
+
+                            <!-- ! CONTENDEDOR DE PRIORIDAD -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Prioridad:</span>
+                                <span :class="[
+                                    selectedActivity.priority === 'Baja' ? 'badge badge-sm badge-soft badge-info text-xs font-semibold' :
+                                    selectedActivity.priority === 'Media' ? 'badge badge-sm badge-soft badge-warning text-xs font-semibold' :
+                                    selectedActivity.priority === 'Alta' ? 'badge badge-sm badge-soft badge-error text-xs font-semibold' :
+                                    'badge badge-sm badge-soft badge-error text-xs font-semibold'
+                                ]">{{ selectedActivity.priority }}</span>
+                            </div>
+
+                            <!-- ! CONTENEDOR DE FECHA LIMITE -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Fecha limite:</span>
+                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.due_date }}</span>
+                            </div>
+
+                            <!-- ! CONTENEDOR DE FECHA DE INICIO -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Fecha de inicio:</span>
+                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.start_date }}</span>
+                            </div>
+
+                            <!-- ! CONTENEDOR DE FECHA FINALIZACIÓN -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Fecha de finalización:</span>
+                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.completed_at }}</span>
+                            </div>
+
+                            <!-- ! CONTENEDOR PARA LINK DE RECURSOS DE ACTIVIDAD -->
+                            <div class="flex items-center justify-start mt-3 gap-2">
+                                <span class="text-sm text-neutral font-black">Link:</span>
+                                <a :href="selectedActivity.link" target="_blank" rel="noopener noreferrer">
+                                    <PhPaperclip class="size-4 text-slate-400/60 hover:text-neutral duration-200 " weight="bold" />
+                                </a>
+                            </div>
+
+                            <div class="divider"></div>
 
                             <!-- * BTN DE ELIMINADOS -->
                             <div @click="deleteActivity" class="flex items-center justify-start gap-2">
                                 <PhTrash class="size-4 text-error" weight="fill" />
-                                <span class=" link link-hover text-sm text-error font-black duration-200 hover:duration-200">Eliminar</span>
-                            </div>
-
-                            <!-- * BADGE DE FECHA LIMITE DE PROYECTO -->
-                            <div class="flex items-center justify-start mt-3">
-                                <span :class="getLinkClass(editForm.due_date)">
-                                    <component :is="getIcon(editForm.due_date)" class="size-4" weight="bold" />
-                                    {{ getDaysText(editForm.due_date) }}
-                                </span>
+                                <span class=" link link-hover text-sm link-error text-error font-black duration-200">Eliminar actividad</span>
                             </div>
 
                             <!-- * BTN DE ACTUALIZAR ESTATUS DE ACTIVIDAD -->
-
-                            <!-- btn para marcar en progreso o a revisión -->
                             <button v-if="selectedActivity.changeStatus_p && selectedActivity.status === 'Disponible'"
                                 @click="router.patch(route('activities.update-status', selectedActivity.id), { status: 'En progreso' })"
-                                class="flex items-center justify-start gap-2 mt-3 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                class="flex items-center justify-start gap-2 mt-3 link link-hover hover:text-info duration-200 text-sm font-black">
                                 <PhPlay class="size-4" weight="bold" />
                                 Iniciar actividad</button>
 
                             <button v-if="selectedActivity.changeStatus_p && selectedActivity.status === 'En progreso'"
                                 @click="router.patch(route('activities.update-status', selectedActivity.id), { status: 'Revision' })"
-                                class="flex items-center justify-start gap-2 mt-3 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                class="flex items-center justify-start gap-2 mt-3 link link-hover hover:text-info duration-200 text-sm font-black">
                                 <PhTestTube class="size-4" weight="bold" />
                                 Mandar a revisión</button>
 
                             <div v-if="selectedActivity.review_p && selectedActivity.status === 'Revision'" class="flex flex-col gap-2 mt-3">
                                 <button @click="router.patch(route('activities.return', selectedActivity.id))"
-                                    class="flex items-center justify-start gap-2 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                    class="flex items-center justify-start gap-2 link link-hover hover:text-info duration-200 text-sm font-black">
                                     <PhArrowsClockwise class="size-4" weight="bold" />
                                     Regresar actividad
                                 </button>
                                 <button @click="router.patch(route('activities.mark-complete', selectedActivity.id))"
-                                    class="flex items-center justify-start gap-2 link link-info link-hover hover:text-info hover:duration-200 text-sm font-black">
+                                    class="flex items-center justify-start gap-2 link link-hover hover:text-info duration-200 text-sm font-black">
                                     <PhChecks class="size-4" weight="bold" />
                                     Marcar completado
                                 </button>
@@ -410,7 +456,7 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip } from '@phosphor-icons/vue';
 import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
@@ -466,13 +512,6 @@ function getBadgeClass(dueDate) {
     if (days < 0) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-error items-end ml-auto text-white'; // Ya venció
     if (days <= 2) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-warning items-end ml-auto text-black'; // Proximo a vencer
     return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold items-end ml-auto text-black bg-slate-300/50'; // A tiempo
-}
-
-function getLinkClass(dueDate) {
-    let days = calculateDays(dueDate);
-    if (days < 0) return 'flex items-center justify-start gap-1 text-error font-semibold text-sm cursor-default'; // Ya venció
-    if (days <= 2) return 'flex items-center justify-start gap-1 text-warning font-semibold text-sm cursor-default'; // Proximo a vencer
-    return 'flex items-center justify-start gap-1 text-neutral font-semibold text-sm cursor-default'; // A tiempo
 }
 
 function getIcon(dueDate) {
