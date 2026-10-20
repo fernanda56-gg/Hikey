@@ -34,7 +34,7 @@ class ActivityPolicy
         }
 
         // ? Comprueba que el usuario pertenezca a la misma empresa que el proyecto
-        return $user->companies()->where('companies.id', $activity->project_activity->company_id)->exists();
+        return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
     }
 
     /**
@@ -54,7 +54,7 @@ class ActivityPolicy
 
         // ? Solo el líder del proyecto puede crear nuevas actividades
         if ($user->hasRole('team-leader')) {
-            return $project->leader()->contains($user);
+            return $project->leader()->where('users.id', $user->id)->exists();
         }
 
         return false;
@@ -72,11 +72,11 @@ class ActivityPolicy
 
         // ? Comprueba que solo el manager de la empresa pueda actualizar la info de la actividad
         if ($user->hasRole('manager')) {
-            return $user->companies()->where('companies.id', $activity->project_activity->company_id)->exists();
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
         }
 
         // ? Comprueba que solo el líder de equipo pueda editar la info de la actividad
-        return $user->hasRole('team-leader') && $activity->project_activity->leader()->contains($user);
+        return $user->hasRole('team-leader') && $activity->project->leader()->where('users.id', $user->id)->exists();
     }
 
     /**
@@ -89,9 +89,14 @@ class ActivityPolicy
             return true;
         }
 
-        // ? Comprueba que solo el creador de la actividad pueda eliminarla
-        if ($activity->by_user_id === $user->id) {
-            return true;
+        // ? Comprueba que solo el manager de la empresa pueda eliminarla
+        if ($user->hasRole('manager')) {
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
+        }
+
+        // ? Comprueba que solo el líder de equipo del proyecto pueda eliminarla
+        if ($user->hasRole('team-leader')) {
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
         }
 
         return false;
@@ -109,7 +114,7 @@ class ActivityPolicy
 
         // ? Solo el manager de la empresa puede eliminar/restaurar una actividad
         if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $activity->project_activity->company_id)->exists();
+            return $user->companies->where('companies.id', $activity->project->company_id)->exists();
         }
 
         return false;
@@ -136,7 +141,7 @@ class ActivityPolicy
 
         // ? Solo el manager de la empresa puede ver la vista trash de actividad
         if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $project->company->id);
+            return $user->companies->where('companies.id', $project->company->id)->exists();
         }
 
         return false;
@@ -154,12 +159,12 @@ class ActivityPolicy
 
         // ? El manager de la empresa puede cambiar el estatus de las actividades
         if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $activity->project_activity->company_id);
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
         }
 
         // ? Solo los integrantes de equipo asignados al proyecto pueden modificar el estatus (Líder y miembro)
         if ($user->hasAnyRole(['team-leader', 'user'])) {
-            return $activity->project_activity->users()->where('users.id', $user->id)->exists();
+            return $activity->project->users()->where('users.id', $user->id)->exists();
         }
 
         return false;
@@ -177,12 +182,12 @@ class ActivityPolicy
 
         // ? El manager de la empresa puede evaluar las actividades realizadas
         if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $activity->project_activity->company_id);
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
         }
 
         // ? El líder de equipo del proyecto puede evaluar las actividades realizadas
         if ($user->hasRole('team-leader')) {
-            return $activity->project_activity->leader()->where('users.id', $user->id)->exists();
+            return $activity->project->leader()->where('users.id', $user->id)->exists();
         }
 
         return false;

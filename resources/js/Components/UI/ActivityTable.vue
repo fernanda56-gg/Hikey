@@ -334,7 +334,7 @@
 
                                 <!-- ? Acciones del form de edición de info -->
                                 <div v-if="isEditing" class="modal-action">
-                                    <button class="btn btn-sm btn-primary text-black" type="submit" :disabled="editForm.processing">Añadir</button>
+                                    <button class="btn btn-sm btn-primary text-black" type="submit" :disabled="editForm.processing">Actualizar</button>
                                     <button class="btn btn-sm btn-error text-white" type="button" @click="isEditing = false">Cancelar</button>
                                 </div>
                             </form>
@@ -420,7 +420,7 @@
                             <div class="divider"></div>
 
                             <!-- * BTN DE ELIMINADOS -->
-                            <div @click="deleteActivity" class="flex items-center justify-start gap-2">
+                            <div v-if="selectedActivity.delete_p" @click="deleteActivity" class="flex items-center justify-start gap-2">
                                 <PhTrash class="size-4 text-error" weight="fill" />
                                 <span class=" link link-hover text-sm link-error text-error font-black duration-200">Eliminar actividad</span>
                             </div>

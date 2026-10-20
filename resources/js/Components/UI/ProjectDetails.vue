@@ -23,7 +23,7 @@
 
         <!-- Link de proyecto -->
         <div class="flex items-center mt-1.5">
-            <a :href="projects.link" class="link-hover flex items-center gap-2 text-sm uppercase font-semibold duration-200 hover:duration-200 hover:text-accent" target="_blank" rel="noopener noreferrer">
+            <a :href="projects.link" class="link-hover flex items-center gap-2 text-sm uppercase font-semibold duration-200 hover:duration-200 hover:text-accent-content" target="_blank" rel="noopener noreferrer">
                 <span>Link de proyecto</span>
                 <PhLink class="size-5" weight="duotone"/>
             </a>

@@ -58,12 +58,13 @@ class ActivityController extends Controller
         }
 
         $user = Auth::user();
-        $activities = $project->activity()->with(['responsable', 'users', 'items', 'comments.author'])->get();
+        $activities = $project->activity()->with(['responsable', 'project', 'users', 'items', 'comments.author'])->get();
 
         $activities->each(function ($activity) use ($user) {
             $activity->update_p = $user->can('update', $activity);
             $activity->changeStatus_p = $user->can('updateStatus', $activity);
             $activity->review_p = $user->can('review', $activity);
+            $activity->delete_p = $user->can('delete', $activity);
 
             $activity->formatted_completed_at = $activity->completed_at
             ? Carbon::parse($activity->completed_at)->format('Y-m-d')
@@ -75,6 +76,10 @@ class ActivityController extends Controller
         return inertia('Activities/ActivityBoardPage', [
             'project' => $project,
             'activities' => $activities,
+            'can' => [
+                'viewTrash' => $user->can('viewTrash', $activities),
+                'create' => $user->can('create', [Activity::class, $project])
+            ]
         ]);
     }
 

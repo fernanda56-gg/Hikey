@@ -26,7 +26,7 @@ class Activity extends Model
         'by_user_id'
     ];
 
-    public function project_activity() // Relación entre un proyecto y sus actividades
+    public function project() // Relación entre un proyecto y sus actividades
     {
         return $this->belongsTo(Project::class);
     }

@@ -9,7 +9,7 @@
         <div class="flex flex-row mt-4 space-y-2">
             <div class="flex flex-col space-x-2 md:mr-8 mr-4">
                 <h1 class="uppercase font-bold md:text-lg text-base">link de proyecto</h1>
-                <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
+                <a :href="projects.link" class="flex items-center space-x-1 text-accent-content font-bold" target="_blank" rel="noopener noreferrer">
                     <span class="md:text-lg text-sm">Link</span>
                     <PhLink :size="20" weight="bold"/>
                 </a>
@@ -17,7 +17,7 @@
 
             <div class="flex flex-col">
                 <h1 class="uppercase font-bold md:text-lg text-base">link de recursos</h1>
-                <a :href="projects.link" class="flex items-center space-x-1 text-accent font-bold" target="_blank" rel="noopener noreferrer">
+                <a :href="projects.link" class="flex items-center space-x-1 text-accent-content font-bold" target="_blank" rel="noopener noreferrer">
                     <span class="md:text-lg text-sm">Link</span>
                     <PhLink :size="20" weight="bold"/>
                 </a>

@@ -17,7 +17,7 @@
 
             <!-- ! Apartado de btn de soft delete, filtro y crear actividad -->
             <div class="flex items-center justify-end w-full gap-3">
-                <div class="btn btn-sm text-white bg-error md:font-bold border-0 hover:bg-red-600 hover:duration-200 duration-200">
+                <div v-if="can?.viewTrash" class="btn btn-sm text-white bg-error md:font-bold border-0 hover:bg-red-600 hover:duration-200 duration-200">
                     <Link :href="route('activities.trash', {project: project.id})" class="flex items-center space-x-1">
                         <PhTrash class="size-4" weight="bold" />
                     </Link>
@@ -31,7 +31,7 @@
                 </div>
 
                 <!-- ? Btn para abrir modal de nueva actividad -->
-                <div class="btn btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
+                <div v-if="can?.create" class="btn btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
                     <button class="flex items-center space-x-1 cursor-pointer" @click="openModal">
                         <PhPlus class="size-4" weight="bold" />
                         <span>Nueva actividad</span>
@@ -133,7 +133,8 @@ import { ref } from 'vue';
 
 const props = defineProps ({
     project: Object,
-    activities: Object
+    activities: Object,
+    can: Object
 })
 
 const dialogRef = ref(null)
