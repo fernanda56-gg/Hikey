@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ActivityController extends Controller
 {
@@ -57,7 +58,7 @@ class ActivityController extends Controller
         }
 
         $user = Auth::user();
-        $activities = $project->activity()->with(['responsable', 'user_activity', 'items', 'comments.author'])->get();
+        $activities = $project->activity()->with(['responsable', 'users', 'items', 'comments.author'])->get();
 
         $activities->each(function ($activity) use ($user) {
             $activity->update_p = $user->can('update', $activity);
@@ -65,9 +66,11 @@ class ActivityController extends Controller
             $activity->review_p = $user->can('review', $activity);
 
             $activity->formatted_completed_at = $activity->completed_at
-            ? Carbon::parse($activity->completed_at)->format('d/m/Y')
+            ? Carbon::parse($activity->completed_at)->format('Y-m-d')
             : null;
         });
+
+        $project->load(['users' => fn ($q) => $q->select('users.id', 'users.name', 'users.last_name')]);
 
         return inertia('Activities/ActivityBoardPage', [
             'project' => $project,
@@ -199,15 +202,6 @@ class ActivityController extends Controller
             'En progreso' => 'Revision', // Asegúrate de que en la BD el valor sea exactamente este
         ];
 
-        // ESTO TE DIRÁ EXACTAMENTE QUÉ ESTÁ FALLANDO:
-    if (($allowed[$activity->status] ?? null) !== $validate['status']) {
-        dd([
-            'estado_actual_bd' => $activity->status,
-            'estado_permitido_segun_array' => $allowed[$activity->status] ?? 'No existe la clave',
-            'estado_enviado_frontend' => $validate['status']
-        ]);
-    }
-
         if (($allowed[$activity->status] ?? null) !== $validate['status']) {
             return back()->with('error', 'Error al actualizar estatus.');
         }
@@ -252,4 +246,28 @@ class ActivityController extends Controller
         $activity->markCompletedAt();
         return back()->with('success', 'Actividad marcada como completada');
     }
+
+    public function assignMembers(Request $request, Activity $activity)
+    {
+
+        if (Gate::denies('update', $activity))
+        {
+            return back()->with('error', 'No puedes realizar esta acción.');
+        }
+
+        $validated = $request->validate([
+        'user_ids' => 'required|array|min:1|max:3',
+        'user_ids.*' => [
+        'integer',
+        Rule::exists('project_team', 'user_id')
+        ->where('project_id', $activity->project_id),
+        ],
+        ]);
+
+        $activity->users()->sync($validated['user_ids']);
+
+        return back()->with('success', 'Responsables actualizados');
+    }
 }
+
+//TODO YA FUNCIONA ARREGLA A QUE SE VEA BONITO Y TRATA DE VER COMO ARREGLAR LA TABLA DE USUARIO

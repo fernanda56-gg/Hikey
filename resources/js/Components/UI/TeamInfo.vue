@@ -99,7 +99,7 @@
             <!-- Titulo del modal -->
             <h3 class="text-lg font-bold">Selecciona a los integrantes</h3>
 
-            <!-- input de busqueda de usuarios -->
+            <!-- input de búsqueda de usuarios -->
             <div class="flex items-center py-2">
                 <label class="input outline-none input-sm md:input-md">
                     <PhMagnifyingGlass class="md:size-4" weight="bold" />
@@ -114,7 +114,7 @@
                     <thead class="bg-base-200 text-neutral">
                         <tr>
                             <th class="w-100">Usuarios</th>
-                            <th class="w-40 text-center">Disponibiidad</th>
+                            <th class="w-40 text-center">Disponibilidad</th>
                         </tr>
                     </thead>
                     <tbody>

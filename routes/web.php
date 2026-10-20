@@ -130,3 +130,4 @@ Route::delete('activities/{activity}/forceDelete', [ActivityController::class, '
 Route::patch('activities/{activity}/update-status', [ActivityController::class, 'updateStatus'])->name('activities.update-status')->middleware(['auth', 'verified']);
 Route::patch('activities/{activity}/return-activity', [ActivityController::class, 'returnActivity'])->name('activities.return')->middleware(['auth', 'verified']);
 Route::patch('activities/{activity}/mark-complete', [ActivityController::class, 'markComplete'])->name('activities.mark-complete')->middleware(['auth', 'verified']);
+Route::put('activities/{activity}/assign', [ActivityController::class, 'assignMembers'])->name('activities.assign')->middleware(['auth', 'verified']);

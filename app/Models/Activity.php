@@ -36,7 +36,7 @@ class Activity extends Model
         return $this->belongsTo(User::class, 'by_user_id');
     }
 
-    public function user_activity() // Relación tabla pivote para establecer el usuario asignado en la actividad
+    public function users() // Relación tabla pivote para establecer el usuario asignado en la actividad
     {
         return $this->belongsToMany(User::class, 'activity_user')->withTimestamps();
     }

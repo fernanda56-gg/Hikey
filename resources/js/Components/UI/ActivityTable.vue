@@ -240,7 +240,7 @@
                             </div>
                             <!-- BTN para mostrar modal de información de actividad -->
                             <button class="btn btn-sm btn-primary text-black" @click="openActivity(activity)">Mostrar más</button>
-                            <!-- <button class="btn btn-sm btn-primary text-black">Mostrar más</button> -->
+
                         </div>
                     </div>
                 </div>
@@ -347,8 +347,20 @@
 
                             <!-- ! CONTENEDOR DE USUARIO ASIGNADO -->
                             <div class="flex items-center justify-start mt-3 gap-2">
-                                <span class="text-sm text-neutral font-black">Responsable:</span>
-                                <span class="text-xs text-slate-400/50 font-semibold">Asignar a responsable...</span>
+                                <span class="text-sm text-neutral font-black">Responsables:</span>
+
+                                <span v-if="selectedActivity.users?.length" class="text-xs text-neutral font-semibold">
+                                    {{selectedActivity.users.map(u => `${u.name} ${u.last_name}`).join(', ')}}
+                                </span>
+                                <span v-else class="text-xs text-slate-400/50 font-semibold">Sin responsables</span>
+
+                                <button v-if="selectedActivity.update_p" type="button"
+                                    class="text-xs text-slate-400/50 font-semibold cursor-pointer hover:text-neutral duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-slate-400/50"
+                                    :disabled="selectedActivity.completed_at !== null"
+                                    @click="membersDialogRef?.showModal()">
+                                    <PhUserSwitch v-if="selectedActivity.users?.length" class="size-5" weight="bold" />
+                                    <PhUserCirclePlus v-else class="size-5" weight="bold" />
+                                </button>
                             </div>
 
                             <!-- ! CONTENEDOR DE STATUS DE PROYECTO -->
@@ -382,13 +394,19 @@
                             <!-- ! CONTENEDOR DE FECHA DE INICIO -->
                             <div class="flex items-center justify-start mt-3 gap-2">
                                 <span class="text-sm text-neutral font-black">Fecha de inicio:</span>
-                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.start_date ?? 'Pendiente' }}</span>
+                                <span :class="[
+                                    selectedActivity.start_date === null ? 'text-xs text-slate-400/50 font-semibold cursor-not-allowed' :
+                                    'text-xs text-neutral font-semibold'
+                                ]">{{ selectedActivity.start_date ?? 'Pendiente...' }}</span>
                             </div>
 
                             <!-- ! CONTENEDOR DE FECHA FINALIZACIÓN -->
                             <div class="flex items-center justify-start mt-3 gap-2">
                                 <span class="text-sm text-neutral font-black">Fecha de finalización:</span>
-                                <span class="text-xs text-neutral font-semibold">{{ selectedActivity.formatted_completed_at ?? 'Pendiente' }}</span>
+                                <span :class="[
+                                    selectedActivity.completed_at === null ? 'text-xs text-slate-400/50 font-semibold cursor-not-allowed' :
+                                    'text-xs text-neutral font-semibold'
+                                ]">{{ selectedActivity.formatted_completed_at ?? 'Pendiente...' }}</span>
                             </div>
 
                             <!-- ! CONTENEDOR PARA LINK DE RECURSOS DE ACTIVIDAD -->
@@ -444,11 +462,89 @@
                                 Actividad completada</div>
                         </div>
                     </div>
+
+                    <!-- ! MODAL DE INTEGRANTES DE EQUIPO -->
+
+                    <!-- ? CUANDO SI HAY INTEGRANTES REGISTRADOS -->
+                    <dialog ref="membersDialogRef" class="modal">
+                        <div v-if="project?.users.length" class="modal-box md:w-1/3 w-11/12">
+                            <h3 class="text-base font-bold">Lista de integrantes</h3>
+
+                            <!-- * tabla de integrantes de equipo -->
+                            <div v-if="selectedActivity.update_p"
+                                class="w-fit overflow-x-auto rounded-box border-2 border-base-content/15 bg-base-100 overflow-y-auto max-h-50 scrollbar-thin scroll-smooth mt-2.5">
+
+                                <!-- contenedor de error -->
+                                <div v-if="assignForm.errors.user_ids" role="alert" class="alert alert-error">
+                                    <PhXCircle class="size-5" weight="bold" />
+                                    <span>{{ assignForm.errors.user_ids }}</span>
+                                </div>
+
+                                <!-- lista de usuarios -->
+                                <table class="table md:table-md table-sm w-auto">
+                                    <!-- head -->
+                                    <thead class="bg-base-200 text-neutral">
+                                        <tr>
+                                            <th class="w-80">Integrante</th>
+                                            <th class="w-30 text-center">Selección</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody v-for="member in project?.users" :key="member.id">
+                                        <tr>
+                                            <td>{{ member.name }} {{ member.last_name }}</td>
+                                            <td class="flex justify-center items-center">
+                                                <input type="checkbox"
+                                                    class="checkbox checkbox-neutral checkbox-sm outline-none"
+                                                    :value="member.id" v-model="assignForm.user_ids"
+                                                    :disabled="!assignForm.user_ids.includes(member.id) && assignForm.user_ids.length >= 2">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- texto informativo -->
+                            <div class="flex items-center justify-start gap-1 mt-2">
+                                <PhInfo class="size-4 text-info" weight="bold" />
+                                <span class="font-black text-info text-[10px]">Límite dos integrantes por actividad.</span>
+                            </div>
+
+                            <div class="modal-action">
+                                <button :disabled="assignForm.processing || !assignForm.user_ids.length"
+                                    @click="saveMembers" class="btn btn-sm btn-primary text-black disabled:text-slate-400/50">Añadir</button>
+                                <form method="dialog">
+                                    <!-- if there is a button in form, it will close the modal -->
+                                    <button class="btn btn-sm btn-error text-white">Cancelar</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- ? CUANDO AUN NO HAY INTEGRANTES REGISTRADOS -->
+                        <div v-else class="modal-box w-11/12">
+                            <!-- botón de salir de modal -->
+                            <form method="dialog">
+                                <button class="btn btn-sm btn-square btn-ghost absolute right-2 top-2">
+                                    <PhX class="size-4" weight="bold" />
+                                </button>
+                            </form>
+
+                            <!-- titulo de modal -->
+                            <h3 class="text-neutral font-bold">Lista de integrantes</h3>
+                            <div class="flex items-center justify-start gap-2 mt-2">
+                                <PhXCircle class="size-5" weight="fill" />
+                                <span class="md:text-sm text-xs">Aún no hay registrados integrantes de equipo...</span>
+                            </div>
+                        </div>
+                    </dialog>
+
+
                 </div>
                 <div v-else class="modal-box w-auto">
                     <p class="text-neutral items-center">Información de actividad no disponible</p>
                 </div>
             </dialog>
+
         </div>
     </div>
 
@@ -456,7 +552,7 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhInfo, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip, PhCheckCircle, PhUserSwitch, PhUserCirclePlus } from '@phosphor-icons/vue';
 import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
@@ -498,20 +594,20 @@ function calculateDays(dueDate) {
     return Math.round(daysDifference);
 }
 
-// * Muestra cuando días faltan para que se venzca el plazo de la actividad con texto, badge e icono
+// * Muestra cuando días faltan para que se vence el plazo de la actividad con texto, badge e icono
 function getDaysText(dueDate, completedAt) {
     let days = calculateDays(dueDate);
 
-    if (completedAt) return 'Completada';
+    if (completedAt) return 'Completada'; // Completada
     if (days < 0) return `Venció hace ${Math.abs(days)} días`;
-    if (days === 0) return 'Vence hoy';
-    if (days === 1) return 'Vence mañana';
-    return `Faltan ${days} días`;
+    if (days === 0) return 'Vence hoy'; // Proximo a vencer
+    if (days === 1) return 'Vence mañana'; // Proximo a vencer
+    return `Faltan ${days} días`; // A tiempo
 }
 
 function getBadgeClass(dueDate, completedAt) {
     let days = calculateDays(dueDate);
-    if (completedAt) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-success items-end ml-auto text-white';
+    if (completedAt) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-success items-end ml-auto text-white'; // Completada
     if (days < 0) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-error items-end ml-auto text-white'; // Ya venció
     if (days <= 2) return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold badge-warning items-end ml-auto text-black'; // Proximo a vencer
     return 'flex items-stretch justify-between gap-1 badge badge-sm font-semibold items-end ml-auto text-black bg-slate-300/50'; // A tiempo
@@ -519,11 +615,13 @@ function getBadgeClass(dueDate, completedAt) {
 
 function getIcon(dueDate, completedAt) {
     let days = calculateDays(dueDate);
-    if (completedAt) return PhChecks;
+    if (completedAt) return PhCheckCircle; // Completada
     if (days < 0) return PhX; // Ya venció
     if (days <= 2) return PhWarningDiamond; // Proximo a vencer
     return PhCalendarDots; // A tiempo
 }
+
+
 
 // ! Modal de información y edición de información de actividad
 const dialogRef = ref(null)
@@ -550,6 +648,10 @@ function openActivity(activity) {
         priority: activity.priority,
         link: activity.link,
         due_date: activity.due_date,
+    }).reset()
+
+    assignForm.defaults({
+        user_ids: (activity.users ?? []).map(u => u.id),
     }).reset()
     dialogRef.value?.showModal()
 }
@@ -586,4 +688,22 @@ function deleteActivity() {
     })
 }
 
+
+// ! Modal de integrantes de equipo y asignación de responsable
+const membersDialogRef = ref(null)
+
+const assignForm = useForm ({
+    user_ids: []
+})
+
+// ? se añadió esto pero en la función openActivity
+/* assignForm.defaults({
+        user_ids: activity.users.map(u => u.id),
+    }).reset() */
+
+function saveMembers() {
+    assignForm.put(route('activities.assign', selectedActivityId.value), {
+        preserveScroll:true
+    })
+}
 </script>
