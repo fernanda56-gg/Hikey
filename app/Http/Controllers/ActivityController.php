@@ -77,7 +77,7 @@ class ActivityController extends Controller
             'project' => $project,
             'activities' => $activities,
             'can' => [
-                'viewTrash' => $user->can('viewTrash', $activities),
+                'viewTrash' => $user->can('viewTrash', [Activity::class, $project]),
                 'create' => $user->can('create', [Activity::class, $project])
             ]
         ]);

@@ -1,4 +1,53 @@
 <template>
+
+    <!-- Filtrado de datos de actividad -->
+    <div class="flex items-center mt-2 justify-end">
+        <div class="dropdown dropdown-left dropdown-end">
+            <div tabindex="0" role="button"
+                class="btn btn-sm text-white bg-zinc-600 border-0 hover:bg-zinc-700 hover:duration-200 duration-200">
+                <span class="flex items-center">
+                    <PhFunnel class="size-4" weight="fill" />
+                </span>
+            </div>
+            <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-60 p-2 shadow-sm mr-2">
+
+                <!-- filtrar por búsqueda de nombre -->
+                <li><a class="focus:bg-transparent active:bg-transparent">
+                        <label class="input outline outline-none">
+                            <PhMagnifyingGlass class="size-4" weight="bold" />
+                            <input v-model="searchName" type="search" required placeholder="Buscar" />
+                        </label>
+
+                    </a></li>
+
+                <!-- filtrar por prioridad -->
+                <li><a class="focus:bg-transparent active:bg-transparent mt-1.5">
+                        <div class="collapse">
+                            <input type="checkbox" />
+                            <div class="collapse-title p-0 text-neutral">Prioridad</div>
+                            <div class="collapse-content text-sm p-0">
+                                <div class="flex flex-col">
+                                    <label v-for="priority in priorities" :key="priority"
+                                        class="label cursor-pointer justify-start gap-2 p-0">
+                                        <input type="checkbox" :value="priority" v-model="priorityFilter"
+                                            class="checkbox checkbox-xs checkbox-neutral" />
+                                        <span class="text-neutral">{{ priority }}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </a></li>
+
+                    <li v-if="hasFilters">
+                        <button type="button" class="btn btn-sm flex items-center bg-black text-white gap-2" @click="clearFilters">
+                            <PhFunnelX class="size-4" weight="fill" />
+                            <span class="font-black">Limpiar</span>
+                        </button>
+                    </li>
+            </ul>
+        </div>
+    </div>
     <div class="overflow-x-auto text-neutral">
         <div class="flex min-w-max gap-4 p-4">
 
@@ -30,7 +79,6 @@
                 <div v-for="activity in disponibles" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
                         <div class="flex items-center">
-                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
                         <span :class="getBadgeClass(activity.due_date)" >
                             <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
                             {{ getDaysText(activity.due_date) }}
@@ -91,7 +139,6 @@
                 <div v-for="activity in enProgreso" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
                         <div class="flex items-center">
-                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
                         <span :class="getBadgeClass(activity.due_date)" >
                             <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
                             {{ getDaysText(activity.due_date) }}
@@ -152,7 +199,6 @@
                 <div v-for="activity in enRevision" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
                         <div class="flex items-center">
-                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
                         <span :class="getBadgeClass(activity.due_date)" >
                             <component :is="getIcon(activity.due_date)" class="size-4" weight="bold" />
                             {{ getDaysText(activity.due_date) }}
@@ -213,7 +259,6 @@
                 <div v-for="activity in completadas" :key="activity.id" class="card w-75 bg-base-200 card-sm shadow-md">
                     <div class="card-body">
                         <div class="flex items-center">
-                        <span class="bg-slate-200/50 rounded-lg p-1 text-xs">#{{ activity.id }}</span>
                         <span :class="getBadgeClass(activity.due_date, activity.completed_at)" >
                             <component :is="getIcon(activity.due_date, activity.completed_at)" class="size-4" weight="bold" />
                             {{ getDaysText(activity.due_date, activity.completed_at) }}
@@ -552,7 +597,7 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhInfo, PhFlagBannerFold, PhX, PhCalendarDots, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip, PhCheckCircle, PhUserSwitch, PhUserCirclePlus } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhInfo, PhFlagBannerFold, PhX, PhCalendarDots, PhFunnel, PhFunnelX, PhMagnifyingGlass, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip, PhCheckCircle, PhUserSwitch, PhUserCirclePlus } from '@phosphor-icons/vue';
 import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
@@ -567,11 +612,34 @@ const props = defineProps ({
     activities: Array
 })
 
+// ! Filtrado de datos
+const searchName = ref('')
+const priorityFilter = ref(['Baja', 'Media', 'Alta', 'Urgente'])
+const priorities = ['Baja', 'Media', 'Alta', 'Urgente']
+
+const filterActivities = computed ( () => {
+    const query = searchName.value.trim().toLowerCase()
+
+    return props.activities.filter(a =>
+        a.name.toLowerCase().includes(query) &&
+        priorityFilter.value.includes(a.priority)
+    )
+})
+
+function clearFilters() {
+    searchName.value = ''
+    priorityFilter.value = ['Baja', 'Media', 'Alta', 'Urgente']
+}
+
+const hasFilters = computed(() =>
+    searchName.value !== '' || priorityFilter.value.length < 4
+)
+
 // ! Obtienen la actividad dependiendo del estado
-const disponibles = computed(() => props.activities.filter(a => a.status === 'Disponible'))
-const enProgreso = computed(() => props.activities.filter(a => a.status === 'En progreso'))
-const enRevision = computed(() => props.activities.filter(a => a.status === 'Revision'))
-const completadas = computed(() => props.activities.filter(a => a.status === 'Completado'))
+const disponibles = computed(() => filterActivities.value.filter(a => a.status === 'Disponible'))
+const enProgreso = computed(() => filterActivities.value.filter(a => a.status === 'En progreso'))
+const enRevision = computed(() => filterActivities.value.filter(a => a.status === 'Revision'))
+const completadas = computed(() => filterActivities.value.filter(a => a.status === 'Completado'))
 
 // * Calcula cuantos días faltan para que la actividad se vence a partir de la fecha actual
 function calculateDays(dueDate) {
@@ -620,8 +688,6 @@ function getIcon(dueDate, completedAt) {
     if (days <= 2) return PhWarningDiamond; // Proximo a vencer
     return PhCalendarDots; // A tiempo
 }
-
-
 
 // ! Modal de información y edición de información de actividad
 const dialogRef = ref(null)

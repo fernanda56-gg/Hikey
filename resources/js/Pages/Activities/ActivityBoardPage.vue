@@ -23,13 +23,6 @@
                     </Link>
                 </div>
 
-                <div class="btn btn-sm text-white bg-black border-0 hover:bg-slate-700 hover:duration-200 duration-200">
-                    <Link :href="route('projects.create')" class="flex items-center space-x-1">
-                        <PhFunnel class="size-4" weight="fill" />
-                        <span>Filtro</span>
-                    </Link>
-                </div>
-
                 <!-- ? Btn para abrir modal de nueva actividad -->
                 <div v-if="can?.create" class="btn btn-sm text-black bg-primary md:font-bold border-0 hover:bg-primary-content hover:duration-200 duration-200">
                     <button class="flex items-center space-x-1 cursor-pointer" @click="openModal">
@@ -126,7 +119,7 @@
 import AppLayout from '../../Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { PhHouseLine, PhPlus, PhTrash, PhFunnel, PhWarningCircle } from '@phosphor-icons/vue';
+import { PhHouseLine, PhPlus, PhTrash, PhWarningCircle } from '@phosphor-icons/vue';
 import ActivityTable from '../../Components/UI/ActivityTable.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
