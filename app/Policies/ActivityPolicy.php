@@ -53,8 +53,9 @@ class ActivityPolicy
         }
 
         // ? Solo el líder del proyecto puede crear nuevas actividades
-        if ($user->hasRole('team-leader')) {
-            return $project->leader()->where('users.id', $user->id)->exists();
+        if ($user->hasRole('team-leader')
+        && $project->leader()->where('users.id', $user->id)->exists()) {
+        return true;
         }
 
         return false;
@@ -114,7 +115,7 @@ class ActivityPolicy
 
         // ? Solo el manager de la empresa puede eliminar/restaurar una actividad
         if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $activity->project->company_id)->exists();
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
         }
 
         return false;
@@ -141,7 +142,7 @@ class ActivityPolicy
 
         // ? Solo el manager de la empresa puede ver la vista trash de actividad
         if ($user->hasRole('manager')) {
-            return $user->companies->where('companies.id', $project->company->id)->exists();
+            return $user->companies()->where('companies.id', $project->company->id)->exists();
         }
 
         return false;

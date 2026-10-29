@@ -18,7 +18,7 @@ class ActivityController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        if(Gate::denies('viewActivities', $project))
+        if(Gate::denies('create', [Activity::class, $project]))
         {
             abort(403, 'No tienes los permisos necesarios para ver esta pagina.');
         }
