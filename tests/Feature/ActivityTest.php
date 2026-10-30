@@ -144,3 +144,53 @@ test('El usuario puede generar actividades', function () {
     $response->assertSessionHasNoErrors()
     ->assertRedirect();
 });
+
+test('El usuario de otra empresa no puede generar actividades', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* se genera el usuario de otra empresa */
+    /** @var \App\Models\User $other_user */
+    $other_user = User::factory()->create();
+
+    $other_user->assignRole('manager');
+
+    // * se realiza la prueba
+    $response = actingAs($other_user)
+    ->post(route('activities.store', $project), [
+        'name' => 'Actividad X',
+        'description' => 'Descripción X',
+        'priority' => 'Baja',
+        'status' => 'Disponible',
+        'link' => 'https://example.com/actividad-x',
+        'due_date' => now()->addDays(14)->toDateString(),
+        'project_id' => $project->id,
+        'by_user_id' => $other_user->id,
+    ]);
+
+    $response->assertForbidden();
+});
+
