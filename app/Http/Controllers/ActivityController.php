@@ -275,4 +275,3 @@ class ActivityController extends Controller
     }
 }
 
-//TODO YA FUNCIONA ARREGLA A QUE SE VEA BONITO Y TRATA DE VER COMO ARREGLAR LA TABLA DE USUARIO
