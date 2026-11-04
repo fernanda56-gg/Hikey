@@ -51,16 +51,20 @@
                     @change="toggleItem(item)"
                     class="checkbox checkbox-xs text-neutral" />
 
-                    <span class="text-xs font-semibold text-neutral flex-1" :class="{ 'line-through text-slate-400/50 cursor-not-allowed': item.is_completed }">
+                    <input v-if="editingId === item.id" v-model="editText" type="text"
+                        class="input input-xs flex-1 outline-none" @keyup.enter="updateItem(item)"
+                        @keyup.esc="editingId = null" />
+
+                    <span v-else class="text-sm flex-1 cursor-text"
+                        @dblclick="activity.update_p && startEdit(item)"
+                        :class="{ 'line-through text-slate-400/50 cursor-not-allowed': item.is_completed }"
+                        >
                         {{ item.description }}
                     </span>
 
                     <!-- Btn de acciones -->
                     <button class="btn btn-square btn-xs btn-ghost" @click="removeItem(item)" >
                         <PhTrash class="text-error size-4" weight="fill" />
-                    </button>
-                    <button class="btn btn-square btn-xs btn-ghost" @click="removeItem(item)" >
-                        <PhPencilSimple class="size-4" weight="fill" />
                     </button>
                 </li>
             </ul>
@@ -70,9 +74,9 @@
 
 <script setup>
 import { router, useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { route } from 'ziggy-js';
-import { PhCheckSquareOffset, PhPercent, PhXCircle, PhWarningCircle, PhTrash, PhPencilSimple } from '@phosphor-icons/vue';
+import { PhCheckSquareOffset, PhPercent, PhXCircle, PhWarningCircle, PhTrash } from '@phosphor-icons/vue';
 
 const props = defineProps({
     activity: Object,
@@ -85,6 +89,8 @@ const items = computed( () => props.activity.items ?? [])
 const doneCount = computed ( () => items.value.filter(i => i.is_completed).length) // ? realiza el conteo de las acciones ya realizadas
 const progress = computed ( () => // ? obtiene el % de las acciones realizadas del plan de acción
         items.value.length ?  Math.round((doneCount.value / items.value.length) * 100 ) : 0)
+const editingId = ref(null)
+const editText = ref('')
 
 function addItem() {
     if (!form.description.trim()) return
@@ -107,6 +113,21 @@ function removeItem(item) {
     router.delete(route('action.destroy', item.id), {
         preserveScroll: true,
         preserveState: true
+    })
+}
+
+function startEdit(item) {
+    editingId.value = item.id
+    editText.value = item.description
+}
+
+function updateItem(item) {
+    if (!editText.value.trim()) return
+
+    router.put(route('action.update', item.id), { description: editText.value }, {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => editingId.value = null,
     })
 }
 </script>
