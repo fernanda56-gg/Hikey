@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ActivityItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
@@ -131,3 +132,8 @@ Route::patch('activities/{activity}/update-status', [ActivityController::class, 
 Route::patch('activities/{activity}/return-activity', [ActivityController::class, 'returnActivity'])->name('activities.return')->middleware(['auth', 'verified']);
 Route::patch('activities/{activity}/mark-complete', [ActivityController::class, 'markComplete'])->name('activities.mark-complete')->middleware(['auth', 'verified']);
 Route::put('activities/{activity}/assign', [ActivityController::class, 'assignMembers'])->name('activities.assign')->middleware(['auth', 'verified']);
+// Items
+Route::post('activities/{activity}/items', [ActivityItemController::class, 'store'])->name('action.store')->middleware(['auth', 'verified']);
+Route::put('activity-item/{item}', [ActivityItemController::class, 'update'])->name('action.update')->middleware(['auth', 'verified']);
+Route::delete('activity-item/{item}', [ActivityItemController::class, 'destroy'])->name('action.destroy')->middleware(['auth', 'verified']);
+Route::patch('activity-items/{item}/toggle-item', [ActivityItemController::class, 'toggle'])->name('action.toggle-item')->middleware(['auth', 'verified']);

@@ -293,7 +293,7 @@
 
             <!-- ! MODAL DE INFORMACIÓN DE ACTIVIDAD -->
             <dialog id="my_modal_1" ref="dialogRef" class="modal" @close="onModalClose">
-                <div v-if="selectedActivity" class="modal-box w-11/12 max-w-3xl">
+                <div v-if="selectedActivity" class="modal-box w-11/12 max-w-3xl overflow-y-auto h-120 scrollbar-thin scroll-smooth">
                     <form method="dialog">
                         <button @click="closeActivity" type="button" class="btn btn-sm btn-square btn-ghost absolute right-2 top-2">
                             <PhX class="size-4 text-neutral" weight="bold" />
@@ -383,6 +383,10 @@
                                     <button class="btn btn-sm btn-error text-white" type="button" @click="isEditing = false">Cancelar</button>
                                 </div>
                             </form>
+
+                            <div class="divider"></div>
+
+                            <ActivityItems :activity="selectedActivity" :key="selectedActivity.id" />
                         </div>
 
                         <div class="divider divider-horizontal"></div>
@@ -403,8 +407,8 @@
                                     class="text-xs text-slate-400/50 font-semibold cursor-pointer hover:text-neutral duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-slate-400/50"
                                     :disabled="selectedActivity.completed_at !== null"
                                     @click="membersDialogRef?.showModal()">
-                                    <PhUserSwitch v-if="selectedActivity.users?.length" class="size-5" weight="bold" />
-                                    <PhUserCirclePlus v-else class="size-5" weight="bold" />
+                                    <PhSwap v-if="selectedActivity.users?.length" class="size-5" weight="duotone" />
+                                    <PhUserPlus v-else class="size-5" weight="duotone" />
                                 </button>
                             </div>
 
@@ -597,12 +601,13 @@
 </template>
 
 <script setup>
-import { PhCircle, PhXCircle, PhInfo, PhFlagBannerFold, PhX, PhCalendarDots, PhFunnel, PhFunnelX, PhMagnifyingGlass, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip, PhCheckCircle, PhUserSwitch, PhUserCirclePlus } from '@phosphor-icons/vue';
+import { PhCircle, PhXCircle, PhInfo, PhFlagBannerFold, PhX, PhCalendarDots, PhFunnel, PhFunnelX, PhMagnifyingGlass, PhPencilSimple, PhTrash, PhWarningDiamond, PhPlay, PhTestTube, PhArrowsClockwise, PhChecks, PhPaperclip, PhCheckCircle, PhSwap, PhUserPlus } from '@phosphor-icons/vue';
 import { computed, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { router } from '@inertiajs/vue3';
 import { usePermission } from '../../composables/usePermission';
+import ActivityItems from './ActivityItems.vue';
 
 //Comprobar permisos de usuario
 const {hasRole} = usePermission();

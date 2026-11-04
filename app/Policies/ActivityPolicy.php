@@ -193,4 +193,27 @@ class ActivityPolicy
 
         return false;
     }
+
+    /**
+     * Determina quien puede marcar una acción de una actividad
+     */
+    public function toggleItem(User $user, Activity $activity): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? El manager de la empresa pueden marcar una actividad
+        if ($user->hasRole('manager')) {
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
+        }
+
+        // ? Los integrantes del equipo pueden marcar una actividad
+        if ($user->hasAnyRole(['team-leader', 'user'])) {
+            return $activity->project->users()->where('users.id', $user->id)->exists();
+        }
+
+        return false;
+    }
 }
