@@ -208,6 +208,13 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 ha sido revocado, continuaras trabajando en el proyecto otro integrante tomará tu posición
                             </div>
+
+                            <!-- * ACTIVIDADES -->
+                            <div v-if="notification.type === 'App\\Notifications\\NewActivity'" class="font-semibold">
+                                Se ha generado una nueva actividad para el proyecto
+                                <span class="uppercase font-black underline">{{ notification.data.project_name_activity }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->

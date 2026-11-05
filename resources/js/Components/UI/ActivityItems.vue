@@ -55,7 +55,7 @@
                         class="input input-xs flex-1 outline-none" @keyup.enter="updateItem(item)"
                         @keyup.esc="editingId = null" />
 
-                    <span v-else class="text-sm flex-1 cursor-text"
+                    <span v-else class="text-xs font-semibold flex-1 cursor-text"
                         @dblclick="activity.update_p && startEdit(item)"
                         :class="{ 'line-through text-slate-400/50 cursor-not-allowed': item.is_completed }"
                         >

@@ -293,7 +293,7 @@
 
             <!-- ! MODAL DE INFORMACIÓN DE ACTIVIDAD -->
             <dialog id="my_modal_1" ref="dialogRef" class="modal" @close="onModalClose">
-                <div v-if="selectedActivity" class="modal-box w-11/12 max-w-3xl overflow-y-auto h-120 scrollbar-thin scroll-smooth">
+                <div v-if="selectedActivity" class="modal-box w-11/12 max-w-3xl overflow-y-auto h-150 scrollbar-thin scroll-smooth">
                     <form method="dialog">
                         <button @click="closeActivity" type="button" class="btn btn-sm btn-square btn-ghost absolute right-2 top-2">
                             <PhX class="size-4 text-neutral" weight="bold" />

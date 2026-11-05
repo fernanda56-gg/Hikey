@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Project;
+use App\Notifications\NewActivity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Notification;
 
 class ActivityController extends Controller
 {
@@ -34,10 +36,13 @@ class ActivityController extends Controller
         ]);
 
         try {
-            $project->activity()->create([
+            $activity = $project->activity()->create([
                 ...$validated,
                 'by_user_id' => $request->user()->id,
             ]);
+
+            /* notificación */
+            Notification::send($project->users, new NewActivity($activity, $project));
 
             return redirect()->back()->with('success', 'Actividad creada con éxito.');
         } catch (ValidationException $e) {
