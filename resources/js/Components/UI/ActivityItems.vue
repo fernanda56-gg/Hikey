@@ -28,7 +28,7 @@
         <form v-if="activity.update_p"
             @submit.prevent="addItem"
             class="flex items-center mt-5 gap-2">
-            <input v-model="form.description" type="text" placeholder="Investigar información relacionada con la actividad."
+            <input v-model="form.description" type="text" placeholder="Descripción de acción a realizar..."
                 class="input input-sm flex-1 outline-none" />
             <button type="submit" class="btn btn-sm btn-primary text-black" :disabled="form.processing">
                 Añadir

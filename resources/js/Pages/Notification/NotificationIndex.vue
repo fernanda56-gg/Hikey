@@ -215,6 +215,30 @@
                                 <span class="uppercase font-black underline">{{ notification.data.project_name_activity }}</span>
                                 , ve al tablón de actividades para conocer los detalles.
                             </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\EditActivity'" class="font-semibold">
+                                Se ha actualizado la información de la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\DeleteActivity'" class="font-semibold">
+                                Se ha eliminado la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\AssignActivity'" class="font-semibold">
+                                Se te ha asignado como responsable de la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\ReviewActivity'" class="font-semibold">
+                                {{notification.data.sender_name}} {{ notification.data.sender_last_name }}, ha mandado a revisión la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->

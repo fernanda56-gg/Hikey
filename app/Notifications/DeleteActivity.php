@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Activity;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,7 +15,7 @@ class DeleteActivity extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(private Activity $activity)
     {
         //
     }
@@ -26,7 +27,7 @@ class DeleteActivity extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -35,9 +36,11 @@ class DeleteActivity extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        ->subject('Actividad eliminada')
+            ->line("Se ha eliminado la actividad '{$this->activity->name}', regresa al tablón de actividades para seguir creando nuevas actividades.")
+            ->action('Ver tablón de actividades',
+            route('activities-board.show', ['project' => $this->activity->project_id]))
+            ->line('Gracias por usar nuestra aplicación!');
     }
 
     /**
@@ -48,7 +51,10 @@ class DeleteActivity extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'activity_id' => $this->activity->id,
+            'name' => $this->activity->name,
+            'project_id' => $this->activity->project_id,
+            'user_id' => $this->activity->by_user_id
         ];
     }
 }

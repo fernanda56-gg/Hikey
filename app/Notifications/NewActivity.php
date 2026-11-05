@@ -38,7 +38,7 @@ class NewActivity extends Notification
     {
         return (new MailMessage)
         ->subject('Nueva actividad añadida')
-            ->line("Una nueva actividad '{$this->activity->name} {$this->project->name}' ha sido agregada a tu tablón de actividades.")
+            ->line("Una nueva actividad '{$this->activity->name}' ha sido agregada a tu tablón de actividades.")
             ->action('Ver tablón de actividades',
             route('activities-board.show', ['project' => $this->activity->project_id]))
             ->line('Gracias por usar nuestra aplicación!');

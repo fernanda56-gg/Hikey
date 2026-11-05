@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Project;
+use App\Notifications\AssignActivity;
+use App\Notifications\DeleteActivity;
+use App\Notifications\EditActivity;
 use App\Notifications\NewActivity;
+use App\Notifications\ReviewActivity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -12,6 +16,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Notification;
+use Mockery\Matcher\Not;
 
 class ActivityController extends Controller
 {
@@ -110,6 +115,9 @@ class ActivityController extends Controller
         try {
             $activity->update($validated);
 
+            /* notificación */
+            Notification::send($activity->project->users, new EditActivity($activity));
+
             return redirect()->back()->with('success', 'Información de actividad actualizada exitosamente.');
         } catch (ValidationException $e) {
             throw $e;
@@ -130,6 +138,9 @@ class ActivityController extends Controller
 
         $projectId = $activity->project_id;
         $activity->delete();
+
+        /* notificación */
+        Notification::send($activity->responsable, new DeleteActivity($activity));
 
         return redirect()->route('activities-board.show', $projectId)->with('success', 'Actividad eliminada.');
     }
@@ -219,8 +230,17 @@ class ActivityController extends Controller
 
         match ($validate['status']) {
             'En progreso' => $activity->markInProgress(),
-            'Revision' => $activity->sendToReview()
-        };
+            'Revision' => (function () use ($activity, $request) {
+            $activity->sendToReview();
+
+            $reviewers = $activity->project->leader;
+
+            if ($reviewers) {
+                Notification::send( $reviewers, new ReviewActivity($activity, $request->user()));
+            } })(),
+            
+            default => null,
+            };
 
         return back()->with('success', 'Estatus actualizado.');
     }
@@ -276,6 +296,9 @@ class ActivityController extends Controller
         ]);
 
         $activity->users()->sync($validated['user_ids']);
+
+        /* notificación */
+        Notification::send($activity->users, new AssignActivity($activity));
 
         return back()->with('success', 'Responsables actualizados');
     }
