@@ -239,6 +239,18 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 , ve al tablón de actividades para conocer los detalles.
                             </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\ReturnActivity'" class="font-semibold">
+                                {{notification.data.sender_name}} {{ notification.data.sender_last_name }}, ha regresado tu actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\CompleteActivity'" class="font-semibold">
+                                {{notification.data.sender_name}} {{ notification.data.sender_last_name }}, ha marcado como completada tu actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , espera a que tu líder de equipo te asigne tu siguiente actividad.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->

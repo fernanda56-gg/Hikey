@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Project;
 use App\Notifications\AssignActivity;
+use App\Notifications\CompleteActivity;
 use App\Notifications\DeleteActivity;
 use App\Notifications\EditActivity;
 use App\Notifications\NewActivity;
+use App\Notifications\ReturnActivity;
 use App\Notifications\ReviewActivity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -233,12 +235,12 @@ class ActivityController extends Controller
             'Revision' => (function () use ($activity, $request) {
             $activity->sendToReview();
 
-            $reviewers = $activity->project->leader;
+            $reviewers = $activity->responsable;
 
             if ($reviewers) {
                 Notification::send( $reviewers, new ReviewActivity($activity, $request->user()));
             } })(),
-            
+
             default => null,
             };
 
@@ -259,6 +261,13 @@ class ActivityController extends Controller
             return back()->with('error', 'La actividad aún no esta en revisión.');
         }
 
+        $responsable = $activity->users;
+
+        /* notificación */
+        if ($responsable) {
+            Notification::send($responsable, new ReturnActivity($activity, $request->user()));
+        }
+
         $activity->returnActivity();
         return back()->with('success', 'Actividad devuelta.');
     }
@@ -272,6 +281,13 @@ class ActivityController extends Controller
 
         if ($activity->status !== 'Revision') {
             return back()->with('error', 'La actividad aún no esta en revisión.');
+        }
+
+        $responsable = $activity->users;
+
+        /* notificación */
+        if ($responsable) {
+            Notification::send($responsable, new CompleteActivity($activity, $request->user()));
         }
 
         $activity->markCompletedAt();
@@ -298,9 +314,14 @@ class ActivityController extends Controller
         $activity->users()->sync($validated['user_ids']);
 
         /* notificación */
-        Notification::send($activity->users, new AssignActivity($activity));
+        /* Notification::send($activity->users, new AssignActivity($activity)); */
+        Notification::send(
+            $activity->users,
+            app()->make('App\\Notifications\\AssignActivity', ['activity' => $activity])
+        );
 
         return back()->with('success', 'Responsables actualizados');
     }
 }
 
+/* // TODO: REVISA LO DE LOS PERMISOS PARA SABER QUIEN PUEDE REGRESAR Y MARCAR COMO COMPLETADA UNA ACTIVIDAD */
