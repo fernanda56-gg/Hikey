@@ -257,6 +257,25 @@
                                 vence mañana
                                 , ve al tablón de actividades para conocer los detalles.
                             </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\NewAction'" class="font-semibold">
+                                Se ha añadido una nueva acción a realizar para la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\UpdateAction'" class="font-semibold">
+                                Se ha actualizado la información de las acciones para la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\ActionCompleted'" class="font-semibold">
+                                Has completado la acción
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                de la actividad <span class="uppercase font-black underline">{{ notification.data.activity_name }}</span>
+                                , sigue así y continua con las demás acciones de la actividad.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->

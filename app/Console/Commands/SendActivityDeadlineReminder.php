@@ -34,8 +34,7 @@ class SendActivityDeadlineReminder extends Command
             ->get();
 
         $this->info('Fecha buscada: ' . now()->addDay()->toDateString());
-
-$this->info('Actividades encontradas: ' . $activities->count());
+        $this->info('Actividades encontradas: ' . $activities->count());
 
         foreach ($activities as $activity) {
             Notification::send($activity->users, new DueDateActivity($activity));

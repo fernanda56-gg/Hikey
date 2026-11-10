@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ActivityItem;
+use App\Notifications\ActionCompleted;
+use App\Notifications\NewAction;
+use App\Notifications\UpdateAction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Gate;
+use Notification;
 
 class ActivityItemController extends Controller
 {
@@ -30,6 +34,9 @@ class ActivityItemController extends Controller
                 'description' => $validated['description'],
                 'order' => ($activity->items()->max('order') ?? 0) + 1 // ? se incrementa el num de actividad
             ]);
+
+        /* notificación */
+        Notification::send($activity->users, new NewAction($activity));
 
             return back()->with('success', 'Acción añadida exitosamente.');
         } catch (ValidationException $e) {
@@ -62,6 +69,9 @@ class ActivityItemController extends Controller
 
         try {
             $item->update($validated);
+
+            /* notificación */
+            Notification::send($activity->users, new UpdateAction($activity));
 
             return back()->with('success', 'Acción actualizada exitosamente.');
         } catch (ValidationException $e) {
@@ -96,7 +106,7 @@ class ActivityItemController extends Controller
     /**
      * Marca una actividad como completada
      */
-    public function toggle(ActivityItem $item)
+    public function toggle(ActivityItem $item, Request $request)
     {
         $activity = $item->activity;
 
@@ -113,6 +123,9 @@ class ActivityItemController extends Controller
         $item->update([
             'is_completed' => !$item->is_completed
         ]);
+
+        /* notificación */
+        Notification::send($activity->users, new ActionCompleted($item, $request->user()));
 
         return back();
     }
