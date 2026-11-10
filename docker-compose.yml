@@ -58,6 +58,19 @@ services:
         networks:
             - hikey
 
+    scheduler:
+        build:
+            context: ./dockerfiles
+            dockerfile: php.dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
+        volumes:
+            - .:/var/www/html:delegated
+        command: php artisan schedule:work
+        networks:
+            - hikey
+
     redis:
         image: redis:alpine3.23
         restart: unless-stopped

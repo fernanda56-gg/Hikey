@@ -314,14 +314,12 @@ class ActivityController extends Controller
         $activity->users()->sync($validated['user_ids']);
 
         /* notificación */
-        /* Notification::send($activity->users, new AssignActivity($activity)); */
-        Notification::send(
+        Notification::send($activity->users, new AssignActivity($activity));
+        /* Notification::send(
             $activity->users,
             app()->make('App\\Notifications\\AssignActivity', ['activity' => $activity])
-        );
+        ); */
 
         return back()->with('success', 'Responsables actualizados');
     }
 }
-
-/* // TODO: REVISA LO DE LOS PERMISOS PARA SABER QUIEN PUEDE REGRESAR Y MARCAR COMO COMPLETADA UNA ACTIVIDAD */

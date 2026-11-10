@@ -251,6 +251,12 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 , espera a que tu líder de equipo te asigne tu siguiente actividad.
                             </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\DueDateActivity'" class="font-semibold">
+                                La actividad <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                vence mañana
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->

@@ -500,7 +500,7 @@
                                 </button>
                             </div>
 
-                            <div v-if="hasRole('admin') && selectedActivity.status === 'Revision'"
+                            <div v-if="hasRole('user') && selectedActivity.status === 'Revision'"
                                 class="flex items-center justify-start gap-2 mt-3 text-sm text-slate-400/50 font-black cursor-not-allowed">
                                 <PhTestTube class="size-4" weight="bold" />
                                 Actividad en revisión</div>
