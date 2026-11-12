@@ -22,7 +22,7 @@ class ActivityItemController extends Controller
     {
         if (Gate::denies('update', $activity))
         {
-            return redirect()->back()->with('error', 'No tienes permiso para realizar está acción');
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
         }
 
         $validated = $request->validate([
@@ -55,7 +55,7 @@ class ActivityItemController extends Controller
 
         if (Gate::denies('update', $activity))
         {
-            return redirect()->back()->with('error', 'No tienes permiso para realizar está acción');
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
         }
 
         if ($activity->status === 'Completado')
@@ -90,7 +90,7 @@ class ActivityItemController extends Controller
 
         if (Gate::denies('delete', $activity))
         {
-            return redirect()->back()->with('error', 'No tienes permiso para realizar está acción');
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
         }
 
         if ($activity->status === 'Completado')
@@ -112,7 +112,7 @@ class ActivityItemController extends Controller
 
         if (Gate::denies('toggleItem', $activity))
         {
-            return redirect()->back()->with('error', 'No tienes permiso para realizar está acción');
+            abort(403, 'No tienes los permisos necesarios para realizar esta acción.');
         }
 
         if ($activity->status === 'Completado')

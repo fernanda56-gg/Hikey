@@ -97,7 +97,7 @@ class ActivityPolicy
 
         // ? Comprueba que solo el líder de equipo del proyecto pueda eliminarla
         if ($user->hasRole('team-leader')) {
-            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
+        return $activity->project->leader->contains('id', $user->id);
         }
 
         return false;

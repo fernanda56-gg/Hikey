@@ -3,6 +3,7 @@
 use function Pest\Laravel\{actingAs, get, seed};
 
 use App\Models\Activity;
+use App\Models\ActivityItem;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\User;
@@ -879,4 +880,422 @@ test('El usuario puede marcar como completado una actividad', function () {
 
     $response->assertRedirect()
     ->assertSessionHasNoErrors();
+});
+
+
+// ! TEST PARA ACTIVITY ITEMS
+test('El usuario puede añadir nuevas acciones', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    app(ProjectTeamService::class)->changeRole($project, $user, 'Lider');
+
+    expect($project->fresh()->leader->contains($user))->toBeTrue();
+    expect($user->fresh()->hasRole('team-leader'))->toBeTrue();
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $response = actingAs($user)
+    ->post(route('action.store', $activity), [
+        'description' => 'Descripción de una acción a completar'
+    ]);
+
+    $response->assertRedirect()
+    ->assertSessionHasNoErrors();
+});
+
+test('El usuario no puede añadir nuevas acciones', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario miembro de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $user->assignRole('manager');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $response = actingAs($user)
+    ->post(route('action.store', $activity), [
+        'description' => 'Descripción de una acción a completar'
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('El usuario puede actualizar la información de la acción', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    app(ProjectTeamService::class)->changeRole($project, $user, 'Lider');
+
+    expect($project->fresh()->leader->contains($user))->toBeTrue();
+    expect($user->fresh()->hasRole('team-leader'))->toBeTrue();
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $item = ActivityItem::factory()->create([
+        'activity_id' => $activity->id
+    ]);
+
+    $response = actingAs($user)
+    ->put(route('action.update', $item), [
+        'description' => 'Descripción de una acción a completar nueva.'
+    ]);
+
+    $response->assertRedirect()
+    ->assertSessionHasNoErrors();
+});
+
+test('El usuario no puede actualizar la información de la acción', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $item = ActivityItem::factory()->create([
+        'activity_id' => $activity->id
+    ]);
+
+    $response = actingAs($user)
+    ->put(route('action.update', $item), [
+        'description' => 'Descripción de una acción a completar nueva.'
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('El usuario puede eliminar una acción', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    app(ProjectTeamService::class)->changeRole($project, $user, 'Lider');
+
+    expect($project->fresh()->leader->contains($user))->toBeTrue();
+    expect($user->fresh()->hasRole('team-leader'))->toBeTrue();
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $item = ActivityItem::factory()->create([
+        'activity_id' => $activity->id
+    ]);
+
+    $response = actingAs($user)
+    ->delete(route('action.destroy', $item));
+
+    $response->assertRedirect()
+    ->assertSessionHasNoErrors();
+});
+
+test('El usuario no puede eliminar la acción', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $item = ActivityItem::factory()->create([
+        'activity_id' => $activity->id
+    ]);
+
+    $response = actingAs($user)
+    ->delete(route('action.destroy', $item));
+
+    $response->assertForbidden();
+});
+
+test('El usuario puede marcar como completado la acción', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $item = ActivityItem::factory()->create([
+        'activity_id' => $activity->id
+    ]);
+
+    $response = actingAs($user)
+    ->patch(route('action.toggle-item', $item));
+
+    $response->assertRedirect()
+    ->assertSessionHasNoErrors();
+});
+
+test('El usuario no puede marcar como completado la acción', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario líder de equipo */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $item = ActivityItem::factory()->create([
+        'activity_id' => $activity->id
+    ]);
+
+    $response = actingAs($user)
+    ->patch(route('action.toggle-item', $item));
+
+    $response->assertForbidden();
 });
