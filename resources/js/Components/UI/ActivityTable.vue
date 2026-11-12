@@ -509,6 +509,12 @@
                                 class="flex items-center justify-start gap-2 mt-3 text-sm text-slate-400/50 font-black cursor-not-allowed">
                                 <PhChecks class="size-4" weight="bold" />
                                 Actividad completada</div>
+
+                            <div class="divider"></div>
+
+                            <!-- Sección de comentarios de usuarios -->
+                            <ActivityComment :activity="selectedActivity" :key="selectedActivity.id" />
+
                         </div>
                     </div>
 
@@ -608,6 +614,7 @@ import { route } from 'ziggy-js';
 import { router } from '@inertiajs/vue3';
 import { usePermission } from '../../composables/usePermission';
 import ActivityItems from './ActivityItems.vue';
+import ActivityComment from './ActivityComment.vue';
 
 //Comprobar permisos de usuario
 const {hasRole} = usePermission();

@@ -25,6 +25,6 @@ class ActivityComments extends Model
 
     public function author() // Relación entre users y comentarios de actividades
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

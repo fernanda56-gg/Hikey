@@ -78,6 +78,7 @@ class ActivityController extends Controller
             $activity->review_p = $user->can('review', $activity);
             $activity->delete_p = $user->can('delete', $activity);
             $activity->toggle_p = $user->can('toggleItem', $activity);
+            $activity->comment_p = $user->can('comments', $activity);
 
             $activity->formatted_completed_at = $activity->completed_at
             ? Carbon::parse($activity->completed_at)->format('Y-m-d')

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityCommentController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityItemController;
 use App\Http\Controllers\AuthController;
@@ -137,3 +138,5 @@ Route::post('activities/{activity}/items', [ActivityItemController::class, 'stor
 Route::put('activity-item/{item}', [ActivityItemController::class, 'update'])->name('action.update')->middleware(['auth', 'verified']);
 Route::delete('activity-item/{item}', [ActivityItemController::class, 'destroy'])->name('action.destroy')->middleware(['auth', 'verified']);
 Route::patch('activity-items/{item}/toggle-item', [ActivityItemController::class, 'toggle'])->name('action.toggle-item')->middleware(['auth', 'verified']);
+// Comentarios
+Route::post('activities/{activity}/comments', [ActivityCommentController::class, 'store'])->name('comment.store')->middleware(['auth', 'verified']);

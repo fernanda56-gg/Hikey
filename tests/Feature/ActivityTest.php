@@ -1299,3 +1299,107 @@ test('El usuario no puede marcar como completado la acción', function () {
 
     $response->assertForbidden();
 });
+
+test('El usuario puede hacer comentarios', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    // * se realiza el test
+    $response = actingAs($user)
+    ->post(route('comment.store', $activity), [
+        'user_id' => $user->id,
+        'content' => 'Comentario de prueba'
+    ]);
+
+    $response->assertRedirect()
+    ->assertSessionHasNoErrors();
+
+    expect($activity->comments()->count())->toBe(1); // ? se comprueba que el comentario exista
+});
+
+test('El usuario no puede hacer comentarios', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+    $user->assignRole('manager');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    $user = User::factory()->create();
+
+    // * se realiza el test
+    $response = actingAs($user)
+    ->post(route('comment.store', $activity), [
+        'user_id' => $user->id,
+        'content' => 'Comentario de prueba'
+    ]);
+
+    $response->assertRedirect();
+    expect($activity->comments()->count())->toBe(0); // ? se comprueba que el comentario exista
+});

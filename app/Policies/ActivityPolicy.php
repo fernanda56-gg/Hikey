@@ -216,4 +216,28 @@ class ActivityPolicy
 
         return false;
     }
+
+    /**
+     * Determina quien puede hacer comentarios en una actividad
+     */
+
+    public function comments(User $user, Activity $activity): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? El manager puede comentar sin importar la actividad
+        if ($user->hasRole('manager')) {
+            return $user->companies()->where('companies.id', $activity->project->company_id)->exists();
+        }
+
+        // ? Solo los integrantes del equipo pueden realizar comentarios en las actividades
+        if ($user->hasAnyRole(['team-leader', 'user'])) {
+            return $activity->project->users()->where('users.id', $user->id)->exists();
+        }
+
+        return false;
+    }
 }
