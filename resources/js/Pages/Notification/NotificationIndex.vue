@@ -276,6 +276,12 @@
                                 de la actividad <span class="uppercase font-black underline">{{ notification.data.activity_name }}</span>
                                 , sigue así y continua con las demás acciones de la actividad.
                             </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\NewComment'" class="font-semibold">
+                                {{ notification.data.author_name }} {{ notification.data.author_last_name }} comentó en la actividad
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->

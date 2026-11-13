@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ActivityComments;
+use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 
 class ActivityCommentController extends Controller
@@ -30,7 +32,9 @@ class ActivityCommentController extends Controller
             ]);
 
             /* notificación */
-            // TODO: AGREGAR NOTIFICACIÓN NEW COMMENT
+            if ($activity->users) {
+                Notification::send($activity->users, new NewComment($activity, $request->user()));
+            }
 
             return redirect()->back()->with('success', 'Comentario publicado.');
         } catch (ValidationException $e) {
@@ -72,3 +76,4 @@ class ActivityCommentController extends Controller
         //
     }
 }
+// TODO: AÑADIR ACCIONES DE ELIMINAR Y EDITAR COMENTARIOS Y VER COMO HACER QUE SE VEA MEJOR LO DE ACTIVITY_ITEMS
