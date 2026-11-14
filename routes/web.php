@@ -140,3 +140,5 @@ Route::delete('activity-item/{item}', [ActivityItemController::class, 'destroy']
 Route::patch('activity-items/{item}/toggle-item', [ActivityItemController::class, 'toggle'])->name('action.toggle-item')->middleware(['auth', 'verified']);
 // Comentarios
 Route::post('activities/{activity}/comments', [ActivityCommentController::class, 'store'])->name('comment.store')->middleware(['auth', 'verified']);
+Route::patch('activity-comments/{comment}', [ActivityCommentController::class, 'update'])->name('comment.update')->middleware(['auth', 'verified']);
+Route::delete('activity-comments/{comment}', [ActivityCommentController::class, 'destroy'])->name('comment.destroy')->middleware(['auth', 'verified']);

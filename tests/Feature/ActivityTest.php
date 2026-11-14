@@ -3,6 +3,7 @@
 use function Pest\Laravel\{actingAs, get, seed};
 
 use App\Models\Activity;
+use App\Models\ActivityComments;
 use App\Models\ActivityItem;
 use App\Models\Area;
 use App\Models\Company;
@@ -1403,3 +1404,231 @@ test('El usuario no puede hacer comentarios', function () {
     $response->assertRedirect();
     expect($activity->comments()->count())->toBe(0); // ? se comprueba que el comentario exista
 });
+
+test('El usuario puede editar sus comentarios', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    $comment = ActivityComments::factory()->create([
+        'activity_id' => $activity->id,
+        'user_id' => $user->id,
+    ]);
+
+    // * se realiza el test
+    $response = actingAs($user)
+    ->patch(route('comment.update', $comment), [
+        'content' => 'Comentario de prueba'
+    ]);
+
+    $response->assertRedirect()
+    ->assertSessionHasNoErrors();
+
+    expect($activity->comments()->count())->toBe(1); // ? se comprueba que el comentario exista
+});
+
+test('El usuario no puede editar comentarios', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    $comment = ActivityComments::factory()->create([
+        'activity_id' => $activity->id,
+        'user_id' => $user->id,
+    ]);
+
+    // * se realiza el test
+    /** @var \App\Models\User $other_user */
+    $other_user = User::factory()->create();
+    $other_user->assignRole('user');
+
+    $response = actingAs($other_user)
+    ->patch(route('comment.update', $comment), [
+        'content' => 'Comentario de prueba'
+    ]);
+
+    $response->assertRedirect();
+    expect($comment->fresh()->content)->not->toBe('Comentario de prueba'); // ?  se asegura de que no se haya actualizado
+});
+
+test('El usuario puede eliminar su comentario', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    $comment = ActivityComments::factory()->create([
+        'activity_id' => $activity->id,
+        'user_id' => $user->id,
+    ]);
+
+    // * se realiza el test
+    $response = actingAs($user)
+    ->delete(route('comment.destroy', $comment));
+
+    $response->assertRedirect();
+    expect($activity->comments()->count())->toBe(0); // ? se comprueba que el comentario no exista
+});
+
+
+test('El usuario no puede eliminar un comentario', function () {
+    /* se crean los roles para usuario */
+    Role::create(['name' => 'user']);
+    Role::create(['name' => 'manager']);
+    Role::create(['name' => 'team-leader']);
+
+    /* se genera los usuarios */
+    /** @var \App\Models\User $manager */
+    $manager = User::factory()->create();
+
+    /* se genera empresa */
+    $company = Company::factory()->create([
+        'owner_id' => $manager->id,
+    ]);
+    $manager->companies()->attach($company->id);
+
+    /* se ejecuta el seed de areas */
+    seed(AreaSeeder::class);
+    $area = Area::limit(1)->first();
+
+    /* se genera el proyecto */
+    $project = Project::factory()->create([
+        'by_user_id' => $manager->id,
+        'area_id' => $area,
+        'company_id' => $company->id,
+    ]);
+
+    /* generar usuario */
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    $project->users()->attach($user, ['role' => 'Miembro']);
+    $user->assignRole('user');
+
+    /* se crea la actividad */
+    $activity = Activity::factory()->create([
+        'project_id' => $project->id,
+        'by_user_id' => $user->id
+    ]);
+
+    $comment = ActivityComments::factory()->create([
+        'activity_id' => $activity->id,
+        'user_id' => $user->id,
+    ]);
+
+    // * se realiza el test
+    /** @var \App\Models\User $other_user */
+    $other_user = User::factory()->create();
+    $other_user->assignRole('user');
+
+    $response = actingAs($other_user)
+    ->delete(route('comment.destroy', $comment));
+
+    $response->assertForbidden();
+    expect($activity->comments()->count())->toBe(1); // ? se comprueba que el comentario exista
+});
+

@@ -282,6 +282,18 @@
                                 <span class="uppercase font-black underline">{{ notification.data.name }}</span>
                                 , ve al tablón de actividades para conocer los detalles.
                             </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\UpdatedComment'" class="font-semibold">
+                                {{ notification.data.author_name }} {{ notification.data.author_last_name }} ha editado su comentario
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ve al tablón de actividades para conocer los detalles.
+                            </div>
+
+                            <div v-if="notification.type === 'App\\Notifications\\DeletedComment'" class="font-semibold">
+                                El comentario 
+                                <span class="uppercase font-black underline">{{ notification.data.name }}</span>
+                                , ha sido eliminado de la actividad.
+                            </div>
                         </div>
 
                         <!-- ? Botón para marcar leída la notificación -->
