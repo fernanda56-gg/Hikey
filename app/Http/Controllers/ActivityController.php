@@ -80,6 +80,14 @@ class ActivityController extends Controller
             $activity->toggle_p = $user->can('toggleItem', $activity);
             $activity->comment_p = $user->can('comments', $activity);
 
+            // ! permisos para activity comments
+            $activity->comments->each(function ($comment) use ($user) {
+                $comment->updateComment_p = $user->can('update', $comment);
+                $comment->deleteComment_p = $user->can('delete', $comment);
+                $comment->manage_p = $user->can('manage', $comment);
+            });
+
+
             $activity->formatted_completed_at = $activity->completed_at
             ? Carbon::parse($activity->completed_at)->format('Y-m-d')
             : null;

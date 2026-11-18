@@ -48,6 +48,17 @@ class ActivityCommentsPolicy
         return $comments->user_id === $user->id;
     }
 
+    public function manage(User $user, ActivityComments $comments): bool
+    {
+        // ! Admin siempre puede, sin importar la empresa
+        if($user->hasRole('admin')){
+            return true;
+        }
+
+        // ? solo quien publica el comentario puede realizar acciones sobre este
+        return $comments->user_id === $user->id;
+    }
+
     /**
      * Determine whether the user can restore the model.
      */

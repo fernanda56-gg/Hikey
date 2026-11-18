@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col w-full">
+
+    <!-- Comentarios  //! solo los integrantes de equipo puede ver comentarios -->
+    <div v-if="activity.comment_p" class="flex flex-col w-full">
 
         <!-- Form para añadir nuevos comentarios -->
         <form v-if="activity.comment_p" @submit.prevent="addComment">
@@ -36,13 +38,13 @@
                 <div class="flex items-center justify-between gap-3">
                     <time class="chat-footer text-slate-400/70">{{ commentDateFormat(comment.created_at) }}</time>
                     <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="">
+                        <div v-if="comment.manage_p" tabindex="0" role="button" class="">
                             <PhDotsThreeVertical class="size-4 cursor-pointer" />
                         </div>
                         <ul tabindex="-1" class="dropdown-content menu bg-base-200 rounded-box z-1 w-32 mt-1.5 shadow-sm text-xs p-2">
 
                             <!-- btn para editar comentario -->
-                            <li>
+                            <li v-if="comment.updateComment_p">
                                 <div class="dropdown dropdown-top dropdown-end p-0">
                                     <div tabindex="0" role="button" @focus="startEdit(comment)"
                                         class="flex items-center justify-start gap-1 px-2 py-1 text-neutral font-semibold hover:text-warning duration-200">
@@ -64,7 +66,7 @@
                                             </div>
 
                                             <button type="submit" class="btn btn-xs btn-primary text-black self-end">
-                                                Guardar
+                                                Editar
                                             </button>
                                         </form>
                                     </div>
@@ -72,7 +74,7 @@
                             </li>
 
                             <!-- Btn para eliminar comentario -->
-                            <li><a class="flex items-center justify-start gap-1 px-2 py-1 font-semibold text-neutral hover:text-error duration-200"
+                            <li><a v-if="comment.deleteComment_p" class="flex items-center justify-start gap-1 px-2 py-1 font-semibold text-neutral hover:text-error duration-200"
                                 type="button" @click="removeComment(comment)">
                                 <PhTrash class="size-4" />
                                 Eliminar </a></li>
@@ -81,7 +83,14 @@
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- lo que ve cualquier usuario que no pertenece al equipo -->
+    <div v-else class="flex flex-col w-full">
+        <p class="flex items-center gap-1 font-black text-slate-400/50 mt-5 cursor-not-allowed text-xs">
+            <PhXCircle class="size-6" weight="bold" />
+            Solo los integrantes del equipo pueden comentar en esta actividad.
+        </p>
     </div>
 </template>
 
