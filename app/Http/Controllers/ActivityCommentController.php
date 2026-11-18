@@ -47,23 +47,7 @@ class ActivityCommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(ActivityComments $comment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ActivityComments $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Actualiza el comentario de la BD
      */
     public function update(Request $request, ActivityComments $comment)
     {
@@ -111,4 +95,4 @@ class ActivityCommentController extends Controller
         return back()->with('error', 'Comentario eliminado');
     }
 }
-// TODO: AÑADIR ACCIONES DE ELIMINAR Y EDITAR COMENTARIOS Y VER COMO HACER QUE SE VEA MEJOR LO DE ACTIVITY_ITEMS
+

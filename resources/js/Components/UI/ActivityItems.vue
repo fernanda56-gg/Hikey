@@ -63,9 +63,8 @@
                     </span>
 
                     <!-- Btn de acciones -->
-                    <button class="btn btn-square btn-xs btn-ghost" @click="removeItem(item)" >
-                        <PhTrash class="text-error size-4" weight="fill" />
-                    </button>
+                    <a class="link link-hover text-slate-400/50 text-[10px] font-black hover:text-error duration-200"
+                    type="button" @click="removeItem(item)">Eliminar</a>
                 </li>
             </ul>
         </div>
@@ -76,7 +75,7 @@
 import { router, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { route } from 'ziggy-js';
-import { PhCheckSquareOffset, PhPercent, PhXCircle, PhWarningCircle, PhTrash } from '@phosphor-icons/vue';
+import { PhCheckSquareOffset, PhPercent, PhXCircle, PhWarningCircle } from '@phosphor-icons/vue';
 
 const props = defineProps({
     activity: Object,
