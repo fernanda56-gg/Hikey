@@ -54,8 +54,8 @@ class Activity extends Model
     #[Override]
     protected static function booted()
     {
-        static::saving( function ($activity) {
-            if (! $activity->exists) {
+        static::creating(function ($activity) {
+            if (empty($activity->status)) {
                 $activity->status = 'Disponible';
             }
         });
