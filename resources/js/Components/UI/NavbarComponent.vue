@@ -124,11 +124,61 @@
                 </div>
         </div>
     </nav>
+
+    <!-- * contenedor de nuevo menu -->
+    <button class="btn sm:hidden" popovertarget="my-megamenu-5">Menu</button>
+
+    <div class="megamenu max-sm:megamenu-vertical p-2" id="my-megamenu-5" popover>
+        <span class="megamenu-active"></span>
+
+        <!-- Logo de pagina -->
+        <Link :href="route('inicio')" class="flex items-center space-x-2">
+            <img src="/images/logo.png" class="w-7 m-2">
+            <span class="font-sans font-bold uppercase text-xl flex-1 py-5">hikey</span>
+        </Link>
+
+        <!-- Link home page -->
+        <a :href="route('inicio')" class="flex items-center justify-start gap-1 font-medium">
+            <PhHouse class="size-4" />
+            Inicio
+        </a>
+
+        <!-- ! Link users -->
+        <button class="flex items-center justify-start gap-1.5 font-medium" popovertarget="k1">
+            <PhUser class="size-4" />
+            Usuarios
+        </button>
+        <div id="k1" popover>
+            <ul class="menu">
+                <li><a>Enterprise</a></li>
+                <li><a>CRM software</a></li>
+                <li><a>Security</a></li>
+                <li><a>Consulting</a></li>
+            </ul>
+        </div>
+
+        <button popovertarget="k2">Cloud Solutions</button>
+        <div id="k2" popover>
+            <ul class="menu">
+                <li><a>Cloud computing</a></li>
+                <li><a>Storage solutions</a></li>
+                <li><a>Database services</a></li>
+                <li><a>CDN performance</a></li>
+            </ul>
+        </div>
+
+        <a>Pricing</a>
+
+        <button onclick="login_modal.showModal()">Login</button>
+    </div>
+
+    <!-- ? btn de documentación de sistema -->
     <div class="fixed left-4 bottom-10 z-50">
         <a href="/docs" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-black cursor-pointer duration-200 hover:duration-200 hover:bg-primary-content">
             <PhQuestionMark class="size-6" />
         </a>
     </div>
+
     <slot></slot>
 </template>
 
@@ -136,7 +186,7 @@
 import { Link} from '@inertiajs/vue3';
 import { ref, watchEffect} from 'vue';
 import { route } from 'ziggy-js';
-import { PhMoonStars, PhSunHorizon, PhCaretDown, PhGear, PhSignOut, PhBell, PhQuestionMark } from '@phosphor-icons/vue';
+import { PhMoonStars, PhSunHorizon, PhCaretDown, PhGear, PhSignOut, PhBell, PhQuestionMark, PhHouse, PhUser } from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 import { useNotification } from '../../composables/UseNotification';
 
