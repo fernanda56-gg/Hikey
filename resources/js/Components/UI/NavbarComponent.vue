@@ -132,10 +132,10 @@
         <span class="megamenu-active"></span>
 
         <!-- Logo de pagina -->
-        <Link :href="route('inicio')" class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2 mr-1">
             <img src="/images/logo.png" class="w-7 m-2">
-            <span class="font-sans font-bold uppercase text-xl flex-1 py-5">hikey</span>
-        </Link>
+            <span class="font-sans font-bold uppercase text-xl flex-1 py-5 cursor-default">hikey</span>
+        </div>
 
         <!-- Link home page -->
         <a :href="route('inicio')" class="flex items-center justify-start gap-1 font-medium">
@@ -157,7 +157,11 @@
             </ul>
         </div>
 
-        <button popovertarget="k2">Cloud Solutions</button>
+        <!-- ! Link companies -->
+        <button class="flex items-center justify-start gap-1.5 font-medium" popovertarget="k2">
+            <PhBuildingOffice class="size-4" />
+            Empresas
+        </button>
         <div id="k2" popover>
             <ul class="menu">
                 <li><a>Cloud computing</a></li>
@@ -167,9 +171,48 @@
             </ul>
         </div>
 
-        <a>Pricing</a>
+        <!-- ! Link projects -->
+        <button class="flex items-center justify-start gap-1.5 font-medium" popovertarget="k3">
+            <PhKanban class="size-4" />
+            Proyectos
+        </button>
+        <div id="k3" popover>
+            <ul class="menu">
+                <li><a>Cloud computing</a></li>
+                <li><a>Storage solutions</a></li>
+                <li><a>Database services</a></li>
+                <li><a>CDN performance</a></li>
+            </ul>
+        </div>
 
-        <button onclick="login_modal.showModal()">Login</button>
+        <!-- ! Link de clients -->
+        <a class="flex items-center justify-start gap-1.5 font-medium">
+            <PhUsersThree class="size-4" />
+            Clientes
+        </a>
+
+        <!-- * Acciones de barra de navegación -->
+        <div class="navbar-end">
+
+            <!-- ! Cambiar de modo claro - oscuro -->
+            <label class="swap swap-rotate">
+                <!-- this hidden checkbox controls the state -->
+                <input type="checkbox" class="theme-controller" value="synthwave" @click="toggleTheme" />
+
+                <!-- moon icon -->
+                <div v-if="theme === 'daylight'">
+                    <PhMoonStars v-if="theme === 'daylight'" class="size-6 text-[#003566]" />
+                </div>
+
+                <!-- sun icon -->
+                <div v-else>
+                    <PhSun class="size-6 text-[#FFC300]" />
+                </div>
+            </label>
+
+            <!-- ! Notificaciones del sistema -->
+        </div>
+
     </div>
 
     <!-- ? btn de documentación de sistema -->
@@ -186,7 +229,7 @@
 import { Link} from '@inertiajs/vue3';
 import { ref, watchEffect} from 'vue';
 import { route } from 'ziggy-js';
-import { PhMoonStars, PhSunHorizon, PhCaretDown, PhGear, PhSignOut, PhBell, PhQuestionMark, PhHouse, PhUser } from '@phosphor-icons/vue';
+import { PhMoonStars, PhSunHorizon, PhSun, PhCaretDown, PhGear, PhSignOut, PhBell, PhQuestionMark, PhHouse, PhUser, PhBuildingOffice, PhKanban, PhUsersThree } from '@phosphor-icons/vue';
 import { usePermission } from '../../composables/usePermission';
 import { useNotification } from '../../composables/UseNotification';
 
